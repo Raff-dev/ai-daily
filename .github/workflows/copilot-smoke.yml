@@ -1,0 +1,38 @@
+name: Copilot CLI Smoke Test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  web-access:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
+
+      - name: Ask Copilot to fetch a live URL
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$COPILOT_GITHUB_TOKEN" ]; then
+            echo "::error::Missing PERSONAL_ACCESS_TOKEN secret. Create a fine-grained PAT with Copilot Requests permission and save it as PERSONAL_ACCESS_TOKEN."
+            exit 1
+          fi
+
+          copilot -p 'Fetch https://www.githubstatus.com/api/v2/status.json using the URL fetch tool, then write copilot-web-smoke.json with exactly this JSON shape: {"fetched":true,"url":"https://www.githubstatus.com/api/v2/status.json","indicator":"...","description":"...","updated_at":"..."}. Do not use shell commands, curl, Python, Node.js, or repository files to get the data. Use the live URL content only.' \
+            -s \
+            --allow-tool='url,write(copilot-web-smoke.json)' \
+            --allow-url='https://www.githubstatus.com/api/v2/status.json' \
+            --deny-tool='shell' \
+            --no-ask-user
+
+          test -s copilot-web-smoke.json
+          cat copilot-web-smoke.json
