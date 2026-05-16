@@ -4,11 +4,13 @@
 import html
 import json
 import os
+import re
 import subprocess
 from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
+from urllib.request import Request, urlopen
 
 try:
     from zoneinfo import ZoneInfo
@@ -27,6 +29,7 @@ SECTION_CONFIG = {
 }
 SECTION_ORDER = tuple(SECTION_CONFIG)
 COPILOT_MODEL = "gpt-5.4"
+IMAGE_CACHE: dict[str, str] = {}
 
 SECTION_TITLES = {
     "en": {
@@ -103,10 +106,12 @@ Process:
 1. Run the searches requested by agent.md, replacing {DATE}, {YEAR}, and {MONTH}.
 2. Keep only news published in the last 24 hours.
 3. Use only these section ids, in this exact order: dev-tools, ai-tools, robotics, defense, space, startups, markets.
-4. Pick max 4 important stories per section.
-5. Skip empty sections, including markets unless there is a major market-moving event.
-6. Verify dates and sources. Set verified=false if uncertain.
-7. Return JSON only.
+4. Target 3-4 important stories per section.
+5. If a section has fewer than 3 strong stories, broaden source discovery before skipping it.
+6. Never fabricate filler: include fewer than 3 only when the last-24h evidence is genuinely sparse.
+7. Skip empty sections, including markets unless there is a major market-moving event.
+8. Verify dates and sources. Set verified=false if uncertain.
+9. Return JSON only.
 
 JSON shape:
 {
@@ -133,6 +138,7 @@ JSON shape:
           "implications": "Why this matters.",
           "source_name": "Source",
           "source_url": "https://example.com/article",
+          "image_url": "https://example.com/optional-article-preview.jpg",
           "published_at": "2026-05-16"
         }
       ]
@@ -142,6 +148,7 @@ JSON shape:
 
 Allowed default section ids: dev-tools, ai-tools, robotics, defense, space, startups, markets.
 AI Tools is for non-coding AI products and apps; do not put developer harnesses, coding agents, IDEs, or SDKs there.
+If you can identify a source-provided article preview image, include it as image_url. Use only http/https URLs from the source page metadata or official source assets.
 For custom topics, use lowercase kebab-case ids and include title, icon, and color.
 """
 
@@ -218,7 +225,9 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .card-details { border-top: 1px solid var(--border); padding: 14px 18px 16px; display: flex; flex-direction: column; flex: 1; }
 .card-image-placeholder { width: 100%; aspect-ratio: 16/7; background: #F3F4F6; background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, #FFFFFF), #F3F4F6); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
 .card-image-placeholder::before { content: ''; position: absolute; inset: 16px; border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent); border-radius: 18px; }
-.card-visual-svg { width: 100%; height: 100%; display: block; color: var(--accent); }
+.card-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.card-image-placeholder.has-image::after { content: ''; position: absolute; inset: 0; z-index: 2; background: linear-gradient(180deg, rgba(17,24,39,0) 45%, rgba(17,24,39,.22)); pointer-events: none; }
+.card-visual-svg { width: 100%; height: 100%; display: block; color: var(--accent); position: relative; z-index: 0; }
 .card-visual-label { font: 800 22px/1 Inter, system-ui, sans-serif; letter-spacing: .12em; fill: currentColor; }
 .card-summary .card-image-placeholder { border-bottom: 1px solid var(--border); }
 .card-tags { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -504,6 +513,68 @@ def domain_from_url(url: str) -> str:
     return parsed.netloc or parsed.path.split("/")[0]
 
 
+def is_http_url(url: str) -> bool:
+    parsed = urlparse(url)
+    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+
+
+def extract_meta_image(page_html: str, base_url: str) -> str:
+    patterns = [
+        r'<meta[^>]+(?:property|name)=["\']og:image(?::secure_url)?["\'][^>]+content=["\']([^"\']+)["\']',
+        r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+(?:property|name)=["\']og:image(?::secure_url)?["\']',
+        r'<meta[^>]+(?:property|name)=["\']twitter:image(?::src)?["\'][^>]+content=["\']([^"\']+)["\']',
+        r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+(?:property|name)=["\']twitter:image(?::src)?["\']',
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, page_html, flags=re.IGNORECASE)
+        if not match:
+            continue
+        image_url = html.unescape(match.group(1).strip())
+        resolved = urljoin(base_url, image_url)
+        if is_http_url(resolved):
+            return resolved
+    return ""
+
+
+def fetch_source_preview_image(source_url: str) -> str:
+    if not is_http_url(source_url):
+        return ""
+    if source_url in IMAGE_CACHE:
+        return IMAGE_CACHE[source_url]
+
+    request = Request(
+        source_url,
+        headers={
+            "User-Agent": "AI-Daily/1.0 (+https://github.com/Raff-dev/ai-daily)",
+            "Accept": "text/html,application/xhtml+xml",
+        },
+    )
+    try:
+        with urlopen(request, timeout=10) as response:
+            content_type = response.headers.get("content-type", "")
+            if "html" not in content_type:
+                IMAGE_CACHE[source_url] = ""
+                return ""
+            page_html = response.read(750_000).decode("utf-8", errors="replace")
+    except (OSError, UnicodeError) as error:
+        print(f"warning: could not fetch preview image metadata for {source_url}: {error}")
+        IMAGE_CACHE[source_url] = ""
+        return ""
+
+    image_url = extract_meta_image(page_html, source_url)
+    IMAGE_CACHE[source_url] = image_url
+    if not image_url:
+        print(f"warning: no OpenGraph/Twitter preview image found for {source_url}")
+    return image_url
+
+
+def article_image_url(article: dict) -> str:
+    image_url = str(article.get("image_url") or "").strip()
+    if is_http_url(image_url):
+        return image_url
+    return fetch_source_preview_image(str(article.get("source_url") or ""))
+
+
 def render_stats(stats: list) -> str:
     if not stats:
         return ""
@@ -528,9 +599,19 @@ def render_badges(meta: dict, importance: str, verified: bool) -> str:
     )
 
 
-def render_card_image(meta: dict) -> str:
+def render_card_image(article: dict, meta: dict) -> str:
+    image_url = article_image_url(article)
+    image_html = ""
+    image_class = ""
+    if image_url:
+        image_class = " has-image"
+        image_html = (
+            f'<img class="card-image" src="{e(image_url)}" alt="" loading="lazy" referrerpolicy="no-referrer" '
+            "onerror=\"this.remove(); this.parentElement.classList.remove('has-image');\">"
+        )
     return f"""
-<div class="card-image-placeholder" style="--accent: {e(meta["color"])};">
+<div class="card-image-placeholder{image_class}" style="--accent: {e(meta["color"])};">
+  {image_html}
   <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="{e(meta["title"])} visual" xmlns="http://www.w3.org/2000/svg">
     <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
     <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
@@ -549,7 +630,7 @@ def render_article(article: dict, meta: dict, index: int, total: int, lang: str)
         importance = "info"
     badges_html = render_badges(meta, importance, article.get("verified", True))
     stats_html = render_stats(article.get("stats", []))
-    image_html = render_card_image(meta)
+    image_html = render_card_image(article, meta)
 
     facts = "\n".join(f"<li>{e(fact)}</li>" for fact in article.get("facts", []) if fact)
     facts_html = f'<ul class="bullet-list">{facts}</ul>' if facts else ""
@@ -757,7 +838,7 @@ def render_report(report: dict, dates: dict, translated_report: dict | None = No
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>{REPORT_CSS}</style>
 </head>
-<body>
+<body data-render-version="source-images-v1">
 {''.join(panels)}
 <script>
 const setLanguage = (lang) => {{
@@ -829,7 +910,7 @@ def report_is_current_format(output_path: Path) -> bool:
     if not output_path.exists():
         return False
     html_doc = output_path.read_text(encoding="utf-8")
-    return 'data-lang="pl"' in html_doc and "card-visual-svg" in html_doc
+    return 'data-lang="pl"' in html_doc and 'data-render-version="source-images-v1"' in html_doc
 
 
 def main() -> None:

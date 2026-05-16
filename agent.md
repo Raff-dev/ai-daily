@@ -39,10 +39,32 @@ Use these as defaults. Replace `{DATE}`, `{YEAR}`, and `{MONTH}` with today's va
 7. `"Nvidia Meta Tesla Microsoft Google Apple stock AI news today {DATE}"`
 8. `"AI stock emerging company IPO {MONTH} {YEAR}"`
 
+## Research process
+
+Use a source-ladder instead of relying on one search result page:
+
+1. Trend scan: identify fast-moving topics from Google News, Google Trends-style interest, YouTube launch/keynote activity, Hacker News, Product Hunt, GitHub Trending, Reddit, and X/public posts.
+2. Primary-source check: confirm with official blog posts, changelogs, filings, press releases, papers, launch videos, GitHub repos, or government releases.
+3. Reputable-reporting check: corroborate with outlets such as The Verge, TechCrunch, WIRED, Ars Technica, IEEE Spectrum, The Robot Report, SpaceNews, DefenseScoop, Breaking Defense, Reuters, Bloomberg, CNBC, WSJ, FT, or CNBC.
+4. Persona watch: for market-moving or policy-moving statements, check public posts/interviews from people such as Elon Musk, Donald Trump, Sam Altman, Greg Brockman, Dario Amodei, Demis Hassabis, Jensen Huang, Palmer Luckey, Alexandr Wang, and major agency/company leaders. Treat social posts as signals, not final proof.
+5. Evidence gate: include a story only when the date, source, and category fit the last-24h window. Mark `verified=false` if the story is plausible but not fully confirmed.
+
+Useful source map by section:
+
+- `dev-tools`: GitHub Blog/Changelog, OpenAI, Anthropic, Microsoft/Copilot, Cursor, Windsurf, Sourcegraph, JetBrains, Hacker News, GitHub Trending, Product Hunt.
+- `ai-tools`: OpenAI, Google DeepMind/Gemini, Perplexity, Runway, Midjourney, ElevenLabs, Adobe, Canva, Notion, productivity/creative AI launch pages, YouTube demos.
+- `robotics`: IEEE Spectrum, The Robot Report, Robotics Business Review, Boston Dynamics, Figure, Tesla Optimus, NVIDIA robotics, Agility, Unitree, drone regulatory/news sources.
+- `defense`: DefenseScoop, Breaking Defense, Defense One, War on the Rocks, DoD/DARPA/DIU releases, Anduril, Palantir, Shield AI, Helsing, NATO/EU defense releases.
+- `space`: SpaceNews, NASA, ESA, SpaceX, Rocket Lab, Planet, Maxar, Blue Origin, satellite/operator blogs, launch livestreams.
+- `startups`: TechCrunch, The Information, Crunchbase-style funding news, PitchBook-style reporting, YC, a16z, Sequoia, Index, company launch posts, Product Hunt.
+- `markets`: Reuters, Bloomberg, CNBC, WSJ, FT, SEC filings, earnings releases, investor relations pages, analyst notes when tied to a concrete AI event.
+
 ## Filtering rules
 
 - Keep only articles published in the last 24 hours.
-- Select max 4 stories per section.
+- Target 3-4 strong stories per section.
+- If a section has fewer than 3 strong stories, broaden searches across the source map before skipping it.
+- Do not fabricate filler: if a section still has fewer than 3 genuinely relevant last-24h stories after broadening, include only verified/credible stories and mark uncertain ones with `[UNVERIFIED]`.
 - Skip sections with no relevant last-24h news.
 - Prefer primary sources and reputable reporting.
 - Mark uncertain stories with `[UNVERIFIED]`.
