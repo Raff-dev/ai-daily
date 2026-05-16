@@ -24,6 +24,8 @@ jobs:
   generate:
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.mode == 'generate' }}
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
     concurrency:
       group: daily-brief
       cancel-in-progress: false
