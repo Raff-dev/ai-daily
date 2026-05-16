@@ -17,12 +17,14 @@ except ImportError:
 
 SECTION_CONFIG = {
     "dev-tools": {"title": "Developer Tools", "icon": "monitor", "color": "#2563EB", "badge": "dev"},
+    "ai-tools": {"title": "AI Tools", "icon": "sparkles", "color": "#DB2777", "badge": "ai-tool"},
     "robotics": {"title": "Robotics", "icon": "bot", "color": "#16A34A", "badge": "robot"},
     "defense": {"title": "Defense", "icon": "shield", "color": "#DC2626", "badge": "defense"},
     "space": {"title": "Space", "icon": "rocket", "color": "#7C3AED", "badge": "space"},
     "startups": {"title": "Startups", "icon": "banknote", "color": "#EA580C", "badge": "startup"},
     "markets": {"title": "Markets", "icon": "bar-chart-2", "color": "#0F766E", "badge": "market"},
 }
+SECTION_ORDER = tuple(SECTION_CONFIG)
 
 SYSTEM_PROMPT = """\
 You are an AI News Specialist. Generate only structured content for a daily news briefing.
@@ -34,10 +36,11 @@ the custom brief wins.
 Process:
 1. Run the searches requested by agent.md, replacing {DATE}, {YEAR}, and {MONTH}.
 2. Keep only news published in the last 24 hours.
-3. Pick max 4 important stories per section.
-4. Skip empty sections.
-5. Verify dates and sources. Set verified=false if uncertain.
-6. Return JSON only.
+3. Use only these section ids, in this exact order: dev-tools, ai-tools, robotics, defense, space, startups, markets.
+4. Pick max 4 important stories per section.
+5. Skip empty sections, including markets unless there is a major market-moving event.
+6. Verify dates and sources. Set verified=false if uncertain.
+7. Return JSON only.
 
 JSON shape:
 {
@@ -71,7 +74,8 @@ JSON shape:
   ]
 }
 
-Allowed default section ids: dev-tools, robotics, defense, space, startups, markets.
+Allowed default section ids: dev-tools, ai-tools, robotics, defense, space, startups, markets.
+AI Tools is for non-coding AI products and apps; do not put developer harnesses, coding agents, IDEs, or SDKs there.
 For custom topics, use lowercase kebab-case ids and include title, icon, and color.
 """
 
@@ -85,6 +89,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
   --shadow-sm: 0 1px 3px rgba(0,0,0,.08); --shadow-md: 0 4px 12px rgba(0,0,0,.08);
   --radius: 12px; --radius-sm: 8px; --radius-pill: 9999px;
   --dev: #2563EB; --dev-bg: #EFF6FF; --dev-border: #BFDBFE;
+  --ai-tool: #DB2777; --ai-tool-bg: #FDF2F8; --ai-tool-border: #FBCFE8;
   --robot: #16A34A; --robot-bg: #F0FDF4; --robot-border: #BBF7D0;
   --defense: #DC2626; --defense-bg: #FEF2F2; --defense-border: #FECACA;
   --space: #7C3AED; --space-bg: #F5F3FF; --space-border: #DDD6FE;
@@ -145,6 +150,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .card-tags { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
 .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: var(--radius-pill); font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1; white-space: nowrap; }
 .badge-dev { background: var(--dev-bg); color: var(--dev); border: 1px solid var(--dev-border); }
+.badge-ai-tool { background: var(--ai-tool-bg); color: var(--ai-tool); border: 1px solid var(--ai-tool-border); }
 .badge-robot { background: var(--robot-bg); color: var(--robot); border: 1px solid var(--robot-border); }
 .badge-defense { background: var(--defense-bg); color: var(--defense); border: 1px solid var(--defense-border); }
 .badge-space { background: var(--space-bg); color: var(--space); border: 1px solid var(--space-border); }
@@ -299,13 +305,29 @@ def run_agent(dates: dict) -> dict:
 def section_meta(section: dict) -> dict:
     section_id = section.get("id") or "custom"
     defaults = SECTION_CONFIG.get(section_id, {})
+    if defaults:
+        return {
+            "id": section_id,
+            "title": defaults["title"],
+            "icon": defaults["icon"],
+            "color": defaults["color"],
+            "badge": defaults["badge"],
+        }
     return {
         "id": section_id,
-        "title": section.get("title") or defaults.get("title") or section_id.replace("-", " ").title(),
-        "icon": section.get("icon") or defaults.get("icon") or "newspaper",
-        "color": section.get("color") or defaults.get("color") or "#374151",
-        "badge": defaults.get("badge", "custom"),
+        "title": section.get("title") or section_id.replace("-", " ").title(),
+        "icon": section.get("icon") or "newspaper",
+        "color": section.get("color") or "#374151",
+        "badge": "custom",
     }
+
+
+def ordered_sections(report: dict) -> list[dict]:
+    sections = [section for section in report.get("sections", []) if section.get("articles")]
+    known = {section.get("id"): section for section in sections if section.get("id") in SECTION_CONFIG}
+    ordered = [known[section_id] for section_id in SECTION_ORDER if section_id in known]
+    ordered.extend(section for section in sections if section.get("id") not in SECTION_CONFIG)
+    return ordered
 
 
 def article_class(index: int, total: int) -> str:
@@ -440,7 +462,7 @@ def render_section(section: dict) -> str:
 
 def collect_sources(report: dict) -> list[dict]:
     sources = []
-    for section in report.get("sections", []):
+    for section in ordered_sections(report):
         meta = section_meta(section)
         items = []
         for article in section.get("articles", []):
@@ -467,7 +489,7 @@ def render_sources(report: dict) -> str:
 
 def render_nav(report: dict) -> str:
     links = []
-    for section in report.get("sections", []):
+    for section in ordered_sections(report):
         meta = section_meta(section)
         if section.get("articles"):
             links.append(f'<a href="#{e(meta["id"])}"><i data-lucide="{e(meta["icon"])}"></i> {e(meta["title"])}</a>')
@@ -476,11 +498,12 @@ def render_nav(report: dict) -> str:
 
 
 def render_report(report: dict, dates: dict) -> str:
-    sections = [render_section(section) for section in report.get("sections", [])]
+    report_sections = ordered_sections(report)
+    sections = [render_section(section) for section in report_sections]
     sections_html = "\n".join(section for section in sections if section)
-    section_count = sum(1 for section in report.get("sections", []) if section.get("articles"))
+    section_count = len(report_sections)
     source_count = sum(len(source["items"]) for source in collect_sources(report))
-    articles_count = sum(len(section.get("articles", [])) for section in report.get("sections", []))
+    articles_count = sum(len(section.get("articles", [])) for section in report_sections)
     reviewed = report.get("articles_reviewed") or articles_count
     tagline = report.get("tagline") or "Everything you need to know from the last 24 hours."
     breaking = ""
