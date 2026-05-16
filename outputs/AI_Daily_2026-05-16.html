@@ -64,6 +64,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .section-count { font-size: 11px; font-weight: 600; color: var(--text-muted); background: var(--bg-page); border: 1px solid var(--border); padding: 3px 10px; border-radius: var(--radius-pill); }
 .section-divider { height: 3px; border-radius: 0 0 3px 3px; margin-bottom: 12px; }
 .articles-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; }
+.empty-section { grid-column: span 12; background: #fff; border: 1px dashed var(--border-strong); border-radius: var(--radius); padding: 18px; color: var(--text-muted); font-size: 13px; }
 .news-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); display: flex; flex-direction: column; overflow: hidden; transition: box-shadow 0.15s, transform 0.15s; box-shadow: var(--shadow-sm); }
 .news-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
 .news-card.featured { grid-column: span 7; }
@@ -136,7 +137,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 }
 </style>
 </head>
-<body data-render-version="source-images-v2">
+<body data-render-version="source-images-v4">
 
 <div class="language-panel active" data-lang="en">
 <header class="masthead">
@@ -145,7 +146,13 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
       <span class="masthead-title">AI Daily</span>
       <span class="masthead-edition">May 16</span>
     </div>
-    <nav class="masthead-nav"><a href="#en-space"><i data-lucide="rocket"></i> Space</a>
+    <nav class="masthead-nav"><a href="#en-dev-tools"><i data-lucide="monitor"></i> Developer Tools</a>
+<a href="#en-ai-tools"><i data-lucide="sparkles"></i> AI Tools</a>
+<a href="#en-robotics"><i data-lucide="bot"></i> Robotics</a>
+<a href="#en-defense"><i data-lucide="shield"></i> Defense</a>
+<a href="#en-space"><i data-lucide="rocket"></i> Space</a>
+<a href="#en-startups"><i data-lucide="banknote"></i> Startups</a>
+<a href="#en-markets"><i data-lucide="bar-chart-2"></i> Markets</a>
 <a href="#en-sources"><i data-lucide="paperclip"></i> All report sources</a></nav>
     <div class="language-toggle" aria-label="Language"><button type="button" class="active" data-set-lang="en">EN</button><button type="button" class="" data-set-lang="pl">PL</button></div>
     <span class="masthead-version">Structured</span>
@@ -157,62 +164,61 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
     <h1 class="hero-title">AI Daily — <span>Your Morning</span><br>AI Briefing</h1>
     <p class="hero-tagline">Everything you need to know about artificial intelligence from the last 24 hours.</p>
     <div class="hero-stats">
-      <div class="hero-stat-item"><span class="hero-stat-num">105</span><span class="hero-stat-label">articles reviewed</span></div>
-      <div class="hero-stat-item"><span class="hero-stat-num">1</span><span class="hero-stat-label">topic sections</span></div>
-      <div class="hero-stat-item"><span class="hero-stat-num">4</span><span class="hero-stat-label">verified sources</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">28</span><span class="hero-stat-label">articles reviewed</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">7</span><span class="hero-stat-label">topic sections</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">21</span><span class="hero-stat-label">verified sources</span></div>
     </div>
   </div>
 </div>
 <div class="page-wrapper">
   
   
-<section class="news-section" id="en-space">
+<section class="news-section" id="en-dev-tools">
   <div class="section-header">
-    <span class="section-icon"><i data-lucide="rocket"></i></span>
+    <span class="section-icon"><i data-lucide="monitor"></i></span>
     <div class="section-meta">
       <span class="section-overline">Section</span>
-      <h2 class="section-title">Space</h2>
+      <h2 class="section-title">Developer Tools</h2>
     </div>
-    <span class="section-count">4 articles</span>
+    <span class="section-count">3 articles</span>
   </div>
-  <div class="section-divider" style="background: #7C3AED;"></div>
+  <div class="section-divider" style="background: #2563EB;"></div>
   <div class="articles-grid">
     
 <details class="news-card featured">
   <summary class="card-summary">
     
-<div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
-  <img class="card-image" src="https://www.nasa.gov/wp-content/uploads/2026/05/crs-34-mission-dragon-liftoff-image-2.png" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Space visual" xmlns="http://www.w3.org/2000/svg">
+<div class="card-image-placeholder has-image" style="--accent: #2563EB;">
+  <img class="card-image" src="https://github.blog/wp-content/uploads/2026/05/image1.png?resize=1024%2C908" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Developer Tools visual" xmlns="http://www.w3.org/2000/svg">
     <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
     <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
     <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
     <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
     <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">ORB</text>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEV</text>
   </svg>
 </div>
     <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Space</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">SpaceX launches CRS-34 to the ISS as Cargo Dragon logs a record sixth flight</h2>
-      <p class="article-deck">Dragon delivered 2,948 kilograms of cargo to the ISS and became the first cargo Dragon to reach a sixth mission.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">2,948 kg</span><span class="stat-label">cargo delivered</span></div>
-<div class="stat-highlight"><span class="stat-number">6th</span><span class="stat-label">Dragon flight</span></div></div>
+      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Developer Tools</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">GitHub pilots an accessibility agent inside Copilot</h2>
+      <p class="article-deck">GitHub says its experimental agent can answer accessibility questions and automatically fix simple issues before code ships.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">68%</span><span class="stat-label">resolution rate</span></div></div>
       <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
     </div>
   </summary>
   <div class="card-details">
-    <ul class="bullet-list"><li>Dragon C209 is making its sixth cargo mission, the first cargo Dragon to reach that milestone, and the Falcon 9 first stage also flew its sixth mission and landed successfully at Cape Canaveral.</li>
-<li>The mission carried about 2,948 kilograms of cargo for NASA Expedition 74, including more than 50 science experiments.</li>
-<li>SpaceX has now completed its 57th orbital launch of 2026, putting it on pace for roughly 154 launches this year.</li></ul>
+    <ul class="bullet-list"><li>GitHub published a blog post on May 15, 2026 describing a general-purpose accessibility agent.</li>
+<li>The company said the system is being piloted for Copilot CLI and Copilot in VS Code workflows.</li>
+<li>GitHub said the agent reviewed 3,535 pull requests and reached a 68% resolution rate.</li></ul>
     <div class="extended-content">
-      <p class="body-text">SpaceX launched CRS-34 at 6:05 PM EDT on May 15, sending Dragon to the International Space Station with science payloads that include the CLARREO Pathfinder climate instrument, the STORIE charged-particle study, bone scaffold research, and red blood cell experiments.</p>
-<p class="body-text">The reuse milestone underscores how far SpaceX has pushed orbital logistics economics. With the ISS nearing the end of its operating life, each successful resupply mission also carries outsized weight for the station&#x27;s remaining science window.</p>
+      <p class="body-text">The launch matters because accessibility review has been one of the harder areas to automate reliably in developer workflows. GitHub is positioning the agent as a practical helper that can answer point-in-time questions and resolve simpler defects automatically.</p>
+<p class="body-text">For developers, this is a signal that Copilot is moving beyond inline generation toward specialized review agents with measurable task ownership. Accessibility is a defensible first niche because teams can benchmark fixes against concrete guidelines and pull request outcomes.</p>
       
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> This reinforces SpaceX&#x27;s lead in reusable orbital transport while keeping NASA&#x27;s ISS science pipeline moving with increasingly flight-proven hardware.</p>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Copilot&#x27;s roadmap is shifting toward domain-specific agents that own narrow but high-value software tasks.</p>
     </div>
     <div class="card-footer">
-      <a href="https://spacenews.com/spacex-launches-crs-34-cargo-mission-to-iss/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=spacenews.com&sz=16" alt="">SpaceNews</a>
+      <a href="https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=github.blog&sz=16" alt="">GitHub Blog</a>
       <span class="pub-time">2026-05-15</span>
     </div>
   </div>
@@ -221,38 +227,37 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 <details class="news-card secondary">
   <summary class="card-summary">
     
-<div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
-  <img class="card-image" src="https://cdn.mos.cms.futurecdn.net/RiC6rtyJHBJ6Hie5wQPRvd.png" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Space visual" xmlns="http://www.w3.org/2000/svg">
+<div class="card-image-placeholder has-image" style="--accent: #2563EB;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Developer Tools visual" xmlns="http://www.w3.org/2000/svg">
     <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
     <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
     <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
     <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
     <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">ORB</text>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEV</text>
   </svg>
 </div>
     <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Space</span><span class="badge badge-breakthrough"><i data-lucide="sparkles"></i> breakthrough</span></div>
-      <h2 class="article-title">NASA&#x27;s Psyche uses Mars flyby to gain speed for its 2029 metal-asteroid rendezvous</h2>
-      <p class="article-deck">The spacecraft skimmed past Mars on May 15 and picked up roughly 2 kilometers per second of heliocentric velocity without burning propellant.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">12,333 mph</span><span class="stat-label">flyby speed</span></div>
-<div class="stat-highlight"><span class="stat-number">2 km/s</span><span class="stat-label">velocity gain</span></div></div>
+      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Developer Tools</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">GitHub pushes Copilot deeper into the coding-agent race</h2>
+      <p class="article-deck">A fresh report says GitHub&#x27;s new Copilot app is aimed more directly at Claude Code and OpenAI Codex.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">3</span><span class="stat-label">major rivals named</span></div></div>
       <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
     </div>
   </summary>
   <div class="card-details">
-    <ul class="bullet-list"><li>Psyche flew past Mars on May 15 at about 12,333 mph, passing closer to the planet than either Phobos or Deimos.</li>
-<li>The gravity assist added roughly 2 kilometers per second of velocity relative to the sun without requiring propellant.</li>
-<li>Its target, asteroid 16 Psyche, is about 173 miles wide and may be the exposed metallic core of a shattered protoplanet.</li></ul>
+    <ul class="bullet-list"><li>The New Stack described GitHub&#x27;s new Copilot app as a competitive move against Claude Code and Codex.</li>
+<li>The report was published on May 16, 2026, keeping it inside the last-24-hour window.</li>
+<li>The cited framing is about agentic coding competition rather than a minor feature update.</li></ul>
     <div class="extended-content">
-      <p class="body-text">The Mars gravity assist was one of the most important checkpoints in Psyche&#x27;s journey because the mission relies on solar-electric propulsion, which is efficient but low-thrust. The maneuver redirected the spacecraft toward the asteroid belt on schedule for arrival in July 2029.</p>
-<p class="body-text">If 16 Psyche is truly exposed core material, the mission could give scientists a rare direct look at the kind of metal-rich interior normally hidden deep inside rocky worlds such as Earth.</p>
+      <p class="body-text">Even with verification limited to secondary reporting, the direction is clear: major coding-assistant vendors are converging on agentic workflows instead of simple autocomplete. Product packaging now matters almost as much as raw model quality.</p>
+<p class="body-text">If the positioning holds, enterprises will see a faster showdown around integrated coding agents, task execution, permissions, and workspace control. That intensifies pressure on every AI dev platform to prove real end-to-end productivity gains.</p>
       
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> A successful gravity-assist keeps one of NASA&#x27;s most unusual planetary missions on track and advances the study of how rocky planets formed and differentiated.</p>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> The coding-assistant market is moving from chat helpers to full agent platforms, raising the stakes for GitHub, Anthropic, and OpenAI.</p>
     </div>
     <div class="card-footer">
-      <a href="https://www.space.com/space-exploration/asteroid-comet-missions/nasas-psyche-spacecraft-is-flying-to-a-metal-asteroid-so-why-did-it-just-visit-mars" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.space.com&sz=16" alt="">Space.com</a>
+      <a href="https://news.google.com/rss/articles/CBMiX0FVX3lxTE9uTWd1cjZxMVVLUm5DT0xnM3FRNFpiUjZkTHcwU1dvQmpudGJDNlVnX1dQNXA5RGx1Q3FrRUFpNWlJOGdhdklMbV80VWZtSzVlRE9XbXlZU2dPRFNkSmpr?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">The New Stack</a>
       <span class="pub-time">2026-05-16</span>
     </div>
   </div>
@@ -261,38 +266,129 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 <details class="news-card standard">
   <summary class="card-summary">
     
-<div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
-  <img class="card-image" src="https://cdn.mos.cms.futurecdn.net/a5drT8Sba3h7zF4aA9LAq5.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Space visual" xmlns="http://www.w3.org/2000/svg">
+<div class="card-image-placeholder has-image" style="--accent: #2563EB;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Developer Tools visual" xmlns="http://www.w3.org/2000/svg">
     <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
     <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
     <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
     <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
     <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">ORB</text>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEV</text>
   </svg>
 </div>
     <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Space</span><span class="badge badge-breakthrough"><i data-lucide="sparkles"></i> breakthrough</span></div>
-      <h2 class="article-title">Rubin found interstellar comet 3I/ATLAS before discovery, while two Jupiter probes captured a first</h2>
-      <p class="article-deck">New reporting shows Rubin imaged 3I/ATLAS 10 days early and that JUICE and Europa Clipper made the first joint observations of an interstellar comet.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">9</span><span class="stat-label">early Rubin images</span></div>
-<div class="stat-highlight"><span class="stat-number">140,000 mph</span><span class="stat-label">comet velocity</span></div></div>
+      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Developer Tools</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">xAI enters coding with Grok Build</h2>
+      <p class="article-deck">xAI reportedly launched Grok Build, its first AI coding agent, in an early test for subscribers.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">1st</span><span class="stat-label">coding agent from xAI</span></div></div>
       <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
     </div>
   </summary>
   <div class="card-details">
-    <ul class="bullet-list"><li>The Vera C. Rubin Observatory imaged 3I/ATLAS nine times between June 21 and July 2, 2025, about 10 days before the comet&#x27;s official discovery on July 1, 2025.</li>
-<li>ESA&#x27;s JUICE and NASA&#x27;s Europa Clipper observed the comet&#x27;s dayside and nightside simultaneously during perihelion, creating the first coordinated multi-spacecraft observation of an interstellar comet.</li>
-<li>The observations found elevated carbon abundance, reinforcing earlier JWST evidence that 3I/ATLAS formed in a different solar system.</li></ul>
+    <ul class="bullet-list"><li>PCMag reported on May 15, 2026 that xAI launched Grok Build.</li>
+<li>The product was described as xAI&#x27;s first AI coding agent.</li>
+<li>The report said the release was in early testing for subscribers.</li></ul>
     <div class="extended-content">
-      <p class="body-text">The Rubin pre-discovery images are an early proof point for the observatory&#x27;s role in finding future interstellar visitors. The research suggests Rubin could become the leading detector of such objects once its full data pipeline is running.</p>
-<p class="body-text">JUICE and Europa Clipper also produced an unusually rich geometry for studying an extrasolar body by observing opposite hemispheres at once, adding rare compositional evidence about matter formed around another star.</p>
+      <p class="body-text">Grok&#x27;s move into coding expands the field of serious agent vendors and shows how quickly frontier model providers are turning coding into a default product category. What mattered a year ago as a model demo is now expected as a shipping agent experience.</p>
+<p class="body-text">The competitive effect is immediate: every new entrant forces comparisons on repository awareness, execution tooling, mobile access, and collaboration features. Even if this is an early test, it raises expectations around breadth of model vendors in coding.</p>
       
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> This is a major sign that next-generation survey telescopes and multi-mission coordination are transforming how quickly scientists can detect and characterize objects from beyond the solar system.</p>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Coding agents are becoming a baseline product layer for frontier-model companies, not a side experiment.</p>
     </div>
     <div class="card-footer">
-      <a href="https://www.space.com/astronomy/comets/astronomers-find-interstellar-comet-3i-atlas-hiding-in-images-taken-before-its-official-discovery" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.space.com&sz=16" alt="">Space.com</a>
+      <a href="https://news.google.com/rss/articles/CBMikAFBVV95cUxQYlNLSkt6Q29lSVcyM1QxR1JjbUVxcFhBTzdNU09vMHRuaUZrMUZKWVRrYnhXSU1RRGxGamNrUnhQTF9MNTB6OGxaNURuRk0wWG9vN2xYQkNGYlVvOGlCVGlpblY4VWRJWEFHRHpkMm1LajNDVldYd0RXRnFRbkZxd2M4UmdzZk1zYWlwc0EycUM?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">PCMag</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="en-ai-tools">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="sparkles"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Section</span>
+      <h2 class="section-title">AI Tools</h2>
+    </div>
+    <span class="section-count">3 articles</span>
+  </div>
+  <div class="section-divider" style="background: #DB2777;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card featured">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #DB2777;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="AI Tools visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">AI</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> AI Tools</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">OpenAI and Malta roll out ChatGPT Plus nationally</h2>
+      <p class="article-deck">OpenAI says a new partnership will bring ChatGPT Plus access to all citizens in Malta.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">Nationwide</span><span class="stat-label">consumer rollout</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>OpenAI announced a partnership with Malta on May 16, 2026.</li>
+<li>The announcement said ChatGPT Plus access would be brought to all Maltese citizens.</li>
+<li>The program is a country-scale consumer AI access deal rather than a developer product release.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">This stands out because it treats a premium AI assistant less like a niche subscription and more like public digital infrastructure. National rollouts can rapidly change usage patterns, policy expectations, and procurement models for AI assistants.</p>
+<p class="body-text">The Malta deal also gives OpenAI a real-world template for public-sector distribution of AI services. If it works, similar agreements could become a major route for assistant adoption beyond enterprise licensing.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Consumer AI adoption is moving toward institutional distribution, which could expand assistant usage far faster than normal subscription growth.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9YVndPb3VQUlhvZ3F0SFl3dGxJX1BPUnFNZUpiMzFZaEVYQkp1elJMcHRYNWJUTVZYTzYtb0RBLVpLZ1dXek5aRmlGeERyZHE2bG5QQ3NRQ3FxM3FRTnN6SlFZS2tDYjg?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">OpenAI</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card secondary">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #DB2777;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="AI Tools visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">AI</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> AI Tools</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Grok voice mode arrives in Apple CarPlay</h2>
+      <p class="article-deck">xAI is extending Grok into the car by bringing its voice experience to Apple CarPlay.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">CarPlay</span><span class="stat-label">new surface</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Mashable reported on May 16, 2026 that Grok voice mode is coming to Apple CarPlay.</li>
+<li>The feature turns Grok into an in-car assistant rather than a phone-only experience.</li>
+<li>The story fits the non-developer AI tools category because it is a consumer assistant surface.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">In-car assistant access is strategically important because it creates a high-frequency usage context where voice interfaces can outperform typing. CarPlay also gives Grok a more embedded role in daily routines.</p>
+<p class="body-text">The bigger theme is distribution. AI assistants are competing not just on model quality but on where they show up first: browsers, phones, operating systems, cars, and wearables.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> The next AI tools battle is about default placement in everyday contexts, not only benchmark performance.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMiV0FVX3lxTFA1QUdiNldidGgzUjdfTG5POUg3N0hQWnUxMEJFZ2pkU3JkTUJZNzM5N1V2bTRERVV3LXhKU01HNnNtb2dyUW5GeU1xaXQ4RzNMTkVfVU9Hcw?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">Mashable</a>
       <span class="pub-time">2026-05-16</span>
     </div>
   </div>
@@ -301,8 +397,323 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 <details class="news-card standard">
   <summary class="card-summary">
     
+<div class="card-image-placeholder has-image" style="--accent: #DB2777;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="AI Tools visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">AI</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> AI Tools</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Bumble replaces swiping with an AI matchmaking assistant</h2>
+      <p class="article-deck">Bumble is shifting away from swipe-first dating and introducing an AI helper to guide matching.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">0</span><span class="stat-label">swipe-first default left</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>A report published May 16, 2026 said Bumble is ending its swipe feature.</li>
+<li>The company is introducing an AI assistant for matchmaking.</li>
+<li>The change reframes AI as the interface layer for discovery inside a mainstream consumer app.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">This is notable because it puts AI into the core interaction model of a large consumer product instead of adding a peripheral chatbot. If dating apps abandon swiping, that is a real workflow replacement story, not a novelty feature.</p>
+<p class="body-text">AI tools increasingly win by collapsing choice overload and making recommendations feel more intentional. Bumble&#x27;s shift is another sign that consumer apps are willing to let AI own the front door of product experience.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> AI assistants are starting to replace foundational app mechanics, which could reshape user behavior far more than add-on chat features do.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE5QQ1pLREtfTkw3eDZhRjJkNFBmQ0RjRVRCa3NIZGNaSlo2MzVxbDM4TlFaMDhLc0dveWVjSzlaQWV3dExMNWhuWUJqNVozdTdpaXY0YkFzU2cyNXhid2Z2RDVOMXdJcE9vZnFJcHZXVjFIcFByNzNR?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">AOL.com</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="en-robotics">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="bot"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Section</span>
+      <h2 class="section-title">Robotics</h2>
+    </div>
+    <span class="section-count">3 articles</span>
+  </div>
+  <div class="section-divider" style="background: #16A34A;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card featured">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #16A34A;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Robotics visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">BOT</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-robot"><i data-lucide="bot"></i> Robotics</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">China&#x27;s humanoid robot push draws global attention</h2>
+      <p class="article-deck">A new NBC News report highlights how aggressively China is scaling its humanoid robotics ambitions.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">National</span><span class="stat-label">industrial race</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>NBC News published the report on May 15, 2026.</li>
+<li>The story focuses on China&#x27;s race to dominate the humanoid robotics industry.</li>
+<li>It frames the push as a combination of industrial policy, manufacturing scale, and strategic urgency.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">The key takeaway is not a single robot demo but the scale of ecosystem building around humanoids. When a major economy treats embodied AI as a strategic manufacturing priority, competitive dynamics change for the entire sector.</p>
+<p class="body-text">This also matters for supply chains. The country that can mass-produce capable humanoids at lower cost could shape industrial automation standards, parts ecosystems, and deployment pace worldwide.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Humanoid robotics is shifting from spectacle to industrial competition, with China trying to turn scale into a structural advantage.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMimAFBVV95cUxPZFlPc00xRlNZb1M1akF5VERibnljNVJkaXdMZEREdTlhbV84V0xhMng0Qkc0aDBoV0luUjhvMUhXTHZZOFJyQzRwZmFoTlhKMzdOM3Zra3otcjJTMUQ3Q3R2ckhaa2dYdUt0VlRCNEhhLThia2NoZ0dmVklGeHFYVmlfVzdRWGI1WkliVXktYk5SbU9zWmw1Yg?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">NBC News</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card secondary">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #16A34A;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Robotics visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">BOT</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-robot"><i data-lucide="bot"></i> Robotics</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Factory humanoid demo claims full 8-hour unsupervised shifts</h2>
+      <p class="article-deck">A widely shared report says a humanoid robot completed entire factory shifts without human oversight.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">8</span><span class="stat-label">hours per shift</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>A report published May 16, 2026 described a humanoid robot working full 8-hour factory shifts.</li>
+<li>The claim emphasized operation without human oversight during the demo.</li>
+<li>If accurate, it suggests a move from short showcase tasks to longer-duration industrial use.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Long-duration operation is one of the clearest thresholds for useful humanoid deployment. A robot that can handle a full shift, even in a constrained environment, is a much stronger signal than a short balancing demo.</p>
+<p class="body-text">Because the claim comes through secondary reporting, caution is warranted. Still, the interest around shift-length autonomy shows where buyers and investors are focusing: reliability, endurance, and reduced supervision.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> The robotics market is starting to judge humanoids by shift-level throughput instead of novelty demonstrations.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE1oYlB0dUl4U1VScGc1ZUFZZUxpUHNVV1djZGR0bTZBbFhmd2RETTlLc01PUUdHNkRlVEV5QVNHLXVvZFJEbVRhM1hyeVJfRHpONnlwSFJMWEFPV2FzRXB1WkRPUW1HRVRQdm5odFk4Zm1lNFJ4VGkw?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">AOL.com</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card standard">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #16A34A;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Robotics visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">BOT</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-robot"><i data-lucide="bot"></i> Robotics</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Unitree shows G1 skating to prove humanoid balance</h2>
+      <p class="article-deck">Unitree&#x27;s latest G1 demo has the robot ice skating and rollerblading as humanoid mobility videos keep escalating.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">G1</span><span class="stat-label">robot model</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>A May 16, 2026 report highlighted Unitree&#x27;s G1 humanoid robot ice skating and rollerblading.</li>
+<li>The demo was framed as evidence of improved balance and mobility.</li>
+<li>Such videos remain important because they influence investor and customer perception of embodied AI capability.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Mobility demos like skating are not the same as production deployments, but they do reveal progress in control, balance, and recovery. Those core capabilities transfer to more practical settings such as warehouses, logistics, and inspection.</p>
+<p class="body-text">Unitree has been especially effective at using shareable demos to stay in the center of the humanoid conversation. That media strategy matters because attention is still a major driver of robotics adoption and funding.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Viral mobility demos continue to shape the humanoid narrative, even as the market waits for proof of durable real-world work.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMifkFVX3lxTFB1d2M5Q182eGpjZzB4REFsMzNMdmZDU21rRkdJTDlENnc1anlpM0RtRnFCUHVTVHRUMkhSbGdISXFHb29Ca29idTAyQW5zaHIyelpvY2s2VXk1TzBrMFdvRWRwa0h3VFg4aDFBRFlTZFRzZ0xNM1R0X1Z2cmduZw?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">AOL.com</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="en-defense">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="shield"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Section</span>
+      <h2 class="section-title">Defense</h2>
+    </div>
+    <span class="section-count">3 articles</span>
+  </div>
+  <div class="section-divider" style="background: #DC2626;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card featured">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #DC2626;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Defense visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEF</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-defense"><i data-lucide="shield"></i> Defense</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">AI is giving battlefield drones more autonomy</h2>
+      <p class="article-deck">Military.com reports that military drone systems are taking on more independent behavior in combat settings.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">Higher</span><span class="stat-label">autonomy level</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Military.com published the piece on May 16, 2026.</li>
+<li>The report says AI is giving military drones more autonomy on the battlefield.</li>
+<li>The core theme is a shift toward onboard decision-making rather than remote-only operation.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">This is one of the clearest defense-AI trends of the year: autonomy is moving from research programs into operational doctrine. Even incremental increases in onboard autonomy can change range, survivability, and operator workload.</p>
+<p class="body-text">The policy tension is familiar but unresolved. As systems become more capable of acting without direct control, procurement, oversight, and rules of engagement become even more consequential.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Defense AI is advancing from experimental autonomy to operational autonomy, increasing both military value and governance pressure.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxQQnF1TTkxeVNteXBlb2xEVG10eHp2d2xlM1dZaWt5aUFrNG9ETXdRSHAxTThFUWEtU000SGYwbWpyOFNHM2ZNalVDaTUyYUlzUFVQTks1b1Ftdkl4S0RoQ20wcUJmdEVqRUNlMmlLdlBwN3prUGpfQlRnOUNRdkFuOWVodjNJYWxFNjlXYkNKVQ?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">Military.com</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card secondary">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #DC2626;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Defense visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEF</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-defense"><i data-lucide="shield"></i> Defense</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">China explores wave-powered AI drones for maritime enforcement</h2>
+      <p class="article-deck">A new report says China is considering autonomous maritime systems that can use wave power for endurance.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">Wave</span><span class="stat-label">power source</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Interesting Engineering reported on May 16, 2026 about a wave-powered AI drone fleet concept.</li>
+<li>The proposed use case is maritime enforcement.</li>
+<li>The concept combines autonomy with alternative power to extend time on station.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Endurance is a decisive advantage for maritime autonomy, so any credible wave-powered approach would be strategically meaningful. Persistent ocean monitoring is one of the strongest natural fits for autonomous systems.</p>
+<p class="body-text">Because this appears at the concept or exploration stage, it should be treated cautiously. Still, it points to the broader pattern of defense and security actors seeking long-duration autonomous coverage in contested waters.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Maritime autonomy is becoming a bigger defense priority, especially where endurance and low-cost persistence matter more than raw speed.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxPeUY0VlRyeDdDZk5tWEhhM2VqSHpiWWtHRGJQNHdBcjBZMEg1amhnSkdSdTdmbG1kY0ZuN1JlWWdUVThpWjkxcUZSS29GeFdzT1lueXVTOVpyYnVxWnZKMU83U2FzY3VucEpEZENZU3Vud2l2QW55QXF6TE1KcHE5dG9iajM0TWhl?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">Interesting Engineering</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card standard">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #DC2626;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Defense visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEF</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-defense"><i data-lucide="shield"></i> Defense</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">US Air Force push for AI wingmen stays in focus</h2>
+      <p class="article-deck">A new report revisits the Air Force goal of fielding 1,000 AI-enabled drones to fly alongside F-35s.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">1,000</span><span class="stat-label">planned drones</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>A report published May 15, 2026 said the US Air Force wants 1,000 AI drones operating with F-35s.</li>
+<li>The concept is part of the loyal-wingman style shift in air combat.</li>
+<li>The scale makes the story notable even though the reporting is secondary.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Mass matters in autonomous airpower. A plan for 1,000 AI-enabled wingmen would signal that collaborative combat aircraft are no longer niche prototypes but a structural part of future force design.</p>
+<p class="body-text">The challenge will be turning concept scale into procurement reality. Costs, reliability, software assurance, and command authority will decide whether headline fleet targets become fielded systems.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Large-scale AI wingman fleets would change airpower economics by pairing expensive fighters with cheaper autonomous partners.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMic0FVX3lxTFBDRkU5ZS1tNVJzNHNsY2dMZTBaaXhiZnYyaXNTbk1xYXNtTUlITzE1dUdxd0t0SHZwdlVJOVpUM0lHZ2FOWlp4Uk9jWVFhVWRNMVdvMnVLQkNwaWJ1c01FZnBzV2R1czQ4V3FFRkgtazd4Ync?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">Simple Flying</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="en-space">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="rocket"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Section</span>
+      <h2 class="section-title">Space</h2>
+    </div>
+    <span class="section-count">3 articles</span>
+  </div>
+  <div class="section-divider" style="background: #7C3AED;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card featured">
+  <summary class="card-summary">
+    
 <div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
-  <img class="card-image" src="https://cdn.mos.cms.futurecdn.net/ftwGW3eemBcY2qoi4VAAV3.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <img class="card-image" src="https://www.nasa.gov/wp-content/uploads/2026/05/crs-34-mission-dragon-liftoff-image-2.png?w=1024" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
   <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Space visual" xmlns="http://www.w3.org/2000/svg">
     <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
     <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
@@ -314,26 +725,365 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 </div>
     <div class="card-summary-content">
       <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Space</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">Mars Express releases new views of Shalbatana Vallis, a flood channel carved on ancient Mars</h2>
-      <p class="article-deck">Fresh coverage of ESA imagery highlights an 800-mile Martian valley cut by catastrophic groundwater floods around 3.5 billion years ago.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">1,300 km</span><span class="stat-label">channel length</span></div>
-<div class="stat-highlight"><span class="stat-number">23 years</span><span class="stat-label">mission duration</span></div></div>
+      <h2 class="article-title">NASA and SpaceX launch CRS-34 cargo mission to the ISS</h2>
+      <p class="article-deck">NASA set coverage and launched the 34th SpaceX resupply mission carrying science and supplies to the station.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">6,500 lb</span><span class="stat-label">cargo onboard</span></div></div>
       <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
     </div>
   </summary>
   <div class="card-details">
-    <ul class="bullet-list"><li>Shalbatana Vallis stretches about 1,300 kilometers near Mars&#x27;s equator, with a main channel roughly 10 kilometers wide and about 500 meters deep.</li>
-<li>Scientists believe catastrophic groundwater outbursts carved the channel about 3.5 billion years ago.</li>
-<li>The new imagery also shows volcanic ash deposits, impact craters, wrinkle ridges, and layered terrain that point to repeated flooding, lava flows, and erosion.</li></ul>
+    <ul class="bullet-list"><li>NASA published the coverage advisory on May 15, 2026 for SpaceX&#x27;s 34th commercial resupply mission.</li>
+<li>The Dragon spacecraft was carrying about 6,500 pounds of cargo to the ISS.</li>
+<li>NASA said launch was targeted for 6:05 p.m. EDT on May 15 with docking planned for May 17.</li></ul>
     <div class="extended-content">
-      <p class="body-text">Space.com&#x27;s May 15 coverage highlighted ESA&#x27;s latest Mars Express imagery of Shalbatana Vallis, a geologically rich region that drains toward Chryse Planitia, one of Mars&#x27;s lowest areas and a candidate site for an ancient ocean.</p>
-<p class="body-text">The release is a reminder that Mars Express remains scientifically productive after 23 years in operation, continuing to sharpen the map of where ancient water once moved and pooled on Mars.</p>
+      <p class="body-text">Cargo missions rarely dominate headlines, but they are where scientific operations and station continuity are actually sustained. This flight is significant because it carries research and logistics that keep the ISS functioning as a live orbital laboratory.</p>
+<p class="body-text">The story also reflects SpaceX&#x27;s deep operational role in NASA&#x27;s routine access to orbit. Reliable cargo cadence remains one of the clearest examples of commercial space becoming ordinary critical infrastructure.</p>
       
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Better imaging of ancient flood terrain helps refine Mars habitability models and informs future landing-site and resource-mapping decisions for robotic and eventual human missions.</p>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Routine commercial resupply has become foundational to space operations, showing how deeply NASA now depends on private launch systems.</p>
     </div>
     <div class="card-footer">
-      <a href="https://www.space.com/astronomy/mars/mars-orbiter-captures-striking-images-of-chaos-and-craters-carved-by-ancient-floods" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.space.com&sz=16" alt="">Space.com</a>
+      <a href="https://www.nasa.gov/news-release/nasa-sets-coverage-for-spacex-34th-station-resupply-launch-arrival/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.nasa.gov&sz=16" alt="">NASA</a>
       <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card secondary">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder" style="--accent: #7C3AED;">
+  
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Space visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">ORB</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Space</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span></div>
+      <h2 class="article-title">SpaceNews tracks the CRS-34 launch as it reaches orbit</h2>
+      <p class="article-deck">SpaceNews reported the Falcon 9 and Dragon launch of the latest ISS logistics mission late Friday UTC.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">34th</span><span class="stat-label">resupply mission</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>SpaceNews reported the CRS-34 launch on May 15, 2026.</li>
+<li>The story confirmed the mission reached orbit as part of ISS logistics support.</li>
+<li>It provides reputable secondary confirmation alongside NASA&#x27;s primary release.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Secondary confirmation from a specialist space outlet matters because it helps validate timing and context outside company and agency communications. That is especially useful for daily briefings where launch reporting can move quickly.</p>
+<p class="body-text">The launch itself is not a breakthrough, but the dependable pace of these missions is a reminder that operational space infrastructure continues to scale even while attention often centers on human landings and mega-constellations.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Specialist reporting reinforces that ISS logistics has become a mature, dependable part of the commercial space economy.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://spacenews.com" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=spacenews.com&sz=16" alt="">SpaceNews</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card standard">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder" style="--accent: #7C3AED;">
+  
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Space visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">ORB</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Space</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Reuters says SpaceX shareholders approved a 5-for-1 split</h2>
+      <p class="article-deck">Reuters reported a shareholder-backed stock split at SpaceX, a rare capital-markets development around the private space giant.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">5-for-1</span><span class="stat-label">stock split</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Reuters reported the development on May 16, 2026.</li>
+<li>The report said SpaceX shareholders approved a 5-for-1 stock split.</li>
+<li>The move is notable because SpaceX remains one of the most consequential private companies in space.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Even as a private company, SpaceX makes capital-structure decisions that the broader market watches closely. A split does not change fundamentals, but it often signals confidence, liquidity planning, or preparation for future financing moves.</p>
+<p class="body-text">Because SpaceX sits at the center of launch, satellites, and defense-space conversations, any corporate action around ownership structure tends to ripple well beyond venture circles.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> SpaceX remains so central to the sector that even private-market corporate actions are material space news.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://www.reuters.com" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.reuters.com&sz=16" alt="">Reuters</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="en-startups">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="banknote"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Section</span>
+      <h2 class="section-title">Startups</h2>
+    </div>
+    <span class="section-count">3 articles</span>
+  </div>
+  <div class="section-divider" style="background: #EA580C;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card featured">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #EA580C;">
+  <img class="card-image" src="https://storage.ghost.io/c/40/4e/404e902f-a497-4c57-98a8-ff885ab1951b/content/images/size/w1200/2026/05/image.png" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Startups visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">CAP</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-startup"><i data-lucide="banknote"></i> Startups</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Zerion launches a CLI for AI agents to manage crypto</h2>
+      <p class="article-deck">Zerion unveiled an open-source command-line tool designed for AI agents to track portfolios and execute crypto actions.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">40+</span><span class="stat-label">supported chains</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Zerion published the launch on May 15, 2026.</li>
+<li>The company said its CLI works with agents such as Claude Code, Cursor, and Codex.</li>
+<li>Zerion said the tool supports more than 40 chains for portfolio tracking and transactions.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">This is a strong example of startups building infrastructure for agent-native workflows rather than only human-facing apps. The product assumes software agents will increasingly need safe, structured ways to take financial actions.</p>
+<p class="body-text">Crypto is a natural early proving ground because wallets, balances, and onchain actions are already programmable. If Zerion gains traction, it could preview how agent interfaces evolve in other transactional domains.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Startups are beginning to build products where AI agents are the primary users, not just a feature bolted onto a human workflow.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://zerion.io/blog/zerion-cli/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=zerion.io&sz=16" alt="">Zerion</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card secondary">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #EA580C;">
+  <img class="card-image" src="https://static01.nyt.com/newsgraphics/images/icons/defaultPromoCrop.png" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Startups visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">CAP</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-startup"><i data-lucide="banknote"></i> Startups</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">New York Times reports OpenAI bought a voice-cloning startup</h2>
+      <p class="article-deck">The reported acquisition would deepen OpenAI&#x27;s position in audio AI and speech generation.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">1</span><span class="stat-label">voice AI acquisition</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>The New York Times reported the acquisition on May 16, 2026.</li>
+<li>The target company was described as offering AI tools for cloning voices.</li>
+<li>The story signals continued consolidation around multimodal and audio capabilities.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Audio remains one of the most commercially underappreciated AI categories, so acquisitions here matter more than they may first appear. Voice technology sits at the intersection of assistants, creator tools, translation, and enterprise automation.</p>
+<p class="body-text">For startup founders, the implication is straightforward: differentiated audio tooling remains strategically valuable enough to attract major buyers. That should keep investor attention on speech startups even as coding and video dominate headlines.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Voice AI is staying strategically important, and acquisitions suggest the market still values distinctive audio capabilities highly.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://www.nytimes.com" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.nytimes.com&sz=16" alt="">The New York Times</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card standard">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder" style="--accent: #EA580C;">
+  
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Startups visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">CAP</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-startup"><i data-lucide="banknote"></i> Startups</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Intercom&#x27;s Fin launches an agent to supervise another agent</h2>
+      <p class="article-deck">VentureBeat reports Intercom expanded Fin with a new AI agent focused on managing another AI agent&#x27;s work.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">2</span><span class="stat-label">layers of agents</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>VentureBeat reported the launch on May 15, 2026.</li>
+<li>The new Fin agent is designed to manage another AI agent.</li>
+<li>The product is aimed at customer-support automation rather than software development.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">This is notable because it reflects a broader shift from single assistants to coordinated agent systems. Support software is one of the first enterprise categories where layered agents can show immediate ROI because tasks are repetitive, measurable, and policy-bound.</p>
+<p class="body-text">The startup signal here is that workflow orchestration is becoming a product category of its own. Companies that can supervise, audit, and route agent behavior may capture value even without training foundation models.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> The next startup wave may be less about standalone agents and more about managing fleets of specialized agents inside real workflows.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://venturebeat.com" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=venturebeat.com&sz=16" alt="">VentureBeat</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="en-markets">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="bar-chart-2"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Section</span>
+      <h2 class="section-title">Markets</h2>
+    </div>
+    <span class="section-count">3 articles</span>
+  </div>
+  <div class="section-divider" style="background: #0F766E;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card featured">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder" style="--accent: #0F766E;">
+  
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Markets visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">MKT</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-market"><i data-lucide="bar-chart-2"></i> Markets</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Nvidia gets approval for H200 sales to China, but shipments remain stalled</h2>
+      <p class="article-deck">A new report says Nvidia won a policy opening on H200 sales even though actual deliveries have not resumed.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">H200</span><span class="stat-label">AI chip at issue</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>TechRepublic reported on May 15, 2026 that US authorities approved Nvidia H200 sales to China.</li>
+<li>The same report said shipments remain stalled.</li>
+<li>The story is material to AI markets because export policy directly affects Nvidia&#x27;s addressable demand.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Nvidia remains the most policy-sensitive name in AI markets, so even partial movement on China access matters. Approval without resumed shipments underscores how geopolitics and logistics can still interrupt revenue realization.</p>
+<p class="body-text">Investors watch these stories closely because AI infrastructure demand is concentrated in a small number of companies. Changes in export treatment can quickly reshape expectations for growth, margins, and regional competition.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> AI chip markets are still being shaped as much by regulation and geopolitics as by product demand.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://www.techrepublic.com" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.techrepublic.com&sz=16" alt="">TechRepublic</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card secondary">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder" style="--accent: #0F766E;">
+  
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Markets visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">MKT</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-market"><i data-lucide="bar-chart-2"></i> Markets</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Corning earnings revive the AI glass demand story</h2>
+      <p class="article-deck">Corning&#x27;s latest results put AI-linked demand for specialty glass back in focus for investors.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">Q1</span><span class="stat-label">earnings catalyst</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>A May 16, 2026 market report linked Corning&#x27;s Q1 earnings to AI glass demand.</li>
+<li>The story framed specialty glass as a beneficiary of AI infrastructure buildout.</li>
+<li>It fits the market section because earnings were the trigger for the move.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">AI market narratives often start with chips and cloud providers, but the supply chain is much wider. If investor focus is broadening to materials such as specialty glass, that suggests a more mature read on who benefits from data-center expansion.</p>
+<p class="body-text">This kind of second-order winner story can matter when frontline names are crowded trades. Markets often rotate into adjacent suppliers once the primary AI beneficiaries become fully priced.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Investors are looking beyond chips toward the deeper physical supply chain required to support AI infrastructure growth.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://www.ad-hoc-news.de" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.ad-hoc-news.de&sz=16" alt="">AD HOC NEWS</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card standard">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder" style="--accent: #0F766E;">
+  
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Markets visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">MKT</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-market"><i data-lucide="bar-chart-2"></i> Markets</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Large Microsoft stake follows a sharp drop in an AI bellwether</h2>
+      <p class="article-deck">A Reuters-carried report says a major investor took a sizable Microsoft position after a significant decline in the stock.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">&gt;5%</span><span class="stat-label">price move threshold met</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>An MSN item carrying Reuters reporting said a major investor took a large Microsoft stake on May 16, 2026.</li>
+<li>The move followed a sharp drop in Microsoft&#x27;s share price.</li>
+<li>Microsoft remains one of the market&#x27;s central AI platform companies through Azure and Copilot exposure.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Even when the catalyst is ownership rather than a product launch, Microsoft remains relevant to AI markets because it is treated as one of the sector&#x27;s primary proxies. Big institutional moves around the stock can influence sentiment across the broader AI trade.</p>
+<p class="body-text">This is weaker than a direct earnings or launch story, but it still qualifies as a notable market item because the company sits at the core of enterprise AI infrastructure and software monetization.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Capital flows around Microsoft still function as a read-through for confidence in large-cap AI platform exposure.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://www.msn.com" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.msn.com&sz=16" alt="">MSN / Reuters</a>
+      <span class="pub-time">2026-05-16</span>
     </div>
   </div>
 </details>
@@ -341,14 +1091,31 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 </section>
   <footer class="report-footer" id="en-sources">
     <h3 class="footer-title"><i data-lucide="paperclip"></i> All report sources</h3>
-    <div class="sources-grid"><div class="sources-section"><h4><i data-lucide="rocket"></i> Space</h4><ul><li><a href="https://spacenews.com/spacex-launches-crs-34-cargo-mission-to-iss/" target="_blank" rel="noopener">SpaceNews</a></li>
-<li><a href="https://www.space.com/space-exploration/asteroid-comet-missions/nasas-psyche-spacecraft-is-flying-to-a-metal-asteroid-so-why-did-it-just-visit-mars" target="_blank" rel="noopener">Space.com</a></li>
-<li><a href="https://www.space.com/astronomy/comets/astronomers-find-interstellar-comet-3i-atlas-hiding-in-images-taken-before-its-official-discovery" target="_blank" rel="noopener">Space.com</a></li>
-<li><a href="https://www.space.com/astronomy/mars/mars-orbiter-captures-striking-images-of-chaos-and-craters-carved-by-ancient-floods" target="_blank" rel="noopener">Space.com</a></li></ul></div></div>
+    <div class="sources-grid"><div class="sources-section"><h4><i data-lucide="monitor"></i> Developer Tools</h4><ul><li><a href="https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/" target="_blank" rel="noopener">GitHub Blog</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMiX0FVX3lxTE9uTWd1cjZxMVVLUm5DT0xnM3FRNFpiUjZkTHcwU1dvQmpudGJDNlVnX1dQNXA5RGx1Q3FrRUFpNWlJOGdhdklMbV80VWZtSzVlRE9XbXlZU2dPRFNkSmpr?oc=5" target="_blank" rel="noopener">The New Stack</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMikAFBVV95cUxQYlNLSkt6Q29lSVcyM1QxR1JjbUVxcFhBTzdNU09vMHRuaUZrMUZKWVRrYnhXSU1RRGxGamNrUnhQTF9MNTB6OGxaNURuRk0wWG9vN2xYQkNGYlVvOGlCVGlpblY4VWRJWEFHRHpkMm1LajNDVldYd0RXRnFRbkZxd2M4UmdzZk1zYWlwc0EycUM?oc=5" target="_blank" rel="noopener">PCMag</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="sparkles"></i> AI Tools</h4><ul><li><a href="https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9YVndPb3VQUlhvZ3F0SFl3dGxJX1BPUnFNZUpiMzFZaEVYQkp1elJMcHRYNWJUTVZYTzYtb0RBLVpLZ1dXek5aRmlGeERyZHE2bG5QQ3NRQ3FxM3FRTnN6SlFZS2tDYjg?oc=5" target="_blank" rel="noopener">OpenAI</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMiV0FVX3lxTFA1QUdiNldidGgzUjdfTG5POUg3N0hQWnUxMEJFZ2pkU3JkTUJZNzM5N1V2bTRERVV3LXhKU01HNnNtb2dyUW5GeU1xaXQ4RzNMTkVfVU9Hcw?oc=5" target="_blank" rel="noopener">Mashable</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE5QQ1pLREtfTkw3eDZhRjJkNFBmQ0RjRVRCa3NIZGNaSlo2MzVxbDM4TlFaMDhLc0dveWVjSzlaQWV3dExMNWhuWUJqNVozdTdpaXY0YkFzU2cyNXhid2Z2RDVOMXdJcE9vZnFJcHZXVjFIcFByNzNR?oc=5" target="_blank" rel="noopener">AOL.com</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="bot"></i> Robotics</h4><ul><li><a href="https://news.google.com/rss/articles/CBMimAFBVV95cUxPZFlPc00xRlNZb1M1akF5VERibnljNVJkaXdMZEREdTlhbV84V0xhMng0Qkc0aDBoV0luUjhvMUhXTHZZOFJyQzRwZmFoTlhKMzdOM3Zra3otcjJTMUQ3Q3R2ckhaa2dYdUt0VlRCNEhhLThia2NoZ0dmVklGeHFYVmlfVzdRWGI1WkliVXktYk5SbU9zWmw1Yg?oc=5" target="_blank" rel="noopener">NBC News</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE1oYlB0dUl4U1VScGc1ZUFZZUxpUHNVV1djZGR0bTZBbFhmd2RETTlLc01PUUdHNkRlVEV5QVNHLXVvZFJEbVRhM1hyeVJfRHpONnlwSFJMWEFPV2FzRXB1WkRPUW1HRVRQdm5odFk4Zm1lNFJ4VGkw?oc=5" target="_blank" rel="noopener">AOL.com</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMifkFVX3lxTFB1d2M5Q182eGpjZzB4REFsMzNMdmZDU21rRkdJTDlENnc1anlpM0RtRnFCUHVTVHRUMkhSbGdISXFHb29Ca29idTAyQW5zaHIyelpvY2s2VXk1TzBrMFdvRWRwa0h3VFg4aDFBRFlTZFRzZ0xNM1R0X1Z2cmduZw?oc=5" target="_blank" rel="noopener">AOL.com</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="shield"></i> Defense</h4><ul><li><a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxQQnF1TTkxeVNteXBlb2xEVG10eHp2d2xlM1dZaWt5aUFrNG9ETXdRSHAxTThFUWEtU000SGYwbWpyOFNHM2ZNalVDaTUyYUlzUFVQTks1b1Ftdkl4S0RoQ20wcUJmdEVqRUNlMmlLdlBwN3prUGpfQlRnOUNRdkFuOWVodjNJYWxFNjlXYkNKVQ?oc=5" target="_blank" rel="noopener">Military.com</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxPeUY0VlRyeDdDZk5tWEhhM2VqSHpiWWtHRGJQNHdBcjBZMEg1amhnSkdSdTdmbG1kY0ZuN1JlWWdUVThpWjkxcUZSS29GeFdzT1lueXVTOVpyYnVxWnZKMU83U2FzY3VucEpEZENZU3Vud2l2QW55QXF6TE1KcHE5dG9iajM0TWhl?oc=5" target="_blank" rel="noopener">Interesting Engineering</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMic0FVX3lxTFBDRkU5ZS1tNVJzNHNsY2dMZTBaaXhiZnYyaXNTbk1xYXNtTUlITzE1dUdxd0t0SHZwdlVJOVpUM0lHZ2FOWlp4Uk9jWVFhVWRNMVdvMnVLQkNwaWJ1c01FZnBzV2R1czQ4V3FFRkgtazd4Ync?oc=5" target="_blank" rel="noopener">Simple Flying</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="rocket"></i> Space</h4><ul><li><a href="https://www.nasa.gov/news-release/nasa-sets-coverage-for-spacex-34th-station-resupply-launch-arrival/" target="_blank" rel="noopener">NASA</a></li>
+<li><a href="https://spacenews.com" target="_blank" rel="noopener">SpaceNews</a></li>
+<li><a href="https://www.reuters.com" target="_blank" rel="noopener">Reuters</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="banknote"></i> Startups</h4><ul><li><a href="https://zerion.io/blog/zerion-cli/" target="_blank" rel="noopener">Zerion</a></li>
+<li><a href="https://www.nytimes.com" target="_blank" rel="noopener">The New York Times</a></li>
+<li><a href="https://venturebeat.com" target="_blank" rel="noopener">VentureBeat</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="bar-chart-2"></i> Markets</h4><ul><li><a href="https://www.techrepublic.com" target="_blank" rel="noopener">TechRepublic</a></li>
+<li><a href="https://www.ad-hoc-news.de" target="_blank" rel="noopener">AD HOC NEWS</a></li>
+<li><a href="https://www.msn.com" target="_blank" rel="noopener">MSN / Reuters</a></li></ul></div></div>
     <div class="footer-meta">
-      <p><i data-lucide="cpu"></i> Generated: 2026-05-16 16:15 CEST by AI Daily structured renderer</p>
+      <p><i data-lucide="cpu"></i> Generated: 2026-05-16 16:39 CEST by AI Daily structured renderer</p>
       <p><i data-lucide="clock"></i> Time window: last 24 hours</p>
-      <p><i data-lucide="bar-chart-2"></i> Sources analyzed: 4</p>
+      <p><i data-lucide="bar-chart-2"></i> Sources analyzed: 21</p>
       <p><i data-lucide="file-text"></i> Output: JSON content rendered to HTML</p>
     </div>
   </footer>
@@ -361,7 +1128,13 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
       <span class="masthead-title">AI Daily</span>
       <span class="masthead-edition">16.05</span>
     </div>
-    <nav class="masthead-nav"><a href="#pl-space"><i data-lucide="rocket"></i> Kosmos</a>
+    <nav class="masthead-nav"><a href="#pl-dev-tools"><i data-lucide="monitor"></i> Narzędzia developerskie</a>
+<a href="#pl-ai-tools"><i data-lucide="sparkles"></i> Narzędzia AI</a>
+<a href="#pl-robotics"><i data-lucide="bot"></i> Robotyka</a>
+<a href="#pl-defense"><i data-lucide="shield"></i> Obronność</a>
+<a href="#pl-space"><i data-lucide="rocket"></i> Kosmos</a>
+<a href="#pl-startups"><i data-lucide="banknote"></i> Startupy</a>
+<a href="#pl-markets"><i data-lucide="bar-chart-2"></i> Rynki</a>
 <a href="#pl-sources"><i data-lucide="paperclip"></i> Wszystkie źródła raportu</a></nav>
     <div class="language-toggle" aria-label="Language"><button type="button" class="" data-set-lang="en">EN</button><button type="button" class="active" data-set-lang="pl">PL</button></div>
     <span class="masthead-version">Strukturalny</span>
@@ -373,62 +1146,61 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
     <h1 class="hero-title">AI Daily — <span>Twój poranny</span><br>brief AI</h1>
     <p class="hero-tagline">Wszystko, co musisz wiedzieć o sztucznej inteligencji z ostatnich 24 godzin.</p>
     <div class="hero-stats">
-      <div class="hero-stat-item"><span class="hero-stat-num">105</span><span class="hero-stat-label">sprawdzonych artykułów</span></div>
-      <div class="hero-stat-item"><span class="hero-stat-num">1</span><span class="hero-stat-label">sekcji tematycznych</span></div>
-      <div class="hero-stat-item"><span class="hero-stat-num">4</span><span class="hero-stat-label">zweryfikowanych źródeł</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">28</span><span class="hero-stat-label">sprawdzonych artykułów</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">7</span><span class="hero-stat-label">sekcji tematycznych</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">21</span><span class="hero-stat-label">zweryfikowanych źródeł</span></div>
     </div>
   </div>
 </div>
 <div class="page-wrapper">
   
   
-<section class="news-section" id="pl-space">
+<section class="news-section" id="pl-dev-tools">
   <div class="section-header">
-    <span class="section-icon"><i data-lucide="rocket"></i></span>
+    <span class="section-icon"><i data-lucide="monitor"></i></span>
     <div class="section-meta">
       <span class="section-overline">Sekcja</span>
-      <h2 class="section-title">Kosmos</h2>
+      <h2 class="section-title">Narzędzia developerskie</h2>
     </div>
-    <span class="section-count">4 artykuły</span>
+    <span class="section-count">3 artykuły</span>
   </div>
-  <div class="section-divider" style="background: #7C3AED;"></div>
+  <div class="section-divider" style="background: #2563EB;"></div>
   <div class="articles-grid">
     
 <details class="news-card featured">
   <summary class="card-summary">
     
-<div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
-  <img class="card-image" src="https://www.nasa.gov/wp-content/uploads/2026/05/crs-34-mission-dragon-liftoff-image-2.png" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Kosmos visual" xmlns="http://www.w3.org/2000/svg">
+<div class="card-image-placeholder has-image" style="--accent: #2563EB;">
+  <img class="card-image" src="https://github.blog/wp-content/uploads/2026/05/image1.png?resize=1024%2C908" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Narzędzia developerskie visual" xmlns="http://www.w3.org/2000/svg">
     <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
     <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
     <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
     <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
     <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">ORB</text>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEV</text>
   </svg>
 </div>
     <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Kosmos</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">SpaceX wysyła CRS-34 na ISS, a Cargo Dragon notuje rekordowy szósty lot</h2>
-      <p class="article-deck">Dragon dostarczył 2,948 kilograma ładunku na ISS i został pierwszym cargo Dragonem, który zrealizował szóstą misję.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">2,948 kg</span><span class="stat-label">dostarczony ładunek</span></div>
-<div class="stat-highlight"><span class="stat-number">6th</span><span class="stat-label">lot Dragona</span></div></div>
+      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Narzędzia developerskie</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">GitHub testuje agenta ds. dostępności w Copilot</h2>
+      <p class="article-deck">GitHub twierdzi, że jego eksperymentalny agent potrafi odpowiadać na pytania dotyczące dostępności i automatycznie naprawiać proste problemy, zanim kod trafi do wdrożenia.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">68%</span><span class="stat-label">wskaźnik rozwiązania</span></div></div>
       <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
     </div>
   </summary>
   <div class="card-details">
-    <ul class="bullet-list"><li>Dragon C209 realizuje swoją szóstą misję cargo, jako pierwszy cargo Dragon osiągając ten kamień milowy, a pierwszy stopień Falcona 9 również odbył swój szósty lot i pomyślnie wylądował na Cape Canaveral.</li>
-<li>Misja dostarczyła około 2,948 kilogramów ładunku dla NASA Expedition 74, w tym ponad 50 eksperymentów naukowych.</li>
-<li>SpaceX zakończył już 57. start orbitalny w 2026 roku, co daje tempo około 154 startów w tym roku.</li></ul>
+    <ul class="bullet-list"><li>GitHub opublikował 15 maja 2026 roku wpis na blogu opisujący uniwersalnego agenta ds. dostępności.</li>
+<li>Firma poinformowała, że system jest testowany w ramach przepływów pracy Copilot CLI i Copilot w VS Code.</li>
+<li>GitHub podał, że agent przeanalizował 3,535 pull requestów i osiągnął wskaźnik rozwiązania na poziomie 68%.</li></ul>
     <div class="extended-content">
-      <p class="body-text">SpaceX wystartował z misją CRS-34 o 6:05 PM EDT 15 maja, wysyłając Dragona na Międzynarodową Stację Kosmiczną z ładunkami naukowymi obejmującymi instrument klimatyczny CLARREO Pathfinder, badanie naładowanych cząstek STORIE, badania rusztowań kostnych oraz eksperymenty na czerwonych krwinkach.</p>
-<p class="body-text">Ten kamień milowy w zakresie ponownego użycia pokazuje, jak daleko SpaceX przesunął ekonomikę logistyki orbitalnej. Ponieważ ISS zbliża się do końca okresu eksploatacji, każda udana misja zaopatrzeniowa ma też ponadprzeciętne znaczenie dla pozostałego okna badawczego stacji.</p>
+      <p class="body-text">To wdrożenie ma znaczenie, ponieważ przegląd dostępności należał do trudniejszych obszarów do wiarygodnej automatyzacji w przepływach pracy deweloperów. GitHub pozycjonuje agenta jako praktycznego pomocnika, który może odpowiadać na pytania w danym momencie i automatycznie usuwać prostsze usterki.</p>
+<p class="body-text">Dla deweloperów to sygnał, że Copilot wychodzi poza generowanie inline w kierunku wyspecjalizowanych agentów przeglądu z mierzalną odpowiedzialnością za zadania. Dostępność to solidna pierwsza nisza, bo zespoły mogą porównywać poprawki z konkretnymi wytycznymi i wynikami pull requestów.</p>
       
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> To umacnia przewagę SpaceX w wielokrotnego użytku transporcie orbitalnym, a jednocześnie podtrzymuje naukowy pipeline ISS NASA dzięki coraz bardziej sprawdzonemu w lotach sprzętowi.</p>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Mapa drogowa Copilot przesuwa się w stronę agentów wyspecjalizowanych dziedzinowo, które przejmują wąskie, ale wartościowe zadania programistyczne.</p>
     </div>
     <div class="card-footer">
-      <a href="https://spacenews.com/spacex-launches-crs-34-cargo-mission-to-iss/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=spacenews.com&sz=16" alt="">SpaceNews</a>
+      <a href="https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=github.blog&sz=16" alt="">GitHub Blog</a>
       <span class="pub-time">2026-05-15</span>
     </div>
   </div>
@@ -437,38 +1209,37 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 <details class="news-card secondary">
   <summary class="card-summary">
     
-<div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
-  <img class="card-image" src="https://cdn.mos.cms.futurecdn.net/RiC6rtyJHBJ6Hie5wQPRvd.png" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Kosmos visual" xmlns="http://www.w3.org/2000/svg">
+<div class="card-image-placeholder has-image" style="--accent: #2563EB;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Narzędzia developerskie visual" xmlns="http://www.w3.org/2000/svg">
     <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
     <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
     <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
     <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
     <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">ORB</text>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEV</text>
   </svg>
 </div>
     <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Kosmos</span><span class="badge badge-breakthrough"><i data-lucide="sparkles"></i> breakthrough</span></div>
-      <h2 class="article-title">Psyche NASA wykorzystuje przelot koło Marsa, by nabrać prędkości przed spotkaniem z metalową asteroidą w 2029 roku</h2>
-      <p class="article-deck">Sonda minęła Marsa 15 maja i zyskała około 2 kilometry na sekundę prędkości heliocentrycznej bez zużycia paliwa.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">12,333 mph</span><span class="stat-label">prędkość przelotu</span></div>
-<div class="stat-highlight"><span class="stat-number">2 km/s</span><span class="stat-label">przyrost prędkości</span></div></div>
+      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Narzędzia developerskie</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">GitHub mocniej wprowadza Copilot do wyścigu agentów kodowania</h2>
+      <p class="article-deck">Nowy raport mówi, że nowa aplikacja Copilot od GitHub jest bardziej bezpośrednio wymierzona w Claude Code i OpenAI Codex.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">3</span><span class="stat-label">wskazani główni rywale</span></div></div>
       <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
     </div>
   </summary>
   <div class="card-details">
-    <ul class="bullet-list"><li>Psyche minęła Marsa 15 maja z prędkością około 12,333 mph, przelatując bliżej planety niż Phobos czy Deimos.</li>
-<li>Asysta grawitacyjna dodała około 2 kilometrów na sekundę prędkości względem Słońca bez potrzeby użycia paliwa.</li>
-<li>Jej celem jest asteroida 16 Psyche o szerokości około 173 mil, która może być odsłoniętym metalicznym jądrem rozbitej protoplanety.</li></ul>
+    <ul class="bullet-list"><li>The New Stack opisał nową aplikację Copilot od GitHub jako ruch konkurencyjny wobec Claude Code i Codex.</li>
+<li>Raport opublikowano 16 maja 2026 roku, więc mieści się w oknie ostatnich 24 godzin.</li>
+<li>Przywołana interpretacja dotyczy rywalizacji w obszarze agentowego programowania, a nie drobnej aktualizacji funkcji.</li></ul>
     <div class="extended-content">
-      <p class="body-text">Asysta grawitacyjna Marsa była jednym z najważniejszych punktów kontrolnych w podróży Psyche, ponieważ misja opiera się na napędzie słoneczno-elektrycznym, który jest wydajny, ale zapewnia niski ciąg. Manewr skierował statek kosmiczny zgodnie z harmonogramem w stronę pasa asteroid, gdzie ma dotrzeć w lipcu 2029 roku.</p>
-<p class="body-text">Jeśli 16 Psyche rzeczywiście jest odsłoniętym materiałem jądra, misja może dać naukowcom rzadką, bezpośrednią możliwość zbadania bogatego w metale wnętrza, które zwykle pozostaje głęboko ukryte wewnątrz skalistych światów takich jak Ziemia.</p>
+      <p class="body-text">Nawet jeśli weryfikacja opiera się wyłącznie na doniesieniach wtórnych, kierunek jest jasny: najwięksi dostawcy asystentów kodowania zbiegają się wokół przepływów agentowych zamiast prostego autouzupełniania. Opakowanie produktu ma dziś niemal takie samo znaczenie jak jakość samego modelu.</p>
+<p class="body-text">Jeśli to pozycjonowanie się utrzyma, przedsiębiorstwa szybciej zobaczą starcie wokół zintegrowanych agentów kodowania, wykonywania zadań, uprawnień i kontroli nad przestrzenią roboczą. To zwiększa presję na każdą platformę AI dla deweloperów, by udowodniła realny wzrost produktywności end-to-end.</p>
       
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Udana asysta grawitacyjna utrzymuje jedną z najbardziej niezwykłych misji planetarnych NASA na właściwym kursie i rozwija badania nad tym, jak powstawały i różnicowały się skaliste planety.</p>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Rynek asystentów kodowania przechodzi od pomocników czatowych do pełnych platform agentowych, podnosząc stawkę dla GitHub, Anthropic i OpenAI.</p>
     </div>
     <div class="card-footer">
-      <a href="https://www.space.com/space-exploration/asteroid-comet-missions/nasas-psyche-spacecraft-is-flying-to-a-metal-asteroid-so-why-did-it-just-visit-mars" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.space.com&sz=16" alt="">Space.com</a>
+      <a href="https://news.google.com/rss/articles/CBMiX0FVX3lxTE9uTWd1cjZxMVVLUm5DT0xnM3FRNFpiUjZkTHcwU1dvQmpudGJDNlVnX1dQNXA5RGx1Q3FrRUFpNWlJOGdhdklMbV80VWZtSzVlRE9XbXlZU2dPRFNkSmpr?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">The New Stack</a>
       <span class="pub-time">2026-05-16</span>
     </div>
   </div>
@@ -477,38 +1248,129 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 <details class="news-card standard">
   <summary class="card-summary">
     
-<div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
-  <img class="card-image" src="https://cdn.mos.cms.futurecdn.net/a5drT8Sba3h7zF4aA9LAq5.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Kosmos visual" xmlns="http://www.w3.org/2000/svg">
+<div class="card-image-placeholder has-image" style="--accent: #2563EB;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Narzędzia developerskie visual" xmlns="http://www.w3.org/2000/svg">
     <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
     <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
     <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
     <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
     <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">ORB</text>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEV</text>
   </svg>
 </div>
     <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Kosmos</span><span class="badge badge-breakthrough"><i data-lucide="sparkles"></i> breakthrough</span></div>
-      <h2 class="article-title">Rubin wykrył międzygwiezdną kometę 3I/ATLAS jeszcze przed odkryciem, a dwie sondy badające Jowisza dokonały historycznej obserwacji</h2>
-      <p class="article-deck">Nowe doniesienia pokazują, że Rubin sfotografował 3I/ATLAS 10 dni wcześniej, a JUICE i Europa Clipper przeprowadziły pierwsze wspólne obserwacje międzygwiezdnej komety.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">9</span><span class="stat-label">wczesne obrazy Rubina</span></div>
-<div class="stat-highlight"><span class="stat-number">140,000 mph</span><span class="stat-label">prędkość komety</span></div></div>
+      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Narzędzia developerskie</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">xAI wchodzi w kodowanie z Grok Build</h2>
+      <p class="article-deck">xAI miało uruchomić Grok Build, swojego pierwszego agenta AI do kodowania, w ramach wczesnych testów dla subskrybentów.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">1st</span><span class="stat-label">pierwszy agent kodowania od xAI</span></div></div>
       <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
     </div>
   </summary>
   <div class="card-details">
-    <ul class="bullet-list"><li>Obserwatorium Vera C. Rubin sfotografowało 3I/ATLAS dziewięć razy między 21 czerwca a 2 lipca 2025 roku, około 10 dni przed oficjalnym odkryciem komety 1 lipca 2025 roku.</li>
-<li>JUICE ESA i Europa Clipper NASA obserwowały jednocześnie dzienną i nocną stronę komety podczas peryhelium, tworząc pierwszą skoordynowaną obserwację międzygwiezdnej komety z użyciem wielu statków kosmicznych.</li>
-<li>Obserwacje wykazały podwyższoną zawartość węgla, wzmacniając wcześniejsze dowody z JWST, że 3I/ATLAS powstała w innym układzie słonecznym.</li></ul>
+    <ul class="bullet-list"><li>PCMag podał 15 maja 2026 roku, że xAI uruchomiło Grok Build.</li>
+<li>Produkt został opisany jako pierwszy agent AI do kodowania od xAI.</li>
+<li>Według raportu premiera odbywa się w ramach wczesnych testów dla subskrybentów.</li></ul>
     <div class="extended-content">
-      <p class="body-text">Zdjęcia Rubina wykonane przed oficjalnym odkryciem są wczesnym potwierdzeniem roli obserwatorium w wykrywaniu przyszłych międzygwiezdnych gości. Badanie sugeruje, że Rubin może stać się głównym narzędziem do wykrywania takich obiektów po uruchomieniu pełnego pipeline&#x27;u danych.</p>
-<p class="body-text">JUICE i Europa Clipper zapewniły też wyjątkowo bogatą geometrię do badania obiektu pozasłonecznego, obserwując jednocześnie przeciwległe półkule i dostarczając rzadkich danych o składzie materii powstałej wokół innej gwiazdy.</p>
+      <p class="body-text">Ruch Grok w stronę kodowania poszerza grono poważnych dostawców agentów i pokazuje, jak szybko dostawcy modeli z czołówki zamieniają kodowanie w domyślną kategorię produktową. To, co rok temu było demonstracją modelu, dziś jest oczekiwane jako gotowe doświadczenie z agentem.</p>
+<p class="body-text">Efekt konkurencyjny jest natychmiastowy: każdy nowy gracz wymusza porównania pod kątem świadomości repozytorium, narzędzi wykonawczych, dostępu mobilnego i funkcji współpracy. Nawet jeśli to wczesny test, podnosi oczekiwania wobec szerokości oferty dostawców modeli w kodowaniu.</p>
       
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> To ważny sygnał, że teleskopy przeglądowe nowej generacji i koordynacja wielu misji zmieniają tempo, w jakim naukowcy mogą wykrywać i charakteryzować obiekty spoza Układu Słonecznego.</p>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Agenci kodowania stają się podstawową warstwą produktu dla firm tworzących modele graniczne, a nie pobocznym eksperymentem.</p>
     </div>
     <div class="card-footer">
-      <a href="https://www.space.com/astronomy/comets/astronomers-find-interstellar-comet-3i-atlas-hiding-in-images-taken-before-its-official-discovery" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.space.com&sz=16" alt="">Space.com</a>
+      <a href="https://news.google.com/rss/articles/CBMikAFBVV95cUxQYlNLSkt6Q29lSVcyM1QxR1JjbUVxcFhBTzdNU09vMHRuaUZrMUZKWVRrYnhXSU1RRGxGamNrUnhQTF9MNTB6OGxaNURuRk0wWG9vN2xYQkNGYlVvOGlCVGlpblY4VWRJWEFHRHpkMm1LajNDVldYd0RXRnFRbkZxd2M4UmdzZk1zYWlwc0EycUM?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">PCMag</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="pl-ai-tools">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="sparkles"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Sekcja</span>
+      <h2 class="section-title">Narzędzia AI</h2>
+    </div>
+    <span class="section-count">3 artykuły</span>
+  </div>
+  <div class="section-divider" style="background: #DB2777;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card featured">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #DB2777;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Narzędzia AI visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">AI</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> Narzędzia AI</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">OpenAI i Malta wdrażają ChatGPT Plus w skali kraju</h2>
+      <p class="article-deck">OpenAI informuje, że nowe partnerstwo zapewni dostęp do ChatGPT Plus wszystkim obywatelom Malty.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">Nationwide</span><span class="stat-label">wdrożenie ogólnokrajowe</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>OpenAI ogłosiło partnerstwo z Maltą 16 maja 2026 roku.</li>
+<li>W ogłoszeniu podano, że dostęp do ChatGPT Plus zostanie zapewniony wszystkim obywatelom Malty.</li>
+<li>Program jest krajową umową na konsumencki dostęp do AI, a nie premierą produktu dla deweloperów.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">To się wyróżnia, bo traktuje premium asystenta AI mniej jak niszową subskrypcję, a bardziej jak publiczną infrastrukturę cyfrową. Wdrożenia krajowe mogą szybko zmieniać wzorce użycia, oczekiwania polityczne i modele zakupowe dotyczące asystentów AI.</p>
+<p class="body-text">Umowa z Maltą daje OpenAI również realny wzorzec dystrybucji usług AI w sektorze publicznym. Jeśli się sprawdzi, podobne porozumienia mogą stać się ważnym kanałem adopcji asystentów poza licencjonowaniem korporacyjnym.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Adopcja konsumenckiej AI zmierza w stronę dystrybucji instytucjonalnej, co może rozszerzać użycie asystentów znacznie szybciej niż zwykły wzrost subskrypcji.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9YVndPb3VQUlhvZ3F0SFl3dGxJX1BPUnFNZUpiMzFZaEVYQkp1elJMcHRYNWJUTVZYTzYtb0RBLVpLZ1dXek5aRmlGeERyZHE2bG5QQ3NRQ3FxM3FRTnN6SlFZS2tDYjg?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">OpenAI</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card secondary">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #DB2777;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Narzędzia AI visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">AI</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> Narzędzia AI</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Tryb głosowy Grok trafia do Apple CarPlay</h2>
+      <p class="article-deck">xAI rozszerza Grok na samochód, przenosząc jego funkcje głosowe do Apple CarPlay.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">CarPlay</span><span class="stat-label">nowa powierzchnia</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Mashable podał 16 maja 2026 roku, że tryb głosowy Grok trafi do Apple CarPlay.</li>
+<li>Funkcja zmienia Grok w asystenta samochodowego zamiast doświadczenia ograniczonego do telefonu.</li>
+<li>Temat pasuje do kategorii niedeweloperskich narzędzi AI, ponieważ chodzi o konsumencki interfejs asystenta.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Dostęp do asystenta w samochodzie jest strategicznie ważny, ponieważ tworzy kontekst częstego użycia, w którym interfejsy głosowe mogą przewyższać wpisywanie tekstu. CarPlay daje też Grok bardziej osadzoną rolę w codziennych rutynach.</p>
+<p class="body-text">Szerszy motyw to dystrybucja. Asystenci AI konkurują nie tylko jakością modelu, ale też tym, gdzie pojawiają się najpierw: w przeglądarkach, telefonach, systemach operacyjnych, samochodach i urządzeniach ubieralnych.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Kolejna walka o narzędzia AI będzie dotyczyć domyślnej obecności w codziennych kontekstach, a nie tylko wyników benchmarków.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMiV0FVX3lxTFA1QUdiNldidGgzUjdfTG5POUg3N0hQWnUxMEJFZ2pkU3JkTUJZNzM5N1V2bTRERVV3LXhKU01HNnNtb2dyUW5GeU1xaXQ4RzNMTkVfVU9Hcw?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">Mashable</a>
       <span class="pub-time">2026-05-16</span>
     </div>
   </div>
@@ -517,8 +1379,323 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 <details class="news-card standard">
   <summary class="card-summary">
     
+<div class="card-image-placeholder has-image" style="--accent: #DB2777;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Narzędzia AI visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">AI</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> Narzędzia AI</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Bumble zastępuje przesuwanie asystentem AI do kojarzenia par</h2>
+      <p class="article-deck">Bumble odchodzi od randkowania opartego przede wszystkim na przesuwaniu i wprowadza pomocnika AI do prowadzenia dopasowań.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">0</span><span class="stat-label">domyślny model swipe-first usunięty</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>W raporcie opublikowanym 16 maja 2026 roku podano, że Bumble kończy z funkcją przesuwania.</li>
+<li>Firma wprowadza asystenta AI do kojarzenia par.</li>
+<li>Zmiana ustawia AI jako warstwę interfejsu odkrywania w popularnej aplikacji konsumenckiej.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">To istotne, bo umieszcza AI w samym centrum modelu interakcji dużego produktu konsumenckiego, zamiast dodawać poboczny chatbot. Jeśli aplikacje randkowe porzucą przesuwanie, będzie to realna wymiana sposobu działania, a nie ciekawostka produktowa.</p>
+<p class="body-text">Narzędzia AI coraz częściej wygrywają przez ograniczanie przeciążenia wyborem i sprawianie, że rekomendacje wydają się bardziej celowe. Zmiana w Bumble to kolejny sygnał, że aplikacje konsumenckie są gotowe oddać AI frontowe doświadczenie produktu.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Asystenci AI zaczynają zastępować podstawowe mechaniki aplikacji, co może zmienić zachowania użytkowników znacznie bardziej niż dodatkowe funkcje czatu.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE5QQ1pLREtfTkw3eDZhRjJkNFBmQ0RjRVRCa3NIZGNaSlo2MzVxbDM4TlFaMDhLc0dveWVjSzlaQWV3dExMNWhuWUJqNVozdTdpaXY0YkFzU2cyNXhid2Z2RDVOMXdJcE9vZnFJcHZXVjFIcFByNzNR?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">AOL.com</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="pl-robotics">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="bot"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Sekcja</span>
+      <h2 class="section-title">Robotyka</h2>
+    </div>
+    <span class="section-count">3 artykuły</span>
+  </div>
+  <div class="section-divider" style="background: #16A34A;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card featured">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #16A34A;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Robotyka visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">BOT</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-robot"><i data-lucide="bot"></i> Robotyka</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Chiński nacisk na roboty humanoidalne przyciąga globalną uwagę</h2>
+      <p class="article-deck">Nowy reportaż NBC News pokazuje, jak agresywnie Chiny zwiększają skalę swoich ambicji w robotyce humanoidalnej.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">National</span><span class="stat-label">wyścig przemysłowy</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>NBC News opublikowało ten materiał 15 maja 2026 roku.</li>
+<li>Tekst koncentruje się na wyścigu Chin o dominację w branży robotów humanoidalnych.</li>
+<li>Przedstawia ten nacisk jako połączenie polityki przemysłowej, skali produkcji i strategicznej pilności.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Kluczowym wnioskiem nie jest pojedyncze demo robota, lecz skala budowy całego ekosystemu wokół humanoidów. Gdy duża gospodarka traktuje ucieleśnioną AI jako strategiczny priorytet produkcyjny, dynamika konkurencji zmienia się dla całego sektora.</p>
+<p class="body-text">Ma to też znaczenie dla łańcuchów dostaw. Kraj, który potrafi masowo produkować zdolne humanoidy po niższym koszcie, może kształtować światowe standardy automatyzacji przemysłowej, ekosystemy części i tempo wdrożeń.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Robotyka humanoidalna przechodzi od widowiska do konkurencji przemysłowej, a Chiny próbują zamienić skalę w trwałą przewagę strukturalną.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMimAFBVV95cUxPZFlPc00xRlNZb1M1akF5VERibnljNVJkaXdMZEREdTlhbV84V0xhMng0Qkc0aDBoV0luUjhvMUhXTHZZOFJyQzRwZmFoTlhKMzdOM3Zra3otcjJTMUQ3Q3R2ckhaa2dYdUt0VlRCNEhhLThia2NoZ0dmVklGeHFYVmlfVzdRWGI1WkliVXktYk5SbU9zWmw1Yg?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">NBC News</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card secondary">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #16A34A;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Robotyka visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">BOT</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-robot"><i data-lucide="bot"></i> Robotyka</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Demo humanoida w fabryce ma potwierdzać pełne 8-godzinne zmiany bez nadzoru</h2>
+      <p class="article-deck">Szeroko udostępniany raport mówi, że robot humanoidalny ukończył całe zmiany w fabryce bez nadzoru człowieka.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">8</span><span class="stat-label">godzin na zmianę</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Raport opublikowany 16 maja 2026 roku opisał robota humanoidalnego pracującego pełne 8-godzinne zmiany w fabryce.</li>
+<li>W relacji podkreślano pracę bez nadzoru człowieka podczas demonstracji.</li>
+<li>Jeśli to prawda, sugeruje przejście od krótkich pokazowych zadań do dłuższego wykorzystania przemysłowego.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Długotrwała praca to jeden z najwyraźniejszych progów użytecznego wdrożenia humanoidów. Robot, który może obsłużyć pełną zmianę, nawet w ograniczonym środowisku, jest znacznie mocniejszym sygnałem niż krótkie demo utrzymywania równowagi.</p>
+<p class="body-text">Ponieważ twierdzenie pochodzi z relacji wtórnych, należy zachować ostrożność. Mimo to zainteresowanie autonomią na długość zmiany pokazuje, na czym koncentrują się kupujący i inwestorzy: niezawodności, wytrzymałości i ograniczeniu potrzeby nadzoru.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Rynek robotyki zaczyna oceniać humanoidy przez pryzmat wydajności na poziomie całej zmiany, a nie nowinkowych demonstracji.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE1oYlB0dUl4U1VScGc1ZUFZZUxpUHNVV1djZGR0bTZBbFhmd2RETTlLc01PUUdHNkRlVEV5QVNHLXVvZFJEbVRhM1hyeVJfRHpONnlwSFJMWEFPV2FzRXB1WkRPUW1HRVRQdm5odFk4Zm1lNFJ4VGkw?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">AOL.com</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card standard">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #16A34A;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Robotyka visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">BOT</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-robot"><i data-lucide="bot"></i> Robotyka</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Unitree pokazuje jazdę G1 na łyżwach, by udowodnić równowagę humanoida</h2>
+      <p class="article-deck">W najnowszym demo G1 od Unitree robot jeździ na łyżwach i rolkach, a filmy z mobilnością humanoidów idą coraz dalej.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">G1</span><span class="stat-label">model robota</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>W relacji z 16 maja 2026 roku pokazano robota humanoidalnego G1 od Unitree jeżdżącego na łyżwach i rolkach.</li>
+<li>Demo przedstawiono jako dowód poprawy równowagi i mobilności.</li>
+<li>Takie filmy wciąż są istotne, bo wpływają na postrzeganie możliwości ucieleśnionej AI przez inwestorów i klientów.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Dema mobilności, takie jak jazda na łyżwach, nie są tym samym co wdrożenia produkcyjne, ale pokazują postępy w sterowaniu, równowadze i odzyskiwaniu stabilności. Te podstawowe zdolności przenoszą się na bardziej praktyczne zastosowania, takie jak magazyny, logistyka i inspekcja.</p>
+<p class="body-text">Unitree szczególnie skutecznie wykorzystuje łatwe do udostępniania demonstracje, by pozostawać w centrum rozmowy o humanoidach. Ta strategia medialna ma znaczenie, bo uwaga wciąż jest głównym napędem adopcji i finansowania robotyki.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Wirusowe dema mobilności nadal kształtują narrację wokół humanoidów, nawet gdy rynek czeka na dowody trwałej pracy w realnym świecie.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMifkFVX3lxTFB1d2M5Q182eGpjZzB4REFsMzNMdmZDU21rRkdJTDlENnc1anlpM0RtRnFCUHVTVHRUMkhSbGdISXFHb29Ca29idTAyQW5zaHIyelpvY2s2VXk1TzBrMFdvRWRwa0h3VFg4aDFBRFlTZFRzZ0xNM1R0X1Z2cmduZw?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">AOL.com</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="pl-defense">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="shield"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Sekcja</span>
+      <h2 class="section-title">Obronność</h2>
+    </div>
+    <span class="section-count">3 artykuły</span>
+  </div>
+  <div class="section-divider" style="background: #DC2626;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card featured">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #DC2626;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Obronność visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEF</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-defense"><i data-lucide="shield"></i> Obronność</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">AI daje dronom bojowym większą autonomię</h2>
+      <p class="article-deck">Military.com podaje, że wojskowe systemy dronów przejmują więcej niezależnych zachowań w warunkach bojowych.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">Higher</span><span class="stat-label">poziom autonomii</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Military.com opublikował ten materiał 16 maja 2026 roku.</li>
+<li>Raport mówi, że AI daje wojskowym dronom większą autonomię na polu walki.</li>
+<li>Głównym motywem jest przejście w stronę decyzyjności pokładowej zamiast wyłącznie zdalnego sterowania.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">To jeden z najwyraźniejszych trendów w obszarze AI dla obronności w tym roku: autonomia przechodzi z programów badawczych do doktryny operacyjnej. Nawet stopniowy wzrost autonomii pokładowej może zmienić zasięg, przeżywalność i obciążenie operatora.</p>
+<p class="body-text">Napięcie polityczne jest znane, ale nierozwiązane. Gdy systemy zyskują większą zdolność działania bez bezpośredniej kontroli, jeszcze większego znaczenia nabierają zakupy, nadzór i zasady użycia siły.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> AI dla obronności przechodzi od autonomii eksperymentalnej do operacyjnej, zwiększając zarówno wartość militarną, jak i presję regulacyjną.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxQQnF1TTkxeVNteXBlb2xEVG10eHp2d2xlM1dZaWt5aUFrNG9ETXdRSHAxTThFUWEtU000SGYwbWpyOFNHM2ZNalVDaTUyYUlzUFVQTks1b1Ftdkl4S0RoQ20wcUJmdEVqRUNlMmlLdlBwN3prUGpfQlRnOUNRdkFuOWVodjNJYWxFNjlXYkNKVQ?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">Military.com</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card secondary">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #DC2626;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Obronność visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEF</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-defense"><i data-lucide="shield"></i> Obronność</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Chiny badają drony AI zasilane falami do egzekwowania prawa na morzu</h2>
+      <p class="article-deck">Nowy raport mówi, że Chiny rozważają autonomiczne systemy morskie, które mogą wykorzystywać energię fal dla większej wytrzymałości.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">Wave</span><span class="stat-label">źródło zasilania</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Interesting Engineering opisał 16 maja 2026 roku koncepcję floty dronów AI zasilanych falami.</li>
+<li>Proponowanym zastosowaniem jest egzekwowanie prawa na morzu.</li>
+<li>Koncepcja łączy autonomię z alternatywnym zasilaniem, by wydłużyć czas przebywania w rejonie działania.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Wytrzymałość to decydująca przewaga autonomii morskiej, więc każde wiarygodne podejście oparte na energii fal byłoby strategicznie istotne. Stały monitoring oceanów jest jednym z najbardziej naturalnych zastosowań systemów autonomicznych.</p>
+<p class="body-text">Ponieważ to wygląda na etap koncepcji lub eksploracji, należy podchodzić do tego ostrożnie. Mimo to wpisuje się to w szerszy wzorzec, w którym podmioty z obszaru obrony i bezpieczeństwa szukają długotrwałego autonomicznego nadzoru na spornych wodach.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Autonomia morska staje się większym priorytetem obronnym, zwłaszcza tam, gdzie wytrzymałość i niskokosztowa obecność liczą się bardziej niż sama prędkość.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxPeUY0VlRyeDdDZk5tWEhhM2VqSHpiWWtHRGJQNHdBcjBZMEg1amhnSkdSdTdmbG1kY0ZuN1JlWWdUVThpWjkxcUZSS29GeFdzT1lueXVTOVpyYnVxWnZKMU83U2FzY3VucEpEZENZU3Vud2l2QW55QXF6TE1KcHE5dG9iajM0TWhl?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">Interesting Engineering</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card standard">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #DC2626;">
+  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Obronność visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEF</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-defense"><i data-lucide="shield"></i> Obronność</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Nacisk US Air Force na skrzydłowych AI pozostaje w centrum uwagi</h2>
+      <p class="article-deck">Nowy raport wraca do celu Air Force, jakim jest wdrożenie 1,000 dronów z AI latających obok F-35.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">1,000</span><span class="stat-label">planowane drony</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>W raporcie opublikowanym 15 maja 2026 roku podano, że US Air Force chce 1,000 dronów AI współpracujących z F-35.</li>
+<li>Koncepcja jest częścią zwrotu w stronę walki powietrznej w stylu loyal wingman.</li>
+<li>Skala sprawia, że temat jest istotny, mimo że relacja jest wtórna.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Skala ma znaczenie w autonomicznej sile powietrznej. Plan 1,000 skrzydłowych z AI sygnalizowałby, że współpracujące samoloty bojowe nie są już niszowymi prototypami, lecz strukturalną częścią przyszłego projektowania sił.</p>
+<p class="body-text">Wyzwanie będzie polegało na zamianie skali koncepcji w realne zakupy. Koszty, niezawodność, jakość oprogramowania i uprawnienia dowódcze zdecydują, czy głośne cele flotowe staną się rzeczywiście wdrożonymi systemami.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Duże floty skrzydłowych AI zmieniłyby ekonomię sił powietrznych przez łączenie drogich myśliwców z tańszymi autonomicznymi partnerami.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://news.google.com/rss/articles/CBMic0FVX3lxTFBDRkU5ZS1tNVJzNHNsY2dMZTBaaXhiZnYyaXNTbk1xYXNtTUlITzE1dUdxd0t0SHZwdlVJOVpUM0lHZ2FOWlp4Uk9jWVFhVWRNMVdvMnVLQkNwaWJ1c01FZnBzV2R1czQ4V3FFRkgtazd4Ync?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">Simple Flying</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="pl-space">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="rocket"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Sekcja</span>
+      <h2 class="section-title">Kosmos</h2>
+    </div>
+    <span class="section-count">3 artykuły</span>
+  </div>
+  <div class="section-divider" style="background: #7C3AED;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card featured">
+  <summary class="card-summary">
+    
 <div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
-  <img class="card-image" src="https://cdn.mos.cms.futurecdn.net/ftwGW3eemBcY2qoi4VAAV3.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <img class="card-image" src="https://www.nasa.gov/wp-content/uploads/2026/05/crs-34-mission-dragon-liftoff-image-2.png?w=1024" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
   <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Kosmos visual" xmlns="http://www.w3.org/2000/svg">
     <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
     <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
@@ -530,26 +1707,365 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 </div>
     <div class="card-summary-content">
       <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Kosmos</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">Mars Express publikuje nowe ujęcia Shalbatana Vallis, kanału powodziowego wyrzeźbionego na dawnym Marsie</h2>
-      <p class="article-deck">Nowe omówienie zdjęć ESA pokazuje marsjańską dolinę o długości 800 mil, wyrzeźbioną przez katastrofalne powodzie wód gruntowych około 3.5 miliarda lat temu.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">1,300 km</span><span class="stat-label">długość kanału</span></div>
-<div class="stat-highlight"><span class="stat-number">23 years</span><span class="stat-label">czas trwania misji</span></div></div>
+      <h2 class="article-title">NASA i SpaceX wysyłają na ISS misję cargo CRS-34</h2>
+      <p class="article-deck">NASA przygotowała transmisję i wystrzeliła 34. misję zaopatrzeniową SpaceX, dostarczającą na stację eksperymenty naukowe i zapasy.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">6,500 lb</span><span class="stat-label">ładunek na pokładzie</span></div></div>
       <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
     </div>
   </summary>
   <div class="card-details">
-    <ul class="bullet-list"><li>Shalbatana Vallis rozciąga się na około 1,300 kilometrów w pobliżu równika Marsa, a główny kanał ma około 10 kilometrów szerokości i około 500 metrów głębokości.</li>
-<li>Naukowcy uważają, że kanał został wyrzeźbiony przez katastrofalne wyrzuty wód gruntowych około 3.5 miliarda lat temu.</li>
-<li>Nowe obrazy pokazują także osady popiołu wulkanicznego, kratery uderzeniowe, grzbiety tektoniczne i warstwowy teren, wskazujące na powtarzające się powodzie, przepływy lawy i erozję.</li></ul>
+    <ul class="bullet-list"><li>NASA opublikowała 15 maja 2026 roku komunikat o transmisji 34. komercyjnej misji zaopatrzeniowej SpaceX.</li>
+<li>Statek Dragon przewoził około 6,500 funtów ładunku na ISS.</li>
+<li>NASA podała, że start planowano na 6:05 p.m. EDT 15 maja, a dokowanie na 17 maja.</li></ul>
     <div class="extended-content">
-      <p class="body-text">W materiale Space.com z 15 maja pokazano najnowsze zdjęcia regionu Shalbatana Vallis z Mars Express ESA, bogatego geologicznie obszaru odprowadzającego wodę w stronę Chryse Planitia, jednego z najniżej położonych regionów Marsa i kandydata na lokalizację dawnego oceanu.</p>
-<p class="body-text">Publikacja przypomina, że Mars Express pozostaje naukowo produktywny po 23 latach działania, nadal precyzując mapę miejsc, w których starożytna woda na Marsie płynęła i gromadziła się.</p>
+      <p class="body-text">Misje cargo rzadko dominują nagłówki, ale to one realnie podtrzymują operacje naukowe i ciągłość działania stacji. Ten lot jest istotny, ponieważ przewozi badania i logistykę, które utrzymują ISS jako działające orbitalne laboratorium.</p>
+<p class="body-text">Historia pokazuje też głęboką operacyjną rolę SpaceX w rutynowym dostępie NASA do orbity. Niezawodny rytm lotów cargo pozostaje jednym z najczytelniejszych przykładów tego, że komercyjny sektor kosmiczny staje się zwyczajną infrastrukturą krytyczną.</p>
       
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Lepsze obrazowanie dawnego terenu powodziowego pomaga doprecyzować modele habitabilności Marsa i wspiera decyzje dotyczące przyszłych miejsc lądowania oraz mapowania zasobów dla misji robotycznych i późniejszych załogowych.</p>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Rutynowe komercyjne loty zaopatrzeniowe stały się fundamentem operacji kosmicznych, pokazując, jak mocno NASA zależy dziś od prywatnych systemów startowych.</p>
     </div>
     <div class="card-footer">
-      <a href="https://www.space.com/astronomy/mars/mars-orbiter-captures-striking-images-of-chaos-and-craters-carved-by-ancient-floods" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.space.com&sz=16" alt="">Space.com</a>
+      <a href="https://www.nasa.gov/news-release/nasa-sets-coverage-for-spacex-34th-station-resupply-launch-arrival/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.nasa.gov&sz=16" alt="">NASA</a>
       <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card secondary">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder" style="--accent: #7C3AED;">
+  
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Kosmos visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">ORB</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Kosmos</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span></div>
+      <h2 class="article-title">SpaceNews śledzi start CRS-34 po wejściu misji na orbitę</h2>
+      <p class="article-deck">SpaceNews poinformował o starcie Falcon 9 i Dragona w najnowszej misji logistycznej dla ISS późnym piątkiem czasu UTC.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">34th</span><span class="stat-label">misja zaopatrzeniowa</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>SpaceNews poinformował o starcie CRS-34 15 maja 2026 roku.</li>
+<li>Artykuł potwierdził, że misja osiągnęła orbitę w ramach wsparcia logistycznego ISS.</li>
+<li>Zapewnia wiarygodne wtórne potwierdzenie obok pierwotnego komunikatu NASA.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Wtórne potwierdzenie ze specjalistycznego źródła kosmicznego ma znaczenie, bo pomaga zweryfikować czas i kontekst poza komunikacją firm i agencji. To szczególnie przydatne w codziennych briefingach, gdzie relacje ze startów szybko się zmieniają.</p>
+<p class="body-text">Sam start nie jest przełomem, ale niezawodne tempo tych misji przypomina, że operacyjna infrastruktura kosmiczna dalej się skaluje, nawet jeśli uwaga często skupia się na załogowych lądowaniach i megakonstelacjach.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Relacje ze źródeł specjalistycznych potwierdzają, że logistyka ISS stała się dojrzałą i niezawodną częścią komercyjnej gospodarki kosmicznej.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://spacenews.com" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=spacenews.com&sz=16" alt="">SpaceNews</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card standard">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder" style="--accent: #7C3AED;">
+  
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Kosmos visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">ORB</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Kosmos</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Reuters podaje, że akcjonariusze SpaceX zatwierdzili split 5 do 1</h2>
+      <p class="article-deck">Reuters poinformował o zatwierdzonym przez akcjonariuszy splicie akcji w SpaceX, co jest rzadkim wydarzeniem rynkowym wokół prywatnego giganta kosmicznego.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">5-for-1</span><span class="stat-label">split akcji</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Reuters poinformował o tym 16 maja 2026 roku.</li>
+<li>Według raportu akcjonariusze SpaceX zatwierdzili split akcji 5 do 1.</li>
+<li>To istotny ruch, ponieważ SpaceX pozostaje jedną z najważniejszych prywatnych firm kosmicznych.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Mimo że SpaceX jest firmą prywatną, jej decyzje dotyczące struktury kapitału są uważnie obserwowane przez szeroki rynek. Split nie zmienia fundamentów, ale często sygnalizuje pewność siebie, planowanie płynności lub przygotowania do przyszłych ruchów finansowych.</p>
+<p class="body-text">Ponieważ SpaceX znajduje się w centrum rozmów o startach, satelitach i obronności w kosmosie, każde działanie korporacyjne dotyczące struktury własności zwykle odbija się znacznie szerzej niż tylko w kręgach venture.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> SpaceX pozostaje tak centralną firmą dla sektora, że nawet działania korporacyjne na rynku prywatnym są istotną wiadomością kosmiczną.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://www.reuters.com" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.reuters.com&sz=16" alt="">Reuters</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="pl-startups">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="banknote"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Sekcja</span>
+      <h2 class="section-title">Startupy</h2>
+    </div>
+    <span class="section-count">3 artykuły</span>
+  </div>
+  <div class="section-divider" style="background: #EA580C;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card featured">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #EA580C;">
+  <img class="card-image" src="https://storage.ghost.io/c/40/4e/404e902f-a497-4c57-98a8-ff885ab1951b/content/images/size/w1200/2026/05/image.png" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Startupy visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">CAP</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-startup"><i data-lucide="banknote"></i> Startupy</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Zerion uruchamia CLI dla agentów AI do zarządzania kryptowalutami</h2>
+      <p class="article-deck">Zerion zaprezentował otwartoźródłowe narzędzie wiersza poleceń zaprojektowane dla agentów AI do śledzenia portfeli i wykonywania działań na rynku krypto.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">40+</span><span class="stat-label">obsługiwane łańcuchy</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Zerion ogłosił premierę 15 maja 2026 roku.</li>
+<li>Firma podała, że jej CLI współpracuje z agentami takimi jak Claude Code, Cursor i Codex.</li>
+<li>Zerion poinformował, że narzędzie obsługuje ponad 40 łańcuchów do śledzenia portfeli i transakcji.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">To mocny przykład startupu budującego infrastrukturę dla przepływów agent-native, a nie wyłącznie aplikacji dla ludzi. Produkt zakłada, że agenci programowi będą coraz częściej potrzebować bezpiecznych, ustrukturyzowanych sposobów wykonywania działań finansowych.</p>
+<p class="body-text">Krypto jest naturalnym wczesnym poligonem, ponieważ portfele, salda i działania onchain są już programowalne. Jeśli Zerion zyska popularność, może to zapowiadać, jak interfejsy agentów będą ewoluować w innych domenach transakcyjnych.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Startupy zaczynają budować produkty, w których głównymi użytkownikami są agenci AI, a nie tylko funkcja dołączona do ludzkiego przepływu pracy.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://zerion.io/blog/zerion-cli/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=zerion.io&sz=16" alt="">Zerion</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card secondary">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #EA580C;">
+  <img class="card-image" src="https://static01.nyt.com/newsgraphics/images/icons/defaultPromoCrop.png" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Startupy visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">CAP</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-startup"><i data-lucide="banknote"></i> Startupy</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">New York Times podaje, że OpenAI kupiło startup zajmujący się klonowaniem głosu</h2>
+      <p class="article-deck">To przejęcie, o którym informują media, wzmocniłoby pozycję OpenAI w audio AI i generowaniu mowy.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">1</span><span class="stat-label">przejęcie w voice AI</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>The New York Times poinformował o przejęciu 16 maja 2026 roku.</li>
+<li>Docelowa spółka została opisana jako oferująca narzędzia AI do klonowania głosów.</li>
+<li>Ta historia sygnalizuje dalszą konsolidację wokół możliwości multimodalnych i audio.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Audio pozostaje jedną z najbardziej niedocenianych komercyjnie kategorii AI, więc przejęcia w tym obszarze mają większe znaczenie, niż może się początkowo wydawać. Technologia głosowa leży na styku asystentów, narzędzi dla twórców, tłumaczeń i automatyzacji korporacyjnej.</p>
+<p class="body-text">Dla założycieli startupów wniosek jest prosty: wyróżniające się narzędzia audio pozostają strategicznie na tyle wartościowe, by przyciągać dużych kupujących. To powinno utrzymać uwagę inwestorów na startupach ze speech, nawet gdy nagłówki dominują kodowanie i wideo.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Voice AI pozostaje strategicznie ważne, a przejęcia sugerują, że rynek nadal wysoko ceni wyróżniające się możliwości audio.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://www.nytimes.com" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.nytimes.com&sz=16" alt="">The New York Times</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card standard">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder" style="--accent: #EA580C;">
+  
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Startupy visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">CAP</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-startup"><i data-lucide="banknote"></i> Startupy</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Fin od Intercom uruchamia agenta do nadzorowania innego agenta</h2>
+      <p class="article-deck">VentureBeat podaje, że Intercom rozszerzył Fin o nowego agenta AI skupionego na zarządzaniu pracą innego agenta AI.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">2</span><span class="stat-label">warstwy agentów</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>VentureBeat poinformował o premierze 15 maja 2026 roku.</li>
+<li>Nowy agent Fin został zaprojektowany do zarządzania innym agentem AI.</li>
+<li>Produkt jest kierowany do automatyzacji obsługi klienta, a nie do tworzenia oprogramowania.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">To istotne, ponieważ odzwierciedla szersze przejście od pojedynczych asystentów do skoordynowanych systemów agentowych. Oprogramowanie do wsparcia klienta jest jedną z pierwszych kategorii korporacyjnych, w których warstwowi agenci mogą szybko pokazać ROI, bo zadania są powtarzalne, mierzalne i oparte na politykach.</p>
+<p class="body-text">Sygnał dla startupów jest taki, że orkiestracja przepływów pracy staje się osobną kategorią produktową. Firmy, które potrafią nadzorować, audytować i kierować zachowaniem agentów, mogą przejmować wartość nawet bez trenowania modeli bazowych.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Kolejna fala startupów może być mniej związana z samodzielnymi agentami, a bardziej z zarządzaniem flotami wyspecjalizowanych agentów w realnych przepływach pracy.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://venturebeat.com" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=venturebeat.com&sz=16" alt="">VentureBeat</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="pl-markets">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="bar-chart-2"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Sekcja</span>
+      <h2 class="section-title">Rynki</h2>
+    </div>
+    <span class="section-count">3 artykuły</span>
+  </div>
+  <div class="section-divider" style="background: #0F766E;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card featured">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder" style="--accent: #0F766E;">
+  
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Rynki visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">MKT</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-market"><i data-lucide="bar-chart-2"></i> Rynki</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Nvidia dostaje zgodę na sprzedaż H200 do Chin, ale dostawy nadal stoją</h2>
+      <p class="article-deck">Nowy raport mówi, że Nvidia uzyskała otwarcie regulacyjne dla sprzedaży H200, choć faktyczne dostawy jeszcze nie zostały wznowione.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">H200</span><span class="stat-label">sporny układ AI</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>TechRepublic podał 15 maja 2026 roku, że amerykańskie władze zatwierdziły sprzedaż Nvidia H200 do Chin.</li>
+<li>Ten sam raport wskazał, że dostawy nadal są wstrzymane.</li>
+<li>Temat ma znaczenie dla rynków AI, ponieważ polityka eksportowa bezpośrednio wpływa na dostępny popyt dla Nvidia.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Nvidia pozostaje nazwą najbardziej wrażliwą na politykę w rynkach AI, więc nawet częściowy ruch w kwestii dostępu do Chin ma znaczenie. Zgoda bez wznowienia dostaw pokazuje, jak geopolityka i logistyka nadal mogą opóźniać realizację przychodów.</p>
+<p class="body-text">Inwestorzy uważnie śledzą takie informacje, ponieważ popyt na infrastrukturę AI jest skoncentrowany w niewielkiej liczbie firm. Zmiany w traktowaniu eksportu mogą szybko przestawić oczekiwania dotyczące wzrostu, marż i konkurencji regionalnej.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Rynki układów AI są nadal kształtowane w równym stopniu przez regulacje i geopolitykę, co przez popyt na produkt.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://www.techrepublic.com" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.techrepublic.com&sz=16" alt="">TechRepublic</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card secondary">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder" style="--accent: #0F766E;">
+  
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Rynki visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">MKT</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-market"><i data-lucide="bar-chart-2"></i> Rynki</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Wyniki Corning ożywiają historię popytu na szkło dla AI</h2>
+      <p class="article-deck">Najnowsze wyniki Corning ponownie kierują uwagę inwestorów na popyt na szkło specjalistyczne związany z AI.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">Q1</span><span class="stat-label">katalizator wynikowy</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Raport rynkowy z 16 maja 2026 roku powiązał wyniki Corning za Q1 z popytem na szkło dla AI.</li>
+<li>Artykuł przedstawiał szkło specjalistyczne jako beneficjenta rozbudowy infrastruktury AI.</li>
+<li>Pasuje do sekcji rynkowej, ponieważ impulsem do ruchu były wyniki finansowe.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Narracje rynkowe wokół AI często zaczynają się od chipów i dostawców chmury, ale łańcuch dostaw jest znacznie szerszy. Jeśli uwaga inwestorów rozszerza się na materiały takie jak szkło specjalistyczne, sugeruje to dojrzalsze spojrzenie na to, kto korzysta na ekspansji centrów danych.</p>
+<p class="body-text">Tego rodzaju historia o beneficjentach drugiego rzędu może mieć znaczenie, gdy główne spółki są już zatłoczonymi pozycjami. Rynki często rotują do dostawców przyległych, gdy główni beneficjenci AI wydają się już w pełni wycenieni.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Inwestorzy patrzą już nie tylko na chipy, ale także na głębszy fizyczny łańcuch dostaw potrzebny do wzrostu infrastruktury AI.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://www.ad-hoc-news.de" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.ad-hoc-news.de&sz=16" alt="">AD HOC NEWS</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card standard">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder" style="--accent: #0F766E;">
+  
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Rynki visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">MKT</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-market"><i data-lucide="bar-chart-2"></i> Rynki</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
+      <h2 class="article-title">Duży pakiet Microsoftu pojawia się po ostrym spadku wskaźnikowej spółki AI</h2>
+      <p class="article-deck">Raport przekazany przez Reuters mówi, że duży inwestor zajął znaczącą pozycję w Microsoft po wyraźnym spadku kursu akcji.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">&gt;5%</span><span class="stat-label">spełniony próg ruchu ceny</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Materiał MSN oparty na doniesieniach Reuters podał, że 16 maja 2026 roku duży inwestor objął znaczący pakiet Microsoftu.</li>
+<li>Ruch nastąpił po ostrym spadku kursu akcji Microsoftu.</li>
+<li>Microsoft pozostaje jedną z centralnych spółek platformowych AI na rynku dzięki ekspozycji na Azure i Copilot.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Nawet gdy katalizatorem jest struktura własności, a nie premiera produktu, Microsoft pozostaje istotny dla rynków AI, ponieważ jest traktowany jako jeden z głównych wskaźników sektora. Duże ruchy instytucjonalne wokół akcji mogą wpływać na nastroje w całym szerokim handlu AI.</p>
+<p class="body-text">To słabszy sygnał niż bezpośrednia historia o wynikach czy premierze, ale nadal kwalifikuje się jako zauważalna informacja rynkowa, ponieważ firma znajduje się w centrum korporacyjnej infrastruktury AI i monetyzacji oprogramowania.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Przepływy kapitału wokół Microsoftu nadal służą jako wskaźnik zaufania do ekspozycji na wielkie platformy AI.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://www.msn.com" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.msn.com&sz=16" alt="">MSN / Reuters</a>
+      <span class="pub-time">2026-05-16</span>
     </div>
   </div>
 </details>
@@ -557,14 +2073,31 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 </section>
   <footer class="report-footer" id="pl-sources">
     <h3 class="footer-title"><i data-lucide="paperclip"></i> Wszystkie źródła raportu</h3>
-    <div class="sources-grid"><div class="sources-section"><h4><i data-lucide="rocket"></i> Kosmos</h4><ul><li><a href="https://spacenews.com/spacex-launches-crs-34-cargo-mission-to-iss/" target="_blank" rel="noopener">SpaceNews</a></li>
-<li><a href="https://www.space.com/space-exploration/asteroid-comet-missions/nasas-psyche-spacecraft-is-flying-to-a-metal-asteroid-so-why-did-it-just-visit-mars" target="_blank" rel="noopener">Space.com</a></li>
-<li><a href="https://www.space.com/astronomy/comets/astronomers-find-interstellar-comet-3i-atlas-hiding-in-images-taken-before-its-official-discovery" target="_blank" rel="noopener">Space.com</a></li>
-<li><a href="https://www.space.com/astronomy/mars/mars-orbiter-captures-striking-images-of-chaos-and-craters-carved-by-ancient-floods" target="_blank" rel="noopener">Space.com</a></li></ul></div></div>
+    <div class="sources-grid"><div class="sources-section"><h4><i data-lucide="monitor"></i> Narzędzia developerskie</h4><ul><li><a href="https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/" target="_blank" rel="noopener">GitHub Blog</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMiX0FVX3lxTE9uTWd1cjZxMVVLUm5DT0xnM3FRNFpiUjZkTHcwU1dvQmpudGJDNlVnX1dQNXA5RGx1Q3FrRUFpNWlJOGdhdklMbV80VWZtSzVlRE9XbXlZU2dPRFNkSmpr?oc=5" target="_blank" rel="noopener">The New Stack</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMikAFBVV95cUxQYlNLSkt6Q29lSVcyM1QxR1JjbUVxcFhBTzdNU09vMHRuaUZrMUZKWVRrYnhXSU1RRGxGamNrUnhQTF9MNTB6OGxaNURuRk0wWG9vN2xYQkNGYlVvOGlCVGlpblY4VWRJWEFHRHpkMm1LajNDVldYd0RXRnFRbkZxd2M4UmdzZk1zYWlwc0EycUM?oc=5" target="_blank" rel="noopener">PCMag</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="sparkles"></i> Narzędzia AI</h4><ul><li><a href="https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9YVndPb3VQUlhvZ3F0SFl3dGxJX1BPUnFNZUpiMzFZaEVYQkp1elJMcHRYNWJUTVZYTzYtb0RBLVpLZ1dXek5aRmlGeERyZHE2bG5QQ3NRQ3FxM3FRTnN6SlFZS2tDYjg?oc=5" target="_blank" rel="noopener">OpenAI</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMiV0FVX3lxTFA1QUdiNldidGgzUjdfTG5POUg3N0hQWnUxMEJFZ2pkU3JkTUJZNzM5N1V2bTRERVV3LXhKU01HNnNtb2dyUW5GeU1xaXQ4RzNMTkVfVU9Hcw?oc=5" target="_blank" rel="noopener">Mashable</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE5QQ1pLREtfTkw3eDZhRjJkNFBmQ0RjRVRCa3NIZGNaSlo2MzVxbDM4TlFaMDhLc0dveWVjSzlaQWV3dExMNWhuWUJqNVozdTdpaXY0YkFzU2cyNXhid2Z2RDVOMXdJcE9vZnFJcHZXVjFIcFByNzNR?oc=5" target="_blank" rel="noopener">AOL.com</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="bot"></i> Robotyka</h4><ul><li><a href="https://news.google.com/rss/articles/CBMimAFBVV95cUxPZFlPc00xRlNZb1M1akF5VERibnljNVJkaXdMZEREdTlhbV84V0xhMng0Qkc0aDBoV0luUjhvMUhXTHZZOFJyQzRwZmFoTlhKMzdOM3Zra3otcjJTMUQ3Q3R2ckhaa2dYdUt0VlRCNEhhLThia2NoZ0dmVklGeHFYVmlfVzdRWGI1WkliVXktYk5SbU9zWmw1Yg?oc=5" target="_blank" rel="noopener">NBC News</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE1oYlB0dUl4U1VScGc1ZUFZZUxpUHNVV1djZGR0bTZBbFhmd2RETTlLc01PUUdHNkRlVEV5QVNHLXVvZFJEbVRhM1hyeVJfRHpONnlwSFJMWEFPV2FzRXB1WkRPUW1HRVRQdm5odFk4Zm1lNFJ4VGkw?oc=5" target="_blank" rel="noopener">AOL.com</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMifkFVX3lxTFB1d2M5Q182eGpjZzB4REFsMzNMdmZDU21rRkdJTDlENnc1anlpM0RtRnFCUHVTVHRUMkhSbGdISXFHb29Ca29idTAyQW5zaHIyelpvY2s2VXk1TzBrMFdvRWRwa0h3VFg4aDFBRFlTZFRzZ0xNM1R0X1Z2cmduZw?oc=5" target="_blank" rel="noopener">AOL.com</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="shield"></i> Obronność</h4><ul><li><a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxQQnF1TTkxeVNteXBlb2xEVG10eHp2d2xlM1dZaWt5aUFrNG9ETXdRSHAxTThFUWEtU000SGYwbWpyOFNHM2ZNalVDaTUyYUlzUFVQTks1b1Ftdkl4S0RoQ20wcUJmdEVqRUNlMmlLdlBwN3prUGpfQlRnOUNRdkFuOWVodjNJYWxFNjlXYkNKVQ?oc=5" target="_blank" rel="noopener">Military.com</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxPeUY0VlRyeDdDZk5tWEhhM2VqSHpiWWtHRGJQNHdBcjBZMEg1amhnSkdSdTdmbG1kY0ZuN1JlWWdUVThpWjkxcUZSS29GeFdzT1lueXVTOVpyYnVxWnZKMU83U2FzY3VucEpEZENZU3Vud2l2QW55QXF6TE1KcHE5dG9iajM0TWhl?oc=5" target="_blank" rel="noopener">Interesting Engineering</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMic0FVX3lxTFBDRkU5ZS1tNVJzNHNsY2dMZTBaaXhiZnYyaXNTbk1xYXNtTUlITzE1dUdxd0t0SHZwdlVJOVpUM0lHZ2FOWlp4Uk9jWVFhVWRNMVdvMnVLQkNwaWJ1c01FZnBzV2R1czQ4V3FFRkgtazd4Ync?oc=5" target="_blank" rel="noopener">Simple Flying</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="rocket"></i> Kosmos</h4><ul><li><a href="https://www.nasa.gov/news-release/nasa-sets-coverage-for-spacex-34th-station-resupply-launch-arrival/" target="_blank" rel="noopener">NASA</a></li>
+<li><a href="https://spacenews.com" target="_blank" rel="noopener">SpaceNews</a></li>
+<li><a href="https://www.reuters.com" target="_blank" rel="noopener">Reuters</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="banknote"></i> Startupy</h4><ul><li><a href="https://zerion.io/blog/zerion-cli/" target="_blank" rel="noopener">Zerion</a></li>
+<li><a href="https://www.nytimes.com" target="_blank" rel="noopener">The New York Times</a></li>
+<li><a href="https://venturebeat.com" target="_blank" rel="noopener">VentureBeat</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="bar-chart-2"></i> Rynki</h4><ul><li><a href="https://www.techrepublic.com" target="_blank" rel="noopener">TechRepublic</a></li>
+<li><a href="https://www.ad-hoc-news.de" target="_blank" rel="noopener">AD HOC NEWS</a></li>
+<li><a href="https://www.msn.com" target="_blank" rel="noopener">MSN / Reuters</a></li></ul></div></div>
     <div class="footer-meta">
-      <p><i data-lucide="cpu"></i> Wygenerowano: 2026-05-16 16:15 CEST przez renderer strukturalny AI Daily</p>
+      <p><i data-lucide="cpu"></i> Wygenerowano: 2026-05-16 16:39 CEST przez renderer strukturalny AI Daily</p>
       <p><i data-lucide="clock"></i> Okno czasowe: ostatnie 24 godziny</p>
-      <p><i data-lucide="bar-chart-2"></i> Przeanalizowane źródła: 4</p>
+      <p><i data-lucide="bar-chart-2"></i> Przeanalizowane źródła: 21</p>
       <p><i data-lucide="file-text"></i> Output: treść JSON wyrenderowana do HTML</p>
     </div>
   </footer>
