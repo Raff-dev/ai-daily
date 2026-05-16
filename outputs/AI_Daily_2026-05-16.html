@@ -17,6 +17,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
   --shadow-sm: 0 1px 3px rgba(0,0,0,.08); --shadow-md: 0 4px 12px rgba(0,0,0,.08);
   --radius: 12px; --radius-sm: 8px; --radius-pill: 9999px;
   --dev: #2563EB; --dev-bg: #EFF6FF; --dev-border: #BFDBFE;
+  --ai-tool: #DB2777; --ai-tool-bg: #FDF2F8; --ai-tool-border: #FBCFE8;
   --robot: #16A34A; --robot-bg: #F0FDF4; --robot-border: #BBF7D0;
   --defense: #DC2626; --defense-bg: #FEF2F2; --defense-border: #FECACA;
   --space: #7C3AED; --space-bg: #F5F3FF; --space-border: #DDD6FE;
@@ -38,6 +39,11 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .masthead-nav a { display: flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 500; color: var(--text-secondary); text-decoration: none; white-space: nowrap; transition: background 0.15s; }
 .masthead-nav a:hover { background: var(--bg-page); }
 .masthead-version { flex-shrink: 0; padding: 4px 12px; background: #111827; color: #fff; border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; }
+.language-toggle { flex-shrink: 0; display: inline-flex; gap: 3px; padding: 3px; background: #F3F4F6; border: 1px solid var(--border); border-radius: var(--radius-pill); }
+.language-toggle button { border: 0; background: transparent; color: var(--text-muted); border-radius: var(--radius-pill); padding: 4px 9px; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; }
+.language-toggle button.active { background: #111827; color: #fff; }
+.language-panel { display: none; }
+.language-panel.active { display: block; }
 .hero-header { background: linear-gradient(135deg, #111827 0%, #1e3a5f 100%); color: white; padding: 48px 16px 40px; margin-bottom: 28px; }
 .hero-inner { max-width: 1180px; margin: 0 auto; }
 .hero-date { font-size: 12px; font-weight: 500; color: #93C5FD; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; }
@@ -66,15 +72,18 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .news-card.full { grid-column: span 12; }
 .news-card > summary { list-style: none; cursor: pointer; }
 .news-card > summary::-webkit-details-marker { display: none; }
-.card-summary { padding: 16px 18px; }
+.card-summary { display: block; }
+.card-summary-content { padding: 16px 18px; }
 .expand-hint { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: #2563EB; }
 .expand-hint [data-lucide] { width: 13px; height: 13px; transition: transform .15s; }
 .news-card[open] .expand-hint [data-lucide] { transform: rotate(180deg); }
 .card-details { border-top: 1px solid var(--border); padding: 14px 18px 16px; display: flex; flex-direction: column; flex: 1; }
-.card-image-placeholder { margin: -14px -18px 14px; width: calc(100% + 36px); aspect-ratio: 16/7; background: linear-gradient(135deg, #F3F4F6, #E5E7EB); display: flex; align-items: center; justify-content: center; font-size: 0; }
+.card-image-placeholder { width: 100%; aspect-ratio: 16/7; background: linear-gradient(135deg, #F3F4F6, #E5E7EB); display: flex; align-items: center; justify-content: center; font-size: 0; }
+.card-summary .card-image-placeholder { border-bottom: 1px solid var(--border); }
 .card-tags { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
 .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: var(--radius-pill); font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1; white-space: nowrap; }
 .badge-dev { background: var(--dev-bg); color: var(--dev); border: 1px solid var(--dev-border); }
+.badge-ai-tool { background: var(--ai-tool-bg); color: var(--ai-tool); border: 1px solid var(--ai-tool-border); }
 .badge-robot { background: var(--robot-bg); color: var(--robot); border: 1px solid var(--robot-border); }
 .badge-defense { background: var(--defense-bg); color: var(--defense); border: 1px solid var(--defense-border); }
 .badge-space { background: var(--space-bg); color: var(--space); border: 1px solid var(--space-border); }
@@ -123,19 +132,22 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 </style>
 </head>
 <body>
+
+<div class="language-panel active" data-lang="en">
 <header class="masthead">
   <div class="masthead-inner">
     <div class="masthead-brand">
       <span class="masthead-title">AI Daily</span>
       <span class="masthead-edition">May 16</span>
     </div>
-    <nav class="masthead-nav"><a href="#startups"><i data-lucide="rocket"></i> Startups &amp; Launches</a>
-<a href="#robotics"><i data-lucide="bot"></i> Robotics &amp; Drones</a>
-<a href="#defense"><i data-lucide="shield"></i> Defense</a>
-<a href="#space"><i data-lucide="satellite"></i> Space</a>
-<a href="#markets"><i data-lucide="chart"></i> Markets</a>
-<a href="#energy-infrastructure"><i data-lucide="zap"></i> Energy &amp; Infrastructure</a>
-<a href="#sources"><i data-lucide="paperclip"></i> Sources</a></nav>
+    <nav class="masthead-nav"><a href="#en-dev-tools"><i data-lucide="monitor"></i> Developer Tools</a>
+<a href="#en-ai-tools"><i data-lucide="sparkles"></i> AI Tools</a>
+<a href="#en-robotics"><i data-lucide="bot"></i> Robotics</a>
+<a href="#en-defense"><i data-lucide="shield"></i> Defense</a>
+<a href="#en-space"><i data-lucide="rocket"></i> Space</a>
+<a href="#en-startups"><i data-lucide="banknote"></i> Startups</a>
+<a href="#en-sources"><i data-lucide="paperclip"></i> All report sources</a></nav>
+    <div class="language-toggle" aria-label="Language"><button type="button" class="active" data-set-lang="en">EN</button><button type="button" class="" data-set-lang="pl">PL</button></div>
     <span class="masthead-version">Structured</span>
   </div>
 </header>
@@ -145,50 +157,120 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
     <h1 class="hero-title">AI Daily — <span>Your Morning</span><br>AI Briefing</h1>
     <p class="hero-tagline">Everything you need to know about artificial intelligence from the last 24 hours.</p>
     <div class="hero-stats">
-      <div class="hero-stat-item"><span class="hero-stat-num">30</span><span class="hero-stat-label">articles reviewed</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">72</span><span class="hero-stat-label">articles reviewed</span></div>
       <div class="hero-stat-item"><span class="hero-stat-num">6</span><span class="hero-stat-label">topic sections</span></div>
-      <div class="hero-stat-item"><span class="hero-stat-num">13</span><span class="hero-stat-label">verified sources</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">8</span><span class="hero-stat-label">verified sources</span></div>
     </div>
   </div>
 </div>
 <div class="page-wrapper">
-  <div class="breaking-banner" role="alert"><span class="breaking-tag"><i data-lucide="zap"></i> BREAKING</span>PJM power prices jumped 76% as grid watchdogs blamed AI data-center demand, showing that the AI race is now a power-infrastructure story as much as a software one.</div>
+  <div class="breaking-banner" role="alert"><span class="breaking-tag"><i data-lucide="zap"></i> BREAKING</span>OpenAI has merged ChatGPT, Codex, and its developer API under a single product organization as it pushes toward a unified agentic stack.</div>
   
-<section class="news-section" id="startups">
+<section class="news-section" id="en-dev-tools">
   <div class="section-header">
-    <span class="section-icon"><i data-lucide="rocket"></i></span>
+    <span class="section-icon"><i data-lucide="monitor"></i></span>
     <div class="section-meta">
       <span class="section-overline">Section</span>
-      <h2 class="section-title">Startups &amp; Launches</h2>
+      <h2 class="section-title">Developer Tools</h2>
     </div>
-    <span class="section-count">3 articles</span>
+    <span class="section-count">2 articles</span>
   </div>
-  <div class="section-divider" style="background: #7C3AED;"></div>
+  <div class="section-divider" style="background: #2563EB;"></div>
   <div class="articles-grid">
     
 <details class="news-card featured">
   <summary class="card-summary">
-    <h2 class="article-title">OpenAI adds bank-linked personal finance tools to ChatGPT</h2>
-    <p class="article-deck">ChatGPT Pro users in the U.S. can now connect financial accounts through Plaid for budgeting and portfolio analysis.</p>
-    <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    <div class="card-image-placeholder"><i data-lucide="monitor"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Developer Tools</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">OpenAI unifies ChatGPT, Codex, and API teams</h2>
+      <p class="article-deck">Greg Brockman formally took product control as OpenAI folded its consumer, coding, and developer surfaces into one core organization.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">900M</span><span class="stat-label">weekly ChatGPT users</span></div>
+<div class="stat-highlight"><span class="stat-number">1</span><span class="stat-label">core product team</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
   </summary>
   <div class="card-details">
-    <div class="card-image-placeholder"><i data-lucide="rocket"></i></div>
-    <div class="card-tags">
-      <span class="badge badge-startup"><i data-lucide="rocket"></i> Startups &amp; Launches</span>
-      <span class="badge badge-important"><i data-lucide="sparkles"></i> important</span>
-      
-    </div>
-    <div class="stat-row"><div class="stat-highlight"><span class="stat-number">12,000+</span><span class="stat-label">institutions via Plaid</span></div>
-<div class="stat-highlight"><span class="stat-number">200M+</span><span class="stat-label">monthly finance question users</span></div></div>
-    <ul class="bullet-list"><li>OpenAI launched the finance feature on May 15 for ChatGPT Pro subscribers in the U.S.</li>
-<li>The product uses Plaid and supports connections to institutions including Schwab, Fidelity, Chase, Robinhood, American Express, and Capital One.</li>
-<li>Connected users get a dashboard for portfolio performance, spending, subscriptions, and upcoming payments.</li></ul>
+    <ul class="bullet-list"><li>OpenAI told staff it is combining ChatGPT, Codex, and the developer API into a single core product team.</li>
+<li>Greg Brockman is now officially leading product strategy, while Codex head Thibault Sottiaux moves up to lead core product and platform.</li>
+<li>Nick Turley is shifting to enterprise products after helping grow ChatGPT to more than 900 million weekly active users.</li></ul>
     <div class="extended-content">
-      <p class="body-text">The launch extends ChatGPT beyond general Q&amp;A into a higher-trust workflow that uses live personal financial data. OpenAI said the feature is available on the web and iOS, with Plus support to come later after feedback from Pro users.</p>
-<p class="body-text">It also follows OpenAI&#x27;s April acquisition of the Hiro team, reinforcing how leading AI companies are turning product launches into vertical, data-rich assistants instead of only shipping general chat interfaces.</p>
-      <blockquote class="article-quote"><p>"More than 200 million users already ask financial questions to ChatGPT every month."</p><cite>OpenAI via TechCrunch</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> This is a notable step toward AI agents handling sensitive consumer workflows, with finance now joining health as a strategic vertical for foundation-model companies.</p>
+      <p class="body-text">WIRED reported that OpenAI is simplifying its product structure around an agent-focused roadmap. The reorganization pulls previously separate consumer, coding, and developer experiences closer together as autonomous task execution becomes central to the company strategy.</p>
+<p class="body-text">The move also signals that Codex is no longer a side product. OpenAI is treating coding agents as shared infrastructure for both consumer and enterprise offerings, which raises the stakes for rivals such as Anthropic, Cursor, and other AI coding platforms.</p>
+      <blockquote class="article-quote"><p>"We’re consolidating our product efforts to execute with maximum focus toward the agentic future, to win across both consumer and enterprise."</p><cite>Greg Brockman via WIRED</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> This is a meaningful platform signal: OpenAI is positioning coding agents and ChatGPT as one integrated product layer instead of separate tools.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://www.wired.com/story/openai-reorg-greg-brockman-product/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.wired.com&sz=16" alt="">WIRED</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card secondary">
+  <summary class="card-summary">
+    <div class="card-image-placeholder"><i data-lucide="monitor"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Developer Tools</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Judge delays Anthropic’s $1.5 billion copyright settlement</h2>
+      <p class="article-deck">A federal judge paused final approval after authors challenged the payout split and the size of requested legal fees.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">$1.5B</span><span class="stat-label">settlement size</span></div>
+<div class="stat-highlight"><span class="stat-number">186K</span><span class="stat-label">Books3 titles cited</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Judge Araceli Martinez-Olguin declined to finalize the settlement and asked for responses to class-member objections.</li>
+<li>Objectors argued that roughly $320 million in legal fees was too high relative to expected payouts for authors.</li>
+<li>The case stems from Anthropic’s use of pirated books from the Books3 dataset to help train Claude.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Ars Technica reported that the biggest copyright settlement yet tied to generative AI training has hit a procedural wall. The court wants a closer look at whether the proposed distribution is fair to authors whose works were allegedly copied into training data.</p>
+<p class="body-text">For AI model developers, the delay keeps copyright liability and data provenance squarely in the product conversation. Anthropic remains one of the most important companies in coding and assistant tooling, so the case matters well beyond publishing.</p>
+      <blockquote class="article-quote"><p>"Every dollar that Counsel takes from the Settlement fund is one that is not given to those actually harmed."</p><cite>Pierce Story, quoted by Ars Technica</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Training-data litigation is still shaping how frontier AI companies build, license, and ship products, especially in enterprise and developer markets.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://arstechnica.com/tech-policy/2026/05/authors-fight-for-higher-payouts-from-anthropics-1-5b-copyright-settlement/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=16" alt="">Ars Technica</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="en-ai-tools">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="sparkles"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Section</span>
+      <h2 class="section-title">AI Tools</h2>
+    </div>
+    <span class="section-count">2 articles</span>
+  </div>
+  <div class="section-divider" style="background: #DB2777;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card featured">
+  <summary class="card-summary">
+    <div class="card-image-placeholder"><i data-lucide="sparkles"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> AI Tools</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">OpenAI launches ChatGPT finance tools with Plaid</h2>
+      <p class="article-deck">ChatGPT Pro users in the U.S. can now link bank and brokerage accounts for spending and planning analysis.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">12,000+</span><span class="stat-label">institutions supported</span></div>
+<div class="stat-highlight"><span class="stat-number">200M+</span><span class="stat-label">monthly finance queries</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>OpenAI launched a Finances feature in preview for ChatGPT Pro users in the U.S.</li>
+<li>The feature uses Plaid connections and supports more than 12,000 institutions including Schwab, Fidelity, Chase, Robinhood, and Capital One.</li>
+<li>OpenAI said GPT-5.5 is better at reasoning over financial context and that the feature will expand based on user feedback.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">TechCrunch reported that OpenAI is moving beyond general chat into a more specialized consumer utility. The new finance workflow lets users connect real accounts and ask questions about spending, subscriptions, portfolio performance, and future planning.</p>
+<p class="body-text">This is one of the clearer examples of AI assistants becoming operational software instead of just conversational interfaces. It also pushes ChatGPT further into regulated, high-trust user workflows where accuracy, privacy controls, and persistent context matter more than novelty.</p>
+      <blockquote class="article-quote"><p>"I feel like I’ve been spending more recently. Has anything changed?"</p><cite>Example user prompt shown by OpenAI via TechCrunch</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> AI assistants are moving deeper into personal and business decision workflows, increasing pressure on rivals in consumer finance, search, and productivity AI.</p>
     </div>
     <div class="card-footer">
       <a href="https://techcrunch.com/2026/05/15/openai-launches-chatgpt-for-personal-finance-will-let-you-connect-bank-accounts/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=16" alt="">TechCrunch</a>
@@ -199,27 +281,25 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 
 <details class="news-card secondary">
   <summary class="card-summary">
-    <h2 class="article-title">Runway sharpens its bet on world models</h2>
-    <p class="article-deck">The AI video startup says video, not language alone, is the path to more capable world-model systems.</p>
-    <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    <div class="card-image-placeholder"><i data-lucide="sparkles"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> AI Tools</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span></div>
+      <h2 class="article-title">Runway ties video generation to world-model ambitions</h2>
+      <p class="article-deck">The startup said its long-term bet is that video models, not text alone, are the path to systems that understand physical reality.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">$5.3B</span><span class="stat-label">valuation</span></div>
+<div class="stat-highlight"><span class="stat-number">$40M</span><span class="stat-label">Q2 ARR added</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
   </summary>
   <div class="card-details">
-    <div class="card-image-placeholder"><i data-lucide="rocket"></i></div>
-    <div class="card-tags">
-      <span class="badge badge-startup"><i data-lucide="rocket"></i> Startups &amp; Launches</span>
-      <span class="badge badge-important"><i data-lucide="sparkles"></i> important</span>
-      
-    </div>
-    <div class="stat-row"><div class="stat-highlight"><span class="stat-number">$5.3B</span><span class="stat-label">valuation</span></div>
-<div class="stat-highlight"><span class="stat-number">$40M</span><span class="stat-label">ARR added in Q2</span></div></div>
-    <ul class="bullet-list"><li>TechCrunch reported that Runway is now valued at $5.3 billion.</li>
-<li>The company said it added $40 million in annual recurring revenue in the second quarter of 2026.</li>
-<li>Runway launched its first world model in December 2025 and plans another release this year.</li></ul>
+    <ul class="bullet-list"><li>TechCrunch reported that Runway is using video generation as a stepping stone toward broader world models.</li>
+<li>The company said it added $40 million in ARR in Q2 2026 and was valued at $5.3 billion in its February financing.</li>
+<li>Runway said it launched its first world model in December 2025 and plans a second in 2026.</li></ul>
     <div class="extended-content">
-      <p class="body-text">Runway is trying to move from creative tooling into deeper simulation and prediction, arguing that video-based systems can learn how the world works rather than only how text describes it. That places it in a direct race with Google, Luma, and World Labs around world-model infrastructure.</p>
-<p class="body-text">Because world models have implications for entertainment, robotics training, and scientific simulation, the company&#x27;s strategy matters beyond video generation and could shape where venture money flows next in multimodal AI.</p>
-      <blockquote class="article-quote"><p>"Language models are trained on the entire internet, on message boards and social media, on textbooks - distilling the existing human knowledge. But to get beyond that, we need to leverage less biased data."</p><cite>Anastasis Germanidis, Runway, via TechCrunch</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Runway is positioning itself as a serious contender in the next wave of AI platforms, where simulation quality may matter as much as chatbot fluency.</p>
+      <p class="body-text">Runway’s pitch is becoming more strategic than creative tooling alone. The company argues that observational video data can help AI systems learn physics and causal structure that text-centric models miss.</p>
+<p class="body-text">That matters because video AI is increasingly being framed as core infrastructure for assistants, simulation, robotics, and embodied systems. Runway is using a creator-first product surface to build toward that larger technical position.</p>
+      <blockquote class="article-quote"><p>"Language models are trained on the entire internet, distilling the existing human knowledge. But to get beyond that, we need to leverage less biased data."</p><cite>Anastasis Germanidis via TechCrunch</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> The AI tools market is shifting from standalone content generation toward world-model claims that could spill into robotics, simulation, and enterprise automation.</p>
     </div>
     <div class="card-footer">
       <a href="https://techcrunch.com/2026/05/15/runway-started-by-helping-filmmakers-now-it-wants-to-beat-google-at-ai/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=16" alt="">TechCrunch</a>
@@ -227,75 +307,42 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
     </div>
   </div>
 </details>
-
-<details class="news-card standard">
-  <summary class="card-summary">
-    <h2 class="article-title">Osaurus pushes local-plus-cloud AI onto the Mac</h2>
-    <p class="article-deck">The open source app lets users switch among local and hosted models while keeping files, memory, and tools on-device.</p>
-    <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-  </summary>
-  <div class="card-details">
-    <div class="card-image-placeholder"><i data-lucide="rocket"></i></div>
-    <div class="card-tags">
-      <span class="badge badge-startup"><i data-lucide="rocket"></i> Startups &amp; Launches</span>
-      <span class="badge badge-info"><i data-lucide="sparkles"></i> info</span>
-      
-    </div>
-    <div class="stat-row"><div class="stat-highlight"><span class="stat-number">112K+</span><span class="stat-label">downloads</span></div>
-<div class="stat-highlight"><span class="stat-number">20+</span><span class="stat-label">native plug-ins</span></div></div>
-    <ul class="bullet-list"><li>Osaurus is an Apple-only LLM server that can connect local models and cloud providers such as OpenAI and Anthropic.</li>
-<li>The app exposes a full MCP server and ships with more than 20 native plug-ins including Git, Filesystem, Browser, Search, XLSX, and PPTX.</li>
-<li>The founders say local deployments typically need at least 64GB of RAM, with larger models benefiting from around 128GB.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">Osaurus is part of a growing layer of software that treats model access as a routing problem, letting users pick the best model while keeping their own tools and data resident on local hardware. The product also emphasizes sandboxing to reduce the security tradeoffs that often come with agent-style tooling.</p>
-<p class="body-text">That combination makes it notable for both prosumer AI adoption and the broader shift toward hybrid local-cloud workflows, especially on Apple hardware where privacy and local inference are part of the pitch.</p>
-      <blockquote class="article-quote"><p>"Last year, local AI could barely finish sentences, but today it can actually run tools, write code, access your browser, and order stuff from Amazon."</p><cite>Terence Pae via TechCrunch</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> The story highlights a meaningful trend: AI products are increasingly competing on orchestration, privacy, and workflow control, not just on raw model quality.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://techcrunch.com/2026/05/15/osaurus-brings-both-local-and-cloud-ai-models-to-your-mac/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=16" alt="">TechCrunch</a>
-      <span class="pub-time">2026-05-15</span>
-    </div>
-  </div>
-</details>
   </div>
 </section>
 
-<section class="news-section" id="robotics">
+<section class="news-section" id="en-robotics">
   <div class="section-header">
     <span class="section-icon"><i data-lucide="bot"></i></span>
     <div class="section-meta">
       <span class="section-overline">Section</span>
-      <h2 class="section-title">Robotics &amp; Drones</h2>
+      <h2 class="section-title">Robotics</h2>
     </div>
-    <span class="section-count">2 articles</span>
+    <span class="section-count">1 article</span>
   </div>
-  <div class="section-divider" style="background: #0F766E;"></div>
+  <div class="section-divider" style="background: #16A34A;"></div>
   <div class="articles-grid">
     
-<details class="news-card featured">
+<details class="news-card full">
   <summary class="card-summary">
-    <h2 class="article-title">Tesla discloses robotaxi crashes during teleoperation</h2>
-    <p class="article-deck">Newly unredacted NHTSA reports show two Austin crashes happened while remote operators were driving Tesla robotaxis.</p>
-    <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    <div class="card-image-placeholder"><i data-lucide="bot"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-robot"><i data-lucide="bot"></i> Robotics</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Tesla reveals teleoperator-linked Robotaxi crashes</h2>
+      <p class="article-deck">Newly unredacted safety filings show at least two low-speed Robotaxi crashes occurred while remote operators were driving.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">17</span><span class="stat-label">Robotaxi crashes logged</span></div>
+<div class="stat-highlight"><span class="stat-number">10 mph</span><span class="stat-label">teleoperator speed cap</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
   </summary>
   <div class="card-details">
-    <div class="card-image-placeholder"><i data-lucide="bot"></i></div>
-    <div class="card-tags">
-      <span class="badge badge-robot"><i data-lucide="bot"></i> Robotics &amp; Drones</span>
-      <span class="badge badge-important"><i data-lucide="sparkles"></i> important</span>
-      
-    </div>
-    <div class="stat-row"><div class="stat-highlight"><span class="stat-number">17</span><span class="stat-label">total reported robotaxi crashes</span></div>
-<div class="stat-highlight"><span class="stat-number">10 MPH</span><span class="stat-label">teleoperation speed cap</span></div></div>
-    <ul class="bullet-list"><li>TechCrunch reported that two Tesla robotaxi crashes in Austin occurred while a teleoperator had taken control of the vehicle.</li>
-<li>One incident involved a curb and metal fence in July 2025, while another hit a construction barricade at about 9 mph in January 2026.</li>
-<li>Tesla previously told lawmakers that remote operators can pilot vehicles at up to 10 mph to move compromised cars.</li></ul>
+    <ul class="bullet-list"><li>TechCrunch reported that Tesla’s newly unredacted NHTSA filings describe two crashes involving remote teleoperators in Austin.</li>
+<li>In one case a teleoperator drove a vehicle into a metal fence after taking over from the automated driving system.</li>
+<li>Tesla told lawmakers remote operators are allowed to pilot vehicles at up to 10 miles per hour to move vehicles out of compromised positions.</li></ul>
     <div class="extended-content">
-      <p class="body-text">The newly unredacted crash descriptions give a clearer view into how much remote assistance still matters even in nominally autonomous ride-hailing systems. They also show that low-speed teleoperation remains an operational risk surface, not just a safety backstop.</p>
-<p class="body-text">For the broader autonomy market, the disclosures underline how scaling robotaxi fleets depends on the boring but crucial edge cases around handoff, recovery, and fleet intervention, not only headline autonomy performance.</p>
-      <blockquote class="article-quote"><p>"Making sure things are completely safe is the biggest limiting factor."</p><cite>Elon Musk, as quoted by TechCrunch</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Remote operations are emerging as a central constraint in real-world autonomous deployment, and regulators now have clearer evidence to scrutinize that layer.</p>
+      <p class="body-text">The filings give a clearer picture of how much human fallback still matters in Tesla’s Robotaxi operation. The vehicles were not simply supervised; in at least two cases, remote operators actively took over and then hit roadside objects.</p>
+<p class="body-text">That distinction matters across robotics and autonomy because companies increasingly market full-stack autonomy while still relying on hidden human intervention. Disclosure quality is becoming as important as disengagement counts.</p>
+      <blockquote class="article-quote"><p>"This capability enables Tesla to promptly move a vehicle that may be in a compromising position."</p><cite>Tesla statement quoted by TechCrunch</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Robotaxi credibility now depends not only on autonomy performance but on transparent reporting of when humans are still in the loop.</p>
     </div>
     <div class="card-footer">
       <a href="https://techcrunch.com/2026/05/15/tesla-reveals-two-robotaxi-crashes-involving-teleoperators/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=16" alt="">TechCrunch</a>
@@ -303,109 +350,45 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
     </div>
   </div>
 </details>
-
-<details class="news-card secondary">
-  <summary class="card-summary">
-    <h2 class="article-title">AIRO unveils a hybrid-electric VTOL drone for military resupply</h2>
-    <p class="article-deck">The JC250 and JX250 target the hard middle-mile logistics gap between rear hubs and forward units.</p>
-    <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-  </summary>
-  <div class="card-details">
-    <div class="card-image-placeholder"><i data-lucide="bot"></i></div>
-    <div class="card-tags">
-      <span class="badge badge-robot"><i data-lucide="bot"></i> Robotics &amp; Drones</span>
-      <span class="badge badge-important"><i data-lucide="sparkles"></i> important</span>
-      
-    </div>
-    <div class="stat-row"><div class="stat-highlight"><span class="stat-number">300-500 NM</span><span class="stat-label">stated range</span></div>
-<div class="stat-highlight"><span class="stat-number">15-18 hrs</span><span class="stat-label">ISR endurance</span></div></div>
-    <ul class="bullet-list"><li>AIRO and Jaunt Air Mobility introduced the JC250 cargo drone and JX250 ISR drone at the Xponential/MDEX conference.</li>
-<li>The platform uses a patented slowed-rotor design that provides helicopter-style lift and then slows the rotor in forward flight to improve efficiency.</li>
-<li>The company said the hybrid-electric design supports use in remote areas without charging infrastructure and is being developed for Blue UAS compatibility.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">The pitch is centered on military logistics, where drones that can vertically lift, cover long distances, and stay aloft for extended ISR missions remain difficult to source. AIRO is framing the aircraft as a dual-use system for defense, government, and commercial operators rather than a niche tactical product.</p>
-<p class="body-text">That matters because long-range autonomous resupply and surveillance are becoming core procurement priorities, especially where trucks are vulnerable and manned helicopters are limited or too expensive to spare.</p>
-      <blockquote class="article-quote"><p>"There&#x27;s not a single aircraft today that can lift vertically and fly 15, 18 hours. It doesn&#x27;t exist."</p><cite>Martin Peryea, AIRO, via Breaking Defense</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Hybrid propulsion and endurance are becoming differentiators in the drone market as militaries look beyond short-range quadcopters toward operational logistics networks.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://breakingdefense.com/2026/05/airos-slowed-rotor-hybrid-electric-vtol-drone-aims-to-solve-resupply-issues/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=breakingdefense.com&sz=16" alt="">Breaking Defense</a>
-      <span class="pub-time">2026-05-15</span>
-    </div>
-  </div>
-</details>
   </div>
 </section>
 
-<section class="news-section" id="defense">
+<section class="news-section" id="en-defense">
   <div class="section-header">
     <span class="section-icon"><i data-lucide="shield"></i></span>
     <div class="section-meta">
       <span class="section-overline">Section</span>
       <h2 class="section-title">Defense</h2>
     </div>
-    <span class="section-count">2 articles</span>
+    <span class="section-count">1 article</span>
   </div>
-  <div class="section-divider" style="background: #B91C1C;"></div>
+  <div class="section-divider" style="background: #DC2626;"></div>
   <div class="articles-grid">
     
-<details class="news-card featured">
+<details class="news-card full">
   <summary class="card-summary">
-    <h2 class="article-title">Army autonomy office shifts from platforms to mission packages</h2>
-    <p class="article-deck">A new Army office says it wants interoperable autonomy bundles for engineering, fires, and logistics instead of one-off robot programs.</p>
-    <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    <div class="card-image-placeholder"><i data-lucide="shield"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-defense"><i data-lucide="shield"></i> Defense</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Russia recruits students into wartime drone roles</h2>
+      <p class="article-deck">Russian universities are reportedly offering tuition and cash incentives to steer technically skilled students into military drone service.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">270+</span><span class="stat-label">universities involved</span></div>
+<div class="stat-highlight"><span class="stat-number">$70,000</span><span class="stat-label">top incentive cited</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
   </summary>
   <div class="card-details">
-    <div class="card-image-placeholder"><i data-lucide="shield"></i></div>
-    <div class="card-tags">
-      <span class="badge badge-defense"><i data-lucide="shield"></i> Defense</span>
-      <span class="badge badge-important"><i data-lucide="sparkles"></i> important</span>
-      
-    </div>
-    <div class="stat-row"><div class="stat-highlight"><span class="stat-number">3</span><span class="stat-label">initial mission areas</span></div>
-<div class="stat-highlight"><span class="stat-number">Weeks</span><span class="stat-label">target onboarding speed</span></div></div>
-    <ul class="bullet-list"><li>The Army&#x27;s Capability Program Executive Office for Mission Autonomy said its first focus areas are combat engineering, fires, and sustainment.</li>
-<li>Brig. Gen. Anthony Gibbs said the goal is to deliver packages that can interpret commander intent, plan, execute, and dynamically retask.</li>
-<li>The office is pushing for open APIs and a reference architecture that can onboard new platforms and payloads in weeks or even days.</li></ul>
+    <ul class="bullet-list"><li>Ars Technica reported that Russian universities are promoting military contracts for drone pilots with incentives including free tuition, tax holidays, loan forgiveness, and cash.</li>
+<li>The campaign is aimed at a pool of roughly 2 million male university students, especially gamers and technically trained recruits.</li>
+<li>The reporting cites at least one confirmed battlefield death among newly recruited student drone operators.</li></ul>
     <div class="extended-content">
-      <p class="body-text">This is a notable procurement shift because it treats autonomy as a cross-platform operating layer rather than as a single drone or robot acquisition program. The Army is effectively trying to standardize how autonomous effects are assembled and commanded across mission areas.</p>
-<p class="body-text">If it works, the approach could reduce vendor lock-in and speed fielding of mixed fleets, especially in areas like target recognition, counter-UAS support, and autonomous resupply where the underlying technology already exists but ownership has been fragmented.</p>
-      <blockquote class="article-quote"><p>"Those technologies are mature. They&#x27;re just cross-cutting. No one owns them. We&#x27;re saying we own those spaces."</p><cite>Brig. Gen. Anthony Gibbs via Breaking Defense</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Defense buyers are moving from platform-centric autonomy buys toward software-defined, interoperable mission systems that can be recomposed quickly in theater.</p>
+      <p class="body-text">The story shows how drone warfare is being institutionalized inside civilian education pipelines. Instead of treating unmanned systems as specialist military hardware, Russia is casting drone operation as a mass technical labor problem that universities can help solve.</p>
+<p class="body-text">That has implications for defense policy and security competition beyond Ukraine. It highlights how low-cost autonomous and semi-autonomous systems are changing recruitment, training, and the social footprint of modern conflict.</p>
+      <blockquote class="article-quote"><p>"No one wants to join. No one is interested."</p><cite>Student quoted by NBC News, via Ars Technica</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Drone warfare is expanding from equipment procurement into workforce mobilization, making technical education a more direct input into military capability.</p>
     </div>
     <div class="card-footer">
-      <a href="https://breakingdefense.com/2026/05/armys-autonomy-office-looks-beyond-drone-robot-platforms-to-packages-of-capability/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=breakingdefense.com&sz=16" alt="">Breaking Defense</a>
-      <span class="pub-time">2026-05-15</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card secondary">
-  <summary class="card-summary">
-    <h2 class="article-title">UK narrows Apache drone-wingman race to four teams</h2>
-    <p class="article-deck">BAE Systems, Anduril UK, Tekever, and Thales will compete for Project NYX, the British Army&#x27;s Apache adjunct drone effort.</p>
-    <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-  </summary>
-  <div class="card-details">
-    <div class="card-image-placeholder"><i data-lucide="shield"></i></div>
-    <div class="card-tags">
-      <span class="badge badge-defense"><i data-lucide="shield"></i> Defense</span>
-      <span class="badge badge-important"><i data-lucide="sparkles"></i> important</span>
-      
-    </div>
-    <div class="stat-row"><div class="stat-highlight"><span class="stat-number">4</span><span class="stat-label">companies selected</span></div>
-<div class="stat-highlight"><span class="stat-number">GBP10M</span><span class="stat-label">funding package</span></div></div>
-    <ul class="bullet-list"><li>The UK Ministry of Defence selected BAE Systems, Anduril UK, Tekever, and Thales for the Project NYX concept-demonstrator phase.</li>
-<li>Officials plan to narrow the field to at most two competitors before choosing a final partner later this year.</li>
-<li>If prototype designs succeed, the goal is to field an operational system by 2030 for missions including reconnaissance, precision strike, target acquisition, and electronic warfare.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">Project NYX is another example of allied militaries operationalizing the loyal-wingman concept outside fast jets, this time around attack helicopters. The design brief explicitly combines drones, AI, and autonomy to extend Apache combat mass and mission flexibility.</p>
-<p class="body-text">The lineup also shows how quickly the European defense ecosystem is coalescing around autonomous teaming, with major incumbents and newer drone specialists now competing in the same programs.</p>
-      <blockquote class="article-quote"><p>"Project NYX is delivery of that work in action, capitalising on the power of drones, AI and autonomy to complement the heavy metal of tanks and artillery."</p><cite>UK Ministry of Defence via Breaking Defense</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Helicopter-drone teaming is moving from concept language into funded prototyping, which should accelerate autonomous adjunct programs across NATO forces.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://breakingdefense.com/2026/05/uk-picks-4-companies-for-apache-drone-wingman-demonstrator-project/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=breakingdefense.com&sz=16" alt="">Breaking Defense</a>
+      <a href="https://arstechnica.com/gadgets/2026/05/russia-pressures-university-students-to-become-wartime-drone-pilots/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=16" alt="">Ars Technica</a>
       <span class="pub-time">2026-05-15</span>
     </div>
   </div>
@@ -413,75 +396,42 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
   </div>
 </section>
 
-<section class="news-section" id="space">
+<section class="news-section" id="en-space">
   <div class="section-header">
-    <span class="section-icon"><i data-lucide="satellite"></i></span>
+    <span class="section-icon"><i data-lucide="rocket"></i></span>
     <div class="section-meta">
       <span class="section-overline">Section</span>
       <h2 class="section-title">Space</h2>
     </div>
-    <span class="section-count">2 articles</span>
+    <span class="section-count">1 article</span>
   </div>
-  <div class="section-divider" style="background: #1D4ED8;"></div>
+  <div class="section-divider" style="background: #7C3AED;"></div>
   <div class="articles-grid">
     
-<details class="news-card featured">
+<details class="news-card full">
   <summary class="card-summary">
-    <h2 class="article-title">SpaceX sends nearly 3,000 kilograms of cargo to the ISS on CRS-34</h2>
-    <p class="article-deck">The Falcon 9 mission carried science payloads and marked the sixth flight for cargo Dragon capsule C209.</p>
-    <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    <div class="card-image-placeholder"><i data-lucide="rocket"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Space</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Russia joins U.S. and China in GEO satellite stalking</h2>
+      <p class="article-deck">Ars Technica reports that all three major space powers now have inspector-satellite activity in geosynchronous orbit.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">22,000</span><span class="stat-label">miles above Earth</span></div>
+<div class="stat-highlight"><span class="stat-number">3</span><span class="stat-label">major powers active</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
   </summary>
   <div class="card-details">
-    <div class="card-image-placeholder"><i data-lucide="satellite"></i></div>
-    <div class="card-tags">
-      <span class="badge badge-space"><i data-lucide="satellite"></i> Space</span>
-      <span class="badge badge-info"><i data-lucide="sparkles"></i> info</span>
-      
-    </div>
-    <div class="stat-row"><div class="stat-highlight"><span class="stat-number">2,948 kg</span><span class="stat-label">cargo mass</span></div>
-<div class="stat-highlight"><span class="stat-number">57</span><span class="stat-label">SpaceX orbital launches this year</span></div></div>
-    <ul class="bullet-list"><li>A Falcon 9 launched CRS-34 from Cape Canaveral at 6:05 p.m. Eastern on May 15.</li>
-<li>The mission carried 2,948 kilograms of cargo, including an 816-kilogram external payload called Space Test Program-Houston 11.</li>
-<li>NASA said the flight includes more than 50 science investigations for NASA, international partners, and the ISS National Lab.</li></ul>
+    <ul class="bullet-list"><li>Ars Technica reported that Russia’s Kosmos 2589 has arrived in geosynchronous orbit as a suspected inspector or attack satellite.</li>
+<li>The United States has operated GSSAP inspector satellites for more than a decade, while China entered the category in 2018.</li>
+<li>The U.S. Space Force is preparing to order more reconnaissance satellites for the geosynchronous belt.</li></ul>
     <div class="extended-content">
-      <p class="body-text">The mission is routine by SpaceX standards, but it shows how central Dragon has become to station logistics and orbital science. Capsule C209 is now the first cargo Dragon to reach a sixth mission, extending the reusability baseline for cargo operations.</p>
-<p class="body-text">For the broader space economy, the flight also reinforces how launch cadence and spacecraft reuse are still the practical backbone for everything from government science to commercial research in orbit.</p>
-      <blockquote class="article-quote"><p>"I&#x27;m not seeing a shift ... but rather a finer resolution and focus on the work being done there."</p><cite>Liz Warren, NASA ISS program, via SpaceNews</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Reliable cargo access remains a strategic enabler for station science, and SpaceX continues to widen its lead in the operational tempo needed to support that work.</p>
+      <p class="body-text">Geosynchronous orbit is one of the most strategically valuable regions in space because military and commercial satellites remain parked over fixed points for years. That makes close-approach surveillance missions unusually sensitive and politically loaded.</p>
+<p class="body-text">This latest shift means GEO is no longer a mostly U.S.-China watch zone. Russia’s entry turns it into a fully tripolar inspection environment, increasing the risk of miscalculation, signal interference, and rapid military response in orbit.</p>
+      <blockquote class="article-quote"><p>"The world’s leading space powers desperately want to know what the others are up to high above the equator."</p><cite>Stephen Clark, Ars Technica</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Space operations are becoming more contested and intelligence-driven, with surveillance and counter-surveillance in GEO moving closer to routine great-power competition.</p>
     </div>
     <div class="card-footer">
-      <a href="https://spacenews.com/spacex-launches-crs-34-cargo-mission-to-iss/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=spacenews.com&sz=16" alt="">SpaceNews</a>
-      <span class="pub-time">2026-05-15</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card secondary">
-  <summary class="card-summary">
-    <h2 class="article-title">U.S. telcos line up behind a direct-to-device satellite joint venture</h2>
-    <p class="article-deck">AT&amp;T, T-Mobile, and Verizon are proposing a shared approach to satellite-to-phone coverage, drawing praise from some operators and skepticism from SpaceX.</p>
-    <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-  </summary>
-  <div class="card-details">
-    <div class="card-image-placeholder"><i data-lucide="satellite"></i></div>
-    <div class="card-tags">
-      <span class="badge badge-space"><i data-lucide="satellite"></i> Space</span>
-      <span class="badge badge-important"><i data-lucide="sparkles"></i> important</span>
-      
-    </div>
-    <div class="stat-row"><div class="stat-highlight"><span class="stat-number">3</span><span class="stat-label">major carriers involved</span></div>
-<div class="stat-highlight"><span class="stat-number">2025</span><span class="stat-label">year Starlink Mobile began U.S. service</span></div></div>
-    <ul class="bullet-list"><li>AT&amp;T, T-Mobile, and Verizon said they agreed in principle to pool spectrum resources to improve direct-to-device services.</li>
-<li>AST SpaceMobile backed the move, while SpaceX executives publicly questioned whether regulators would view the arrangement as collusive.</li>
-<li>Analysts cited by SpaceNews said the venture is still preliminary and may function more like an intermediary or marketing layer than a standalone network operator.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">The fight over direct-to-device is becoming one of the most important battlegrounds in satellite communications because it blends terrestrial spectrum politics, consumer coverage expectations, and low-orbit network economics. This proposed joint venture suggests incumbent carriers want more leverage as space-based mobile services become commercially real.</p>
-<p class="body-text">It also shows that satellite connectivity is no longer a niche satellite-industry story: it is now a competitive telecom platform issue where partnerships, regulation, and customer ownership matter as much as launch capacity.</p>
-      <blockquote class="article-quote"><p>"By joining with other carriers, we&#x27;re bringing our combined expertise to accelerate our customers&#x27; access to reliable, and always-on coverage everywhere."</p><cite>John Stankey via SpaceNews</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> The next phase of satellite connectivity will likely be shaped by carrier alliances and regulatory scrutiny, not just by spacecraft deployment schedules.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://spacenews.com/starlink-mobile-challengers-back-proposed-telco-led-d2d-joint-venture/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=spacenews.com&sz=16" alt="">SpaceNews</a>
+      <a href="https://arstechnica.com/space/2026/05/threes-a-party-us-china-and-now-russia-are-on-the-prowl-in-geo/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=16" alt="">Ars Technica</a>
       <span class="pub-time">2026-05-15</span>
     </div>
   </div>
@@ -489,180 +439,451 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
   </div>
 </section>
 
-<section class="news-section" id="markets">
+<section class="news-section" id="en-startups">
   <div class="section-header">
-    <span class="section-icon"><i data-lucide="chart"></i></span>
+    <span class="section-icon"><i data-lucide="banknote"></i></span>
     <div class="section-meta">
       <span class="section-overline">Section</span>
-      <h2 class="section-title">Markets</h2>
+      <h2 class="section-title">Startups</h2>
     </div>
-    <span class="section-count">2 articles</span>
+    <span class="section-count">1 article</span>
   </div>
   <div class="section-divider" style="background: #EA580C;"></div>
   <div class="articles-grid">
     
-<details class="news-card featured">
+<details class="news-card full">
   <summary class="card-summary">
-    <h2 class="article-title">U.S. approves Nvidia H200 sales to major Chinese tech firms</h2>
-    <p class="article-deck">A fresh export-policy shift reopened a path for H200 chips into China, though Beijing&#x27;s own rules are still holding up shipments.</p>
-    <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    <div class="card-image-placeholder"><i data-lucide="banknote"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-startup"><i data-lucide="banknote"></i> Startups</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">RJ Scaringe’s Mind Robotics adds another $400 million</h2>
+      <p class="article-deck">TechCrunch says investors are still backing Scaringe aggressively as his industrial AI and robotics startup scales.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">$400M</span><span class="stat-label">latest raise</span></div>
+<div class="stat-highlight"><span class="stat-number">$12.3B</span><span class="stat-label">capital raised across startups</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
   </summary>
   <div class="card-details">
-    <div class="card-image-placeholder"><i data-lucide="chart"></i></div>
-    <div class="card-tags">
-      <span class="badge badge-market"><i data-lucide="chart"></i> Markets</span>
-      <span class="badge badge-important"><i data-lucide="sparkles"></i> important</span>
-      
-    </div>
-    <div class="stat-row"><div class="stat-highlight"><span class="stat-number">10</span><span class="stat-label">Chinese firms cited</span></div>
-<div class="stat-highlight"><span class="stat-number">+13.3%</span><span class="stat-label">30-day stock gain</span></div></div>
-    <ul class="bullet-list"><li>Yahoo Finance carried a Simply Wall St report saying U.S. regulators approved Nvidia H200 sales to around 10 major Chinese technology companies.</li>
-<li>The report said Jensen Huang joined President Trump&#x27;s China delegation as one of only two CEOs on Air Force One.</li>
-<li>It also noted that actual H200 shipments remain paused because of Beijing&#x27;s own rules, leaving the near-term revenue impact uncertain.</li></ul>
+    <ul class="bullet-list"><li>TechCrunch reported that Mind Robotics, Scaringe’s industrial AI and robotics company, recently closed another $400 million round.</li>
+<li>Scaringe has now raised more than $12.3 billion across Rivian, Also, and Mind Robotics.</li>
+<li>Eclipse is a lead backer in both Also and Mind Robotics, while DoorDash is among the backers of Also.</li></ul>
     <div class="extended-content">
-      <p class="body-text">This is one of the clearest examples of AI market risk now being driven by geopolitics rather than product cadence alone. Nvidia remains the core supplier for AI data-center buildouts, so any policy change on China access has outsize implications for valuation and revenue mix.</p>
-<p class="body-text">The catch is that regulatory permission in Washington does not yet equal revenue realization on the ground, which keeps the China story a policy-sensitive upside case rather than a clean reopening trade.</p>
-      
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> AI chip markets are still being repriced by export controls, diplomacy, and industrial policy, making Nvidia&#x27;s China pathway one of the most important variables in the sector.</p>
+      <p class="body-text">The scale of capital going into Mind Robotics shows that investors are still willing to fund ambitious industrial AI stories far above normal startup levels when they trust the founder and the hardware-software thesis.</p>
+<p class="body-text">It also reinforces a broader pattern: robotics-adjacent AI startups are benefiting from the same appetite that has already lifted defense tech and frontier model companies. Capital is clustering around founders seen as able to bridge real-world systems and AI.</p>
+      <blockquote class="article-quote"><p>"He has the rare combination of being a truly great engineer while also having an exceptional instinct for product design."</p><cite>Joe Fath of Eclipse, via TechCrunch</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Large early rounds for industrial AI are no longer exceptional, which raises the competitive bar for startup talent, compute access, and go-to-market speed.</p>
     </div>
     <div class="card-footer">
-      <a href="https://finance.yahoo.com/markets/stocks/articles/nvidia-china-h200-approval-raises-101120703.html" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=finance.yahoo.com&sz=16" alt="">Yahoo Finance</a>
-      <span class="pub-time">2026-05-16</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card secondary">
-  <summary class="card-summary">
-    <h2 class="article-title">Nvidia&#x27;s market value now exceeds Germany&#x27;s economy</h2>
-    <p class="article-deck">Euronews says Nvidia reached a $5.7 trillion market cap, overtaking Germany&#x27;s projected 2026 GDP.</p>
-    <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-  </summary>
-  <div class="card-details">
-    <div class="card-image-placeholder"><i data-lucide="chart"></i></div>
-    <div class="card-tags">
-      <span class="badge badge-market"><i data-lucide="chart"></i> Markets</span>
-      <span class="badge badge-info"><i data-lucide="sparkles"></i> info</span>
-      
-    </div>
-    <div class="stat-row"><div class="stat-highlight"><span class="stat-number">$5.7T</span><span class="stat-label">Nvidia market cap</span></div>
-<div class="stat-highlight"><span class="stat-number">$20.81T</span><span class="stat-label">top 5 U.S. tech total</span></div></div>
-    <ul class="bullet-list"><li>Euronews reported Nvidia&#x27;s market capitalization reached $5.7 trillion in mid-May 2026.</li>
-<li>That figure is above Germany&#x27;s projected 2026 GDP of $5.45 trillion, based on IMF data cited in the article.</li>
-<li>The article also said the top five U.S. companies together are worth $20.81 trillion, more than the combined GDP of Europe&#x27;s five largest economies.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">The comparison is symbolic rather than apples-to-apples economics, but it captures how central AI infrastructure has become to public markets. Nvidia&#x27;s scale now reflects not just chip demand, but investor conviction that AI compute remains the scarce asset underpinning the entire sector.</p>
-<p class="body-text">It also sharpens the gap between U.S. AI platform companies and the rest of the industrial base, especially in Europe where no comparable public company has emerged at the same scale.</p>
-      
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Nvidia&#x27;s valuation keeps functioning as a macro proxy for the AI boom, and its scale is now large enough to influence how investors benchmark whole economies and sectors.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://www.euronews.com/2026/05/16/nvidia-surpasses-germany-how-the-market-caps-of-tech-giants-compare-to-top-economies" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.euronews.com&sz=16" alt="">Euronews</a>
-      <span class="pub-time">2026-05-16</span>
-    </div>
-  </div>
-</details>
-  </div>
-</section>
-
-<section class="news-section" id="energy-infrastructure">
-  <div class="section-header">
-    <span class="section-icon"><i data-lucide="zap"></i></span>
-    <div class="section-meta">
-      <span class="section-overline">Section</span>
-      <h2 class="section-title">Energy &amp; Infrastructure</h2>
-    </div>
-    <span class="section-count">2 articles</span>
-  </div>
-  <div class="section-divider" style="background: #059669;"></div>
-  <div class="articles-grid">
-    
-<details class="news-card featured">
-  <summary class="card-summary">
-    <h2 class="article-title">PJM power prices jump 76% as watchdog blames data centers</h2>
-    <p class="article-deck">A new report says the biggest U.S. grid is already feeling the cost of AI-era electricity demand.</p>
-    <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-  </summary>
-  <div class="card-details">
-    <div class="card-image-placeholder"><i data-lucide="zap"></i></div>
-    <div class="card-tags">
-      <span class="badge badge-custom"><i data-lucide="zap"></i> Energy &amp; Infrastructure</span>
-      <span class="badge badge-breakthrough"><i data-lucide="sparkles"></i> breakthrough</span>
-      
-    </div>
-    <div class="stat-row"><div class="stat-highlight"><span class="stat-number">+76%</span><span class="stat-label">year-over-year price jump</span></div>
-<div class="stat-highlight"><span class="stat-number">$136.53</span><span class="stat-label">per MWh wholesale price</span></div></div>
-    <ul class="bullet-list"><li>Monitoring Analytics said PJM wholesale power prices rose to $136.53 per megawatt-hour from $77.78 a year earlier.</li>
-<li>The watchdog explicitly blamed surging data-center demand and PJM&#x27;s failure to handle the load fast enough.</li>
-<li>The report said current PJM capacity is not adequate to meet large data-center demand in the foreseeable future.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">This is one of the clearest near-term signals that AI demand is beginning to reshape electricity markets, not just long-range infrastructure planning. Northern Virginia, which sits inside PJM, remains one of the world&#x27;s densest data-center hubs, so price pressure there has broad implications for cloud economics.</p>
-<p class="body-text">Just as importantly, the fight is no longer abstract. Grid operators, utilities, and watchdogs are now openly arguing about whether market rules, queue delays, and data-center growth are creating a structural affordability problem for everyone else.</p>
-      <blockquote class="article-quote"><p>"The price impacts on customers have been very large and are not reversible."</p><cite>Monitoring Analytics via TechCrunch</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> AI infrastructure bottlenecks are moving upstream into power markets, which could become a major constraint on future model training and inference expansion.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://techcrunch.com/2026/05/15/power-prices-are-up-76-on-americas-biggest-grid-and-a-watchdog-is-pointing-fingers/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=16" alt="">TechCrunch</a>
-      <span class="pub-time">2026-05-15</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card secondary">
-  <summary class="card-summary">
-    <h2 class="article-title">Lake Tahoe faces a power squeeze as AI load reshapes the West</h2>
-    <p class="article-deck">A looming supplier change and booming data-center demand in Nevada and Utah are set to raise electricity costs for traditional customers.</p>
-    <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-  </summary>
-  <div class="card-details">
-    <div class="card-image-placeholder"><i data-lucide="zap"></i></div>
-    <div class="card-tags">
-      <span class="badge badge-custom"><i data-lucide="zap"></i> Energy &amp; Infrastructure</span>
-      <span class="badge badge-important"><i data-lucide="sparkles"></i> important</span>
-      
-    </div>
-    <div class="stat-row"><div class="stat-highlight"><span class="stat-number">22 GW</span><span class="stat-label">NV Energy load requests</span></div>
-<div class="stat-highlight"><span class="stat-number">40x</span><span class="stat-label">Lake Tahoe peak usage</span></div></div>
-    <ul class="bullet-list"><li>Liberty Utilities&#x27; supply agreement with NV Energy ends in May 2027, forcing Lake Tahoe to find new power sources.</li>
-<li>NV Energy has more than 22 gigawatts of load requests, which Bloomberg said is over 40 times Lake Tahoe&#x27;s peak demand.</li>
-<li>TechCrunch also cited a newly approved 40,000-acre Utah data-center project that could consume up to 9 gigawatts, versus about 4 gigawatts used by the entire state today.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">The Lake Tahoe story shows how AI&#x27;s energy footprint is starting to affect communities far from the data centers themselves. Even if local utilities deny a direct causal chain, the economics of serving hyperscale load are clearly changing regional power allocation decisions.</p>
-<p class="body-text">That makes this more than a local utility story: it is an early look at how AI-driven infrastructure demand can crowd out smaller customers and spread price pressure across entire regional grids.</p>
-      <blockquote class="article-quote"><p>"The injustice of the AI energy crunch is that the people who suffer the most have had very little say in the technology or its rollout."</p><cite>TechCrunch</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> As AI demand scales, energy access and local affordability are becoming political and economic issues, not just engineering problems for utilities and cloud providers.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://techcrunch.com/2026/05/15/silicon-valleys-vacationland-needs-a-new-energy-provider-just-as-ai-is-driving-prices-up/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=16" alt="">TechCrunch</a>
+      <a href="https://techcrunch.com/2026/05/15/rj-scaringe-has-raised-more-than-12-billion-across-three-startups-and-investors-still-want-more/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=16" alt="">TechCrunch</a>
       <span class="pub-time">2026-05-15</span>
     </div>
   </div>
 </details>
   </div>
 </section>
-  <footer class="report-footer" id="sources">
+  <footer class="report-footer" id="en-sources">
     <h3 class="footer-title"><i data-lucide="paperclip"></i> All report sources</h3>
-    <div class="sources-grid"><div class="sources-section"><h4><i data-lucide="rocket"></i> Startups &amp; Launches</h4><ul><li><a href="https://techcrunch.com/2026/05/15/openai-launches-chatgpt-for-personal-finance-will-let-you-connect-bank-accounts/" target="_blank" rel="noopener">TechCrunch</a></li>
-<li><a href="https://techcrunch.com/2026/05/15/runway-started-by-helping-filmmakers-now-it-wants-to-beat-google-at-ai/" target="_blank" rel="noopener">TechCrunch</a></li>
-<li><a href="https://techcrunch.com/2026/05/15/osaurus-brings-both-local-and-cloud-ai-models-to-your-mac/" target="_blank" rel="noopener">TechCrunch</a></li></ul></div>
-<div class="sources-section"><h4><i data-lucide="bot"></i> Robotics &amp; Drones</h4><ul><li><a href="https://techcrunch.com/2026/05/15/tesla-reveals-two-robotaxi-crashes-involving-teleoperators/" target="_blank" rel="noopener">TechCrunch</a></li>
-<li><a href="https://breakingdefense.com/2026/05/airos-slowed-rotor-hybrid-electric-vtol-drone-aims-to-solve-resupply-issues/" target="_blank" rel="noopener">Breaking Defense</a></li></ul></div>
-<div class="sources-section"><h4><i data-lucide="shield"></i> Defense</h4><ul><li><a href="https://breakingdefense.com/2026/05/armys-autonomy-office-looks-beyond-drone-robot-platforms-to-packages-of-capability/" target="_blank" rel="noopener">Breaking Defense</a></li>
-<li><a href="https://breakingdefense.com/2026/05/uk-picks-4-companies-for-apache-drone-wingman-demonstrator-project/" target="_blank" rel="noopener">Breaking Defense</a></li></ul></div>
-<div class="sources-section"><h4><i data-lucide="satellite"></i> Space</h4><ul><li><a href="https://spacenews.com/spacex-launches-crs-34-cargo-mission-to-iss/" target="_blank" rel="noopener">SpaceNews</a></li>
-<li><a href="https://spacenews.com/starlink-mobile-challengers-back-proposed-telco-led-d2d-joint-venture/" target="_blank" rel="noopener">SpaceNews</a></li></ul></div>
-<div class="sources-section"><h4><i data-lucide="chart"></i> Markets</h4><ul><li><a href="https://finance.yahoo.com/markets/stocks/articles/nvidia-china-h200-approval-raises-101120703.html" target="_blank" rel="noopener">Yahoo Finance</a></li>
-<li><a href="https://www.euronews.com/2026/05/16/nvidia-surpasses-germany-how-the-market-caps-of-tech-giants-compare-to-top-economies" target="_blank" rel="noopener">Euronews</a></li></ul></div>
-<div class="sources-section"><h4><i data-lucide="zap"></i> Energy &amp; Infrastructure</h4><ul><li><a href="https://techcrunch.com/2026/05/15/power-prices-are-up-76-on-americas-biggest-grid-and-a-watchdog-is-pointing-fingers/" target="_blank" rel="noopener">TechCrunch</a></li>
-<li><a href="https://techcrunch.com/2026/05/15/silicon-valleys-vacationland-needs-a-new-energy-provider-just-as-ai-is-driving-prices-up/" target="_blank" rel="noopener">TechCrunch</a></li></ul></div></div>
+    <div class="sources-grid"><div class="sources-section"><h4><i data-lucide="monitor"></i> Developer Tools</h4><ul><li><a href="https://www.wired.com/story/openai-reorg-greg-brockman-product/" target="_blank" rel="noopener">WIRED</a></li>
+<li><a href="https://arstechnica.com/tech-policy/2026/05/authors-fight-for-higher-payouts-from-anthropics-1-5b-copyright-settlement/" target="_blank" rel="noopener">Ars Technica</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="sparkles"></i> AI Tools</h4><ul><li><a href="https://techcrunch.com/2026/05/15/openai-launches-chatgpt-for-personal-finance-will-let-you-connect-bank-accounts/" target="_blank" rel="noopener">TechCrunch</a></li>
+<li><a href="https://techcrunch.com/2026/05/15/runway-started-by-helping-filmmakers-now-it-wants-to-beat-google-at-ai/" target="_blank" rel="noopener">TechCrunch</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="bot"></i> Robotics</h4><ul><li><a href="https://techcrunch.com/2026/05/15/tesla-reveals-two-robotaxi-crashes-involving-teleoperators/" target="_blank" rel="noopener">TechCrunch</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="shield"></i> Defense</h4><ul><li><a href="https://arstechnica.com/gadgets/2026/05/russia-pressures-university-students-to-become-wartime-drone-pilots/" target="_blank" rel="noopener">Ars Technica</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="rocket"></i> Space</h4><ul><li><a href="https://arstechnica.com/space/2026/05/threes-a-party-us-china-and-now-russia-are-on-the-prowl-in-geo/" target="_blank" rel="noopener">Ars Technica</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="banknote"></i> Startups</h4><ul><li><a href="https://techcrunch.com/2026/05/15/rj-scaringe-has-raised-more-than-12-billion-across-three-startups-and-investors-still-want-more/" target="_blank" rel="noopener">TechCrunch</a></li></ul></div></div>
     <div class="footer-meta">
-      <p><i data-lucide="cpu"></i> Generated: 2026-05-16 14:00 CEST by AI Daily structured renderer</p>
+      <p><i data-lucide="cpu"></i> Generated: 2026-05-16 15:06 CEST by AI Daily structured renderer</p>
       <p><i data-lucide="clock"></i> Time window: last 24 hours</p>
-      <p><i data-lucide="bar-chart-2"></i> Sources analyzed: 13</p>
+      <p><i data-lucide="bar-chart-2"></i> Sources analyzed: 8</p>
       <p><i data-lucide="file-text"></i> Output: JSON content rendered to HTML</p>
     </div>
   </footer>
 </div>
-<script>lucide.createIcons();</script>
+</div>
+<div class="language-panel" data-lang="pl">
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-brand">
+      <span class="masthead-title">AI Daily</span>
+      <span class="masthead-edition">16.05</span>
+    </div>
+    <nav class="masthead-nav"><a href="#pl-dev-tools"><i data-lucide="monitor"></i> Narzędzia developerskie</a>
+<a href="#pl-ai-tools"><i data-lucide="sparkles"></i> Narzędzia AI</a>
+<a href="#pl-robotics"><i data-lucide="bot"></i> Robotyka</a>
+<a href="#pl-defense"><i data-lucide="shield"></i> Obronność</a>
+<a href="#pl-space"><i data-lucide="rocket"></i> Kosmos</a>
+<a href="#pl-startups"><i data-lucide="banknote"></i> Startupy</a>
+<a href="#pl-sources"><i data-lucide="paperclip"></i> Wszystkie źródła raportu</a></nav>
+    <div class="language-toggle" aria-label="Language"><button type="button" class="" data-set-lang="en">EN</button><button type="button" class="active" data-set-lang="pl">PL</button></div>
+    <span class="masthead-version">Strukturalny</span>
+  </div>
+</header>
+<div class="hero-header">
+  <div class="hero-inner">
+    <div class="hero-date">Sobota, 16 maja 2026 · Wydanie poranne</div>
+    <h1 class="hero-title">AI Daily — <span>Twój poranny</span><br>brief AI</h1>
+    <p class="hero-tagline">Wszystko, co musisz wiedzieć o sztucznej inteligencji z ostatnich 24 godzin.</p>
+    <div class="hero-stats">
+      <div class="hero-stat-item"><span class="hero-stat-num">72</span><span class="hero-stat-label">sprawdzonych artykułów</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">6</span><span class="hero-stat-label">sekcji tematycznych</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">8</span><span class="hero-stat-label">zweryfikowanych źródeł</span></div>
+    </div>
+  </div>
+</div>
+<div class="page-wrapper">
+  <div class="breaking-banner" role="alert"><span class="breaking-tag"><i data-lucide="zap"></i> PILNE</span>OpenAI połączyło ChatGPT, Codex i swoje API deweloperskie w ramach jednej organizacji produktowej, dążąc do jednolitego stosu agentowego.</div>
+  
+<section class="news-section" id="pl-dev-tools">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="monitor"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Sekcja</span>
+      <h2 class="section-title">Narzędzia developerskie</h2>
+    </div>
+    <span class="section-count">2 artykuły</span>
+  </div>
+  <div class="section-divider" style="background: #2563EB;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card featured">
+  <summary class="card-summary">
+    <div class="card-image-placeholder"><i data-lucide="monitor"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Narzędzia developerskie</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">OpenAI ujednolica zespoły ChatGPT, Codex i API</h2>
+      <p class="article-deck">Greg Brockman formalnie przejął odpowiedzialność za produkt, gdy OpenAI połączyło swoje obszary konsumenckie, programistyczne i deweloperskie w jedną centralną organizację.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">900M</span><span class="stat-label">tygodniowych użytkowników ChatGPT</span></div>
+<div class="stat-highlight"><span class="stat-number">1</span><span class="stat-label">centralny zespół produktowy</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>OpenAI poinformowało pracowników, że łączy ChatGPT, Codex i API deweloperskie w jeden centralny zespół produktowy.</li>
+<li>Greg Brockman oficjalnie kieruje teraz strategią produktową, a szef Codex, Thibault Sottiaux, awansuje, by prowadzić centralny produkt i platformę.</li>
+<li>Nick Turley przechodzi do produktów dla firm po tym, jak pomógł rozwinąć ChatGPT do ponad 900 milionów aktywnych użytkowników tygodniowo.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">WIRED podał, że OpenAI upraszcza strukturę produktową wokół roadmapy skoncentrowanej na agentach. Reorganizacja zbliża do siebie wcześniej oddzielone doświadczenia konsumenckie, programistyczne i deweloperskie, ponieważ autonomiczne wykonywanie zadań staje się centralnym elementem strategii firmy.</p>
+<p class="body-text">Ten ruch sygnalizuje też, że Codex nie jest już produktem pobocznym. OpenAI traktuje agentów kodujących jako wspólną infrastrukturę zarówno dla oferty konsumenckiej, jak i korporacyjnej, co podnosi stawkę dla rywali takich jak Anthropic, Cursor i innych platform AI do programowania.</p>
+      <blockquote class="article-quote"><p>"Konsolidujemy nasze działania produktowe, aby działać z maksymalnym skupieniem w kierunku agentowej przyszłości i wygrywać zarówno na rynku konsumenckim, jak i korporacyjnym."</p><cite>Greg Brockman via WIRED</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> To istotny sygnał platformowy: OpenAI pozycjonuje agentów kodujących i ChatGPT jako jedną zintegrowaną warstwę produktową, a nie oddzielne narzędzia.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://www.wired.com/story/openai-reorg-greg-brockman-product/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.wired.com&sz=16" alt="">WIRED</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card secondary">
+  <summary class="card-summary">
+    <div class="card-image-placeholder"><i data-lucide="monitor"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Narzędzia developerskie</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Sędzia opóźnia ugodę Anthropic w sprawie praw autorskich wartą $1.5 miliarda</h2>
+      <p class="article-deck">Sędzia federalny wstrzymał ostateczne zatwierdzenie po tym, jak autorzy zakwestionowali podział wypłat i wysokość żądanych honorariów prawnych.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">$1.5B</span><span class="stat-label">wartość ugody</span></div>
+<div class="stat-highlight"><span class="stat-number">186K</span><span class="stat-label">wskazanych tytułów z Books3</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Sędzia Araceli Martinez-Olguin odmówiła finalizacji ugody i poprosiła o odpowiedzi na zastrzeżenia członków grupy.</li>
+<li>Strona zgłaszająca zastrzeżenia argumentowała, że około $320 milionów honorariów prawnych to zbyt dużo w relacji do oczekiwanych wypłat dla autorów.</li>
+<li>Sprawa wynika z wykorzystania przez Anthropic pirackich książek ze zbioru Books3 do pomocy w trenowaniu Claude.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Ars Technica podał, że największa dotąd ugoda dotycząca praw autorskich związana z trenowaniem generatywnej AI napotkała proceduralną przeszkodę. Sąd chce dokładniej przyjrzeć się temu, czy proponowany podział jest uczciwy wobec autorów, których utwory miały rzekomo zostać skopiowane do danych treningowych.</p>
+<p class="body-text">Dla twórców modeli AI opóźnienie utrzymuje odpowiedzialność za prawa autorskie i pochodzenie danych w centrum rozmowy o produkcie. Anthropic pozostaje jedną z najważniejszych firm w obszarze narzędzi do kodowania i asystentów, więc sprawa ma znaczenie daleko wykraczające poza branżę wydawniczą.</p>
+      <blockquote class="article-quote"><p>"Każdy dolar, który pełnomocnik zabiera z funduszu ugodowego, to dolar, który nie trafia do osób rzeczywiście poszkodowanych."</p><cite>Pierce Story, quoted by Ars Technica</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Spory o dane treningowe nadal kształtują sposób, w jaki czołowe firmy AI budują, licencjonują i wdrażają produkty, szczególnie na rynkach korporacyjnych i deweloperskich.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://arstechnica.com/tech-policy/2026/05/authors-fight-for-higher-payouts-from-anthropics-1-5b-copyright-settlement/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=16" alt="">Ars Technica</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="pl-ai-tools">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="sparkles"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Sekcja</span>
+      <h2 class="section-title">Narzędzia AI</h2>
+    </div>
+    <span class="section-count">2 artykuły</span>
+  </div>
+  <div class="section-divider" style="background: #DB2777;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card featured">
+  <summary class="card-summary">
+    <div class="card-image-placeholder"><i data-lucide="sparkles"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> Narzędzia AI</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">OpenAI uruchamia narzędzia finansowe ChatGPT z Plaid</h2>
+      <p class="article-deck">Użytkownicy ChatGPT Pro w USA mogą teraz łączyć konta bankowe i maklerskie, aby analizować wydatki i planowanie.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">12,000+</span><span class="stat-label">obsługiwanych instytucji</span></div>
+<div class="stat-highlight"><span class="stat-number">200M+</span><span class="stat-label">miesięcznych zapytań finansowych</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>OpenAI uruchomiło funkcję Finances w wersji preview dla użytkowników ChatGPT Pro w USA.</li>
+<li>Funkcja korzysta z połączeń Plaid i obsługuje ponad 12 000 instytucji, w tym Schwab, Fidelity, Chase, Robinhood i Capital One.</li>
+<li>OpenAI podało, że GPT-5.5 lepiej rozumuje w kontekście finansowym i że funkcja będzie rozwijana na podstawie opinii użytkowników.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">TechCrunch podał, że OpenAI wychodzi poza ogólny czat w kierunku bardziej wyspecjalizowanego narzędzia konsumenckiego. Nowy workflow finansowy pozwala użytkownikom podłączyć prawdziwe konta i zadawać pytania o wydatki, subskrypcje, wyniki portfela i przyszłe planowanie.</p>
+<p class="body-text">To jeden z wyraźniejszych przykładów przechodzenia asystentów AI od samych interfejsów konwersacyjnych do operacyjnego oprogramowania. Jednocześnie przesuwa to ChatGPT głębiej w regulowane, wymagające wysokiego zaufania procesy użytkownika, gdzie dokładność, kontrola prywatności i trwały kontekst mają większe znaczenie niż nowość.</p>
+      <blockquote class="article-quote"><p>"Mam wrażenie, że ostatnio wydaję więcej. Czy coś się zmieniło?"</p><cite>Example user prompt shown by OpenAI via TechCrunch</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Asystenci AI coraz głębiej wchodzą w osobiste i biznesowe procesy decyzyjne, zwiększając presję na rywali w finansach konsumenckich, wyszukiwaniu i produktywności AI.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://techcrunch.com/2026/05/15/openai-launches-chatgpt-for-personal-finance-will-let-you-connect-bank-accounts/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=16" alt="">TechCrunch</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card secondary">
+  <summary class="card-summary">
+    <div class="card-image-placeholder"><i data-lucide="sparkles"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> Narzędzia AI</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span></div>
+      <h2 class="article-title">Runway wiąże generowanie wideo z ambicjami budowy modeli świata</h2>
+      <p class="article-deck">Startup twierdzi, że jego długoterminowym zakładem jest to, że modele wideo, a nie sam tekst, są drogą do systemów rozumiejących fizyczną rzeczywistość.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">$5.3B</span><span class="stat-label">wycena</span></div>
+<div class="stat-highlight"><span class="stat-number">$40M</span><span class="stat-label">dodanego ARR w Q2</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>TechCrunch podał, że Runway wykorzystuje generowanie wideo jako krok pośredni w stronę szerszych modeli świata.</li>
+<li>Firma poinformowała, że dodała $40 milionów ARR w Q2 2026 i była wyceniana na $5.3 miliarda podczas lutowego finansowania.</li>
+<li>Runway podało, że uruchomiło swój pierwszy model świata w grudniu 2025 roku i planuje drugi w 2026 roku.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Pozycjonowanie Runway staje się bardziej strategiczne niż samo tworzenie narzędzi kreatywnych. Firma argumentuje, że obserwacyjne dane wideo mogą pomóc systemom AI uczyć się fizyki i struktury przyczynowej, których nie wychwytują modele skoncentrowane na tekście.</p>
+<p class="body-text">To ważne, ponieważ AI wideo jest coraz częściej przedstawiane jako podstawowa infrastruktura dla asystentów, symulacji, robotyki i systemów ucieleśnionych. Runway wykorzystuje produkt skierowany najpierw do twórców, aby dojść do tej większej pozycji technologicznej.</p>
+      <blockquote class="article-quote"><p>"Modele językowe są trenowane na całym internecie, destylując istniejącą ludzką wiedzę. Ale żeby wyjść poza to, musimy wykorzystać mniej stronnicze dane."</p><cite>Anastasis Germanidis via TechCrunch</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Rynek narzędzi AI przesuwa się od samodzielnego generowania treści w stronę deklaracji dotyczących modeli świata, które mogą przeniknąć do robotyki, symulacji i automatyzacji przedsiębiorstw.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://techcrunch.com/2026/05/15/runway-started-by-helping-filmmakers-now-it-wants-to-beat-google-at-ai/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=16" alt="">TechCrunch</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="pl-robotics">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="bot"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Sekcja</span>
+      <h2 class="section-title">Robotyka</h2>
+    </div>
+    <span class="section-count">1 artykuł</span>
+  </div>
+  <div class="section-divider" style="background: #16A34A;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card full">
+  <summary class="card-summary">
+    <div class="card-image-placeholder"><i data-lucide="bot"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-robot"><i data-lucide="bot"></i> Robotyka</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Tesla ujawnia kolizje Robotaxi związane z teleoperatorami</h2>
+      <p class="article-deck">Nowo odtajnione zgłoszenia bezpieczeństwa pokazują, że doszło do co najmniej dwóch kolizji Robotaxi przy niskiej prędkości, gdy pojazdy były prowadzone przez zdalnych operatorów.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">17</span><span class="stat-label">odnotowanych kolizji Robotaxi</span></div>
+<div class="stat-highlight"><span class="stat-number">10 mph</span><span class="stat-label">limit prędkości teleoperatora</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>TechCrunch podał, że nowo odtajnione zgłoszenia Tesli do NHTSA opisują dwa wypadki z udziałem zdalnych teleoperatorów w Austin.</li>
+<li>W jednym przypadku teleoperator wjechał pojazdem w metalowe ogrodzenie po przejęciu kontroli od zautomatyzowanego systemu jazdy.</li>
+<li>Tesla poinformowała ustawodawców, że zdalni operatorzy mogą prowadzić pojazdy z prędkością do 10 mil na godzinę, aby wyprowadzać je z problematycznych pozycji.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Zgłoszenia dają jaśniejszy obraz tego, jak ważne pozostaje ludzkie wsparcie awaryjne w operacjach Robotaxi Tesli. Pojazdy nie były jedynie nadzorowane; w co najmniej dwóch przypadkach zdalni operatorzy aktywnie przejęli sterowanie, a następnie uderzyli w obiekty przy drodze.</p>
+<p class="body-text">To rozróżnienie ma znaczenie w całej robotyce i autonomii, ponieważ firmy coraz częściej promują pełnostosową autonomię, jednocześnie nadal polegając na ukrytej interwencji człowieka. Jakość ujawnień staje się równie ważna jak liczba disengagementów.</p>
+      <blockquote class="article-quote"><p>"Ta funkcja umożliwia Tesli szybkie przemieszczenie pojazdu, który może znajdować się w problematycznej pozycji."</p><cite>Tesla statement quoted by TechCrunch</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Wiarygodność Robotaxi zależy teraz nie tylko od wydajności autonomii, ale też od przejrzystego raportowania, kiedy człowiek nadal pozostaje w pętli.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://techcrunch.com/2026/05/15/tesla-reveals-two-robotaxi-crashes-involving-teleoperators/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=16" alt="">TechCrunch</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="pl-defense">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="shield"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Sekcja</span>
+      <h2 class="section-title">Obronność</h2>
+    </div>
+    <span class="section-count">1 artykuł</span>
+  </div>
+  <div class="section-divider" style="background: #DC2626;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card full">
+  <summary class="card-summary">
+    <div class="card-image-placeholder"><i data-lucide="shield"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-defense"><i data-lucide="shield"></i> Obronność</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Rosja rekrutuje studentów do wojennych ról związanych z dronami</h2>
+      <p class="article-deck">Rosyjskie uniwersytety mają oferować czesne i zachęty finansowe, by kierować technicznie uzdolnionych studentów do wojskowej służby przy dronach.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">270+</span><span class="stat-label">zaangażowanych uniwersytetów</span></div>
+<div class="stat-highlight"><span class="stat-number">$70,000</span><span class="stat-label">najwyższa wskazana zachęta</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Ars Technica podał, że rosyjskie uniwersytety promują kontrakty wojskowe dla pilotów dronów, oferując zachęty obejmujące darmowe czesne, wakacje podatkowe, umorzenie pożyczek i gotówkę.</li>
+<li>Kampania jest skierowana do puli około 2 milionów studentów płci męskiej, zwłaszcza graczy i osób z przygotowaniem technicznym.</li>
+<li>Materiał wskazuje na co najmniej jedną potwierdzoną śmierć na polu walki wśród nowo zrekrutowanych studentów-operatorów dronów.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Ta historia pokazuje, jak wojna dronowa jest instytucjonalizowana wewnątrz cywilnych ścieżek edukacyjnych. Zamiast traktować systemy bezzałogowe jako specjalistyczny sprzęt wojskowy, Rosja przedstawia obsługę dronów jako masowy problem technicznej siły roboczej, który uniwersytety mogą pomóc rozwiązać.</p>
+<p class="body-text">Ma to konsekwencje dla polityki obronnej i rywalizacji w obszarze bezpieczeństwa wykraczające poza Ukrainę. Pokazuje, jak tanie systemy autonomiczne i półautonomiczne zmieniają rekrutację, szkolenie i społeczny wymiar współczesnego konfliktu.</p>
+      <blockquote class="article-quote"><p>"Nikt nie chce dołączyć. Nikt nie jest zainteresowany."</p><cite>Student quoted by NBC News, via Ars Technica</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Wojna dronowa rozszerza się z obszaru zakupów sprzętu na mobilizację kadr, czyniąc edukację techniczną bardziej bezpośrednim wkładem w zdolności wojskowe.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://arstechnica.com/gadgets/2026/05/russia-pressures-university-students-to-become-wartime-drone-pilots/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=16" alt="">Ars Technica</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="pl-space">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="rocket"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Sekcja</span>
+      <h2 class="section-title">Kosmos</h2>
+    </div>
+    <span class="section-count">1 artykuł</span>
+  </div>
+  <div class="section-divider" style="background: #7C3AED;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card full">
+  <summary class="card-summary">
+    <div class="card-image-placeholder"><i data-lucide="rocket"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Kosmos</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Rosja dołącza do USA i Chin w śledzeniu satelitów na GEO</h2>
+      <p class="article-deck">Ars Technica podaje, że wszystkie trzy główne potęgi kosmiczne prowadzą już aktywność satelitów-inspektorów na orbicie geosynchronicznej.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">22,000</span><span class="stat-label">mil nad Ziemią</span></div>
+<div class="stat-highlight"><span class="stat-number">3</span><span class="stat-label">aktywne główne potęgi</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Ars Technica podał, że rosyjski Kosmos 2589 dotarł na orbitę geosynchroniczną jako podejrzewany satelita-inspektor lub satelita ofensywny.</li>
+<li>Stany Zjednoczone wykorzystują satelity-inspektory GSSAP od ponad dekady, a Chiny weszły do tej kategorii w 2018 roku.</li>
+<li>U.S. Space Force przygotowuje się do zamówienia kolejnych satelitów rozpoznawczych dla pasa geosynchronicznego.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Orbita geosynchroniczna jest jednym z najbardziej strategicznie wartościowych obszarów w kosmosie, ponieważ satelity wojskowe i komercyjne pozostają nad stałymi punktami przez lata. To sprawia, że misje obserwacyjne z bliskiego podejścia są wyjątkowo wrażliwe i politycznie obciążone.</p>
+<p class="body-text">Ta najnowsza zmiana oznacza, że GEO nie jest już głównie strefą obserwacji USA i Chin. Wejście Rosji przekształca ją w w pełni trójbiegunowe środowisko inspekcji, zwiększając ryzyko błędnej kalkulacji, zakłóceń sygnału i szybkiej reakcji wojskowej na orbicie.</p>
+      <blockquote class="article-quote"><p>"Wiodące potęgi kosmiczne świata desperacko chcą wiedzieć, co robią inni wysoko nad równikiem."</p><cite>Stephen Clark, Ars Technica</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Operacje kosmiczne stają się bardziej sporne i napędzane wywiadowczo, a obserwacja i kontrinwigilacja na GEO coraz bardziej przypominają rutynową rywalizację mocarstw.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://arstechnica.com/space/2026/05/threes-a-party-us-china-and-now-russia-are-on-the-prowl-in-geo/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=16" alt="">Ars Technica</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+
+<section class="news-section" id="pl-startups">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="banknote"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Sekcja</span>
+      <h2 class="section-title">Startupy</h2>
+    </div>
+    <span class="section-count">1 artykuł</span>
+  </div>
+  <div class="section-divider" style="background: #EA580C;"></div>
+  <div class="articles-grid">
+    
+<details class="news-card full">
+  <summary class="card-summary">
+    <div class="card-image-placeholder"><i data-lucide="banknote"></i></div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-startup"><i data-lucide="banknote"></i> Startupy</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
+      <h2 class="article-title">Mind Robotics RJ Scaringe’a pozyskuje kolejne $400 milionów</h2>
+      <p class="article-deck">TechCrunch podaje, że inwestorzy nadal agresywnie wspierają Scaringe’a, gdy jego startup z obszaru przemysłowej AI i robotyki skaluje działalność.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">$400M</span><span class="stat-label">najnowsza runda</span></div>
+<div class="stat-highlight"><span class="stat-number">$12.3B</span><span class="stat-label">kapitału pozyskanego przez startupy</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>TechCrunch podał, że Mind Robotics, firma Scaringe’a z obszaru przemysłowej AI i robotyki, niedawno zamknęła kolejną rundę o wartości $400 milionów.</li>
+<li>Scaringe pozyskał już ponad $12.3 miliarda łącznie w Rivian, Also i Mind Robotics.</li>
+<li>Eclipse jest jednym z głównych inwestorów zarówno w Also, jak i Mind Robotics, a DoorDash należy do inwestorów Also.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Skala kapitału kierowanego do Mind Robotics pokazuje, że inwestorzy nadal są skłonni finansować ambitne historie przemysłowej AI znacznie powyżej typowego poziomu startupowego, gdy ufają założycielowi i tezie łączącej hardware i software.</p>
+<p class="body-text">Wzmacnia to też szerszy trend: startupy AI powiązane z robotyką korzystają z tego samego apetytu, który wcześniej wyniósł spółki z obronności i firmy budujące modele graniczne. Kapitał koncentruje się wokół założycieli postrzeganych jako zdolni połączyć systemy świata rzeczywistego z AI.</p>
+      <blockquote class="article-quote"><p>"Ma rzadkie połączenie bycia naprawdę świetnym inżynierem i jednocześnie posiadania wyjątkowego instynktu do projektowania produktu."</p><cite>Joe Fath of Eclipse, via TechCrunch</cite></blockquote>
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Duże wczesne rundy dla przemysłowej AI przestają być wyjątkiem, co podnosi konkurencyjną poprzeczkę w obszarach talentów startupowych, dostępu do mocy obliczeniowej i szybkości wejścia na rynek.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://techcrunch.com/2026/05/15/rj-scaringe-has-raised-more-than-12-billion-across-three-startups-and-investors-still-want-more/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=16" alt="">TechCrunch</a>
+      <span class="pub-time">2026-05-15</span>
+    </div>
+  </div>
+</details>
+  </div>
+</section>
+  <footer class="report-footer" id="pl-sources">
+    <h3 class="footer-title"><i data-lucide="paperclip"></i> Wszystkie źródła raportu</h3>
+    <div class="sources-grid"><div class="sources-section"><h4><i data-lucide="monitor"></i> Narzędzia developerskie</h4><ul><li><a href="https://www.wired.com/story/openai-reorg-greg-brockman-product/" target="_blank" rel="noopener">WIRED</a></li>
+<li><a href="https://arstechnica.com/tech-policy/2026/05/authors-fight-for-higher-payouts-from-anthropics-1-5b-copyright-settlement/" target="_blank" rel="noopener">Ars Technica</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="sparkles"></i> Narzędzia AI</h4><ul><li><a href="https://techcrunch.com/2026/05/15/openai-launches-chatgpt-for-personal-finance-will-let-you-connect-bank-accounts/" target="_blank" rel="noopener">TechCrunch</a></li>
+<li><a href="https://techcrunch.com/2026/05/15/runway-started-by-helping-filmmakers-now-it-wants-to-beat-google-at-ai/" target="_blank" rel="noopener">TechCrunch</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="bot"></i> Robotyka</h4><ul><li><a href="https://techcrunch.com/2026/05/15/tesla-reveals-two-robotaxi-crashes-involving-teleoperators/" target="_blank" rel="noopener">TechCrunch</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="shield"></i> Obronność</h4><ul><li><a href="https://arstechnica.com/gadgets/2026/05/russia-pressures-university-students-to-become-wartime-drone-pilots/" target="_blank" rel="noopener">Ars Technica</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="rocket"></i> Kosmos</h4><ul><li><a href="https://arstechnica.com/space/2026/05/threes-a-party-us-china-and-now-russia-are-on-the-prowl-in-geo/" target="_blank" rel="noopener">Ars Technica</a></li></ul></div>
+<div class="sources-section"><h4><i data-lucide="banknote"></i> Startupy</h4><ul><li><a href="https://techcrunch.com/2026/05/15/rj-scaringe-has-raised-more-than-12-billion-across-three-startups-and-investors-still-want-more/" target="_blank" rel="noopener">TechCrunch</a></li></ul></div></div>
+    <div class="footer-meta">
+      <p><i data-lucide="cpu"></i> Wygenerowano: 2026-05-16 15:06 CEST przez renderer strukturalny AI Daily</p>
+      <p><i data-lucide="clock"></i> Okno czasowe: ostatnie 24 godziny</p>
+      <p><i data-lucide="bar-chart-2"></i> Przeanalizowane źródła: 8</p>
+      <p><i data-lucide="file-text"></i> Output: treść JSON wyrenderowana do HTML</p>
+    </div>
+  </footer>
+</div>
+</div>
+<script>
+const setLanguage = (lang) => {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.language-panel').forEach((panel) => {
+    panel.classList.toggle('active', panel.dataset.lang === lang);
+  });
+  document.querySelectorAll('[data-set-lang]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.setLang === lang);
+  });
+  localStorage.setItem('ai-daily-lang', lang);
+  if (window.lucide) window.lucide.createIcons();
+};
+document.querySelectorAll('[data-set-lang]').forEach((button) => {
+  button.addEventListener('click', () => setLanguage(button.dataset.setLang));
+});
+const storedLanguage = localStorage.getItem('ai-daily-lang') || 'en';
+setLanguage(document.querySelector(`.language-panel[data-lang="${storedLanguage}"]`) ? storedLanguage : 'en');
+</script>
 </body>
 </html>
