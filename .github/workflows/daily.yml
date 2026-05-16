@@ -46,16 +46,12 @@ jobs:
 
       - name: Generate brief
         env:
-          AI_PROVIDER: ${{ vars.AI_PROVIDER || 'copilot' }}
           COPILOT_GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           COPILOT_MODEL: ${{ vars.COPILOT_MODEL }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL || 'claude-sonnet-4-6' }}
           AGENT_PROMPT_PATH: ${{ vars.AGENT_PROMPT_PATH || 'agent.md' }}
-          AGENT_COMMAND: ${{ vars.AGENT_COMMAND }}
           AGENT_TIMEOUT_SECONDS: ${{ vars.AGENT_TIMEOUT_SECONDS || '1800' }}
         run: |
-          if [ "${AI_PROVIDER}" = "copilot" ] && [ -z "${COPILOT_GITHUB_TOKEN}" ]; then
+          if [ -z "${COPILOT_GITHUB_TOKEN}" ]; then
             echo "::error::Missing PERSONAL_ACCESS_TOKEN secret. Create a fine-grained PAT with Copilot requests: write and save it as PERSONAL_ACCESS_TOKEN."
             exit 1
           fi

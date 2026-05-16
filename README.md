@@ -54,12 +54,9 @@ Optional variables in **Settings -> Secrets and variables -> Actions -> Variable
 
 | Name | Default | Description |
 |---|---|---|
-| `AI_PROVIDER` | `copilot` | Use `copilot`, `anthropic`, or `command` |
 | `COPILOT_MODEL` | Copilot CLI default | Optional Copilot model override |
-| `CLAUDE_MODEL` | `claude-sonnet-4-6` | Claude model override |
 | `AGENT_PROMPT_PATH` | `agent.md` | Prompt file to load |
-| `AGENT_COMMAND` | empty | Command to run when `AI_PROVIDER=command` |
-| `AGENT_TIMEOUT_SECONDS` | `1800` | Timeout for command-based agents |
+| `AGENT_TIMEOUT_SECONDS` | `1800` | Timeout for Copilot CLI generation |
 
 ### 3. Enable GitHub Pages
 
@@ -90,30 +87,15 @@ outputs/AI_Daily_YYYY-MM-DD.html
 
 Copilot CLI is also granted write access only to a temporary ignored JSON file (`.copilot-output/report.json`). The app, not Copilot, renders and commits the final HTML.
 
-## Using another agent or subscription
+## How generation works
 
-Copilot CLI is the default because it runs on GitHub's hosted agent harness with a Copilot subscription. If you prefer Anthropic Claude, set `AI_PROVIDER=anthropic` and add:
-
-| Name | Value |
-|---|---|
-| `ANTHROPIC_API_KEY` | Your key from `https://console.anthropic.com` |
-
-If you want another CLI agent or a company-hosted agent, use `AI_PROVIDER=command`. The command must read the full prompt from stdin and print the structured JSON content to stdout.
-
-Example repository variable:
-
-```text
-AI_PROVIDER=command
-AGENT_COMMAND=your-agent-cli run --web-search --format json
-```
-
-The workflow will run:
+The workflow runs:
 
 ```bash
 python run.py
 ```
 
-`run.py` will pass the full system prompt plus `agent.md` to your command, then render the returned JSON into HTML. Keep credentials in GitHub Secrets, not in the repository.
+`run.py` calls Copilot CLI in programmatic mode, passes the full system prompt plus `agent.md`, asks Copilot to write structured JSON to `.copilot-output/report.json`, and then renders the returned JSON into HTML. Keep credentials in GitHub Secrets, not in the repository.
 
 The agent output contract is intentionally small:
 
@@ -181,15 +163,11 @@ The agent returns JSON, then `run.py` saves the rendered report to `outputs/AI_D
 
 | Env variable | Default | Description |
 |---|---|---|
-| `AI_PROVIDER` | `copilot` | `copilot`, `anthropic`, or `command` |
 | `PERSONAL_ACCESS_TOKEN` | required for Copilot | Fine-grained PAT with `Copilot requests: write` |
 | `COPILOT_MODEL` | Copilot CLI default | Copilot model |
-| `ANTHROPIC_API_KEY` | required for Claude fallback | Anthropic API key |
-| `CLAUDE_MODEL` | `claude-sonnet-4-6` | Claude model |
 | `AGENT_PROMPT_PATH` | `agent.md` | Custom prompt file |
 | `COPILOT_OUTPUT_PATH` | `.copilot-output/report.json` | Temporary JSON file written by Copilot CLI |
-| `AGENT_COMMAND` | empty | Custom agent command for `AI_PROVIDER=command` |
-| `AGENT_TIMEOUT_SECONDS` | `1800` | Timeout for command-based agents |
+| `AGENT_TIMEOUT_SECONDS` | `1800` | Timeout for Copilot CLI generation |
 
 To change the schedule, edit the `cron` line in `.github/workflows/daily.yml`. Cron is UTC.
 
@@ -201,7 +179,6 @@ Safety rules:
 
 - Store API keys only in GitHub Secrets or local environment variables.
 - Do not commit `.env`, API keys, OAuth tokens, or CLI credentials.
-- For custom command agents, use only commands you trust.
 - Keep the repository public only if the generated reports should be public.
 
 ## License

@@ -4,7 +4,6 @@
 import html
 import json
 import os
-import shlex
 import subprocess
 from datetime import datetime
 from pathlib import Path
@@ -250,46 +249,6 @@ def extract_json(text: str) -> dict:
     return data
 
 
-def run_anthropic_agent(dates: dict, system_prompt: str) -> dict:
-    import anthropic
-
-    client = anthropic.Anthropic()
-    model = os.environ.get("CLAUDE_MODEL", "claude-sonnet-4-6")
-    response = client.messages.create(
-        model=model,
-        max_tokens=20000,
-        system=system_prompt,
-        tools=[{
-            "type": "web_search_20250305",
-            "name": "web_search",
-            "max_uses": 10,
-        }],
-        messages=[{"role": "user", "content": build_user_message(dates)}],
-    )
-
-    text = "".join(getattr(block, "text", "") for block in response.content)
-    return extract_json(text)
-
-
-def run_command_agent(dates: dict, system_prompt: str) -> dict:
-    command = os.environ.get("AGENT_COMMAND", "").strip()
-    if not command:
-        raise RuntimeError("AI_PROVIDER=command requires AGENT_COMMAND to be set.")
-
-    prompt = f"{system_prompt}\n\n{build_user_message(dates)}\n"
-    result = subprocess.run(
-        shlex.split(command),
-        input=prompt,
-        text=True,
-        capture_output=True,
-        timeout=int(os.environ.get("AGENT_TIMEOUT_SECONDS", "1800")),
-        check=False,
-    )
-    if result.returncode != 0:
-        raise RuntimeError(f"Agent command failed with exit code {result.returncode}:\n{result.stderr}")
-    return extract_json(result.stdout)
-
-
 def run_copilot_agent(dates: dict, system_prompt: str) -> dict:
     output_path = Path(os.environ.get("COPILOT_OUTPUT_PATH", ".copilot-output/report.json"))
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -332,15 +291,7 @@ def run_copilot_agent(dates: dict, system_prompt: str) -> dict:
 
 
 def run_agent(dates: dict) -> dict:
-    provider = os.environ.get("AI_PROVIDER", "copilot").strip().lower()
-    system_prompt = build_system_prompt()
-    if provider == "copilot":
-        return run_copilot_agent(dates, system_prompt)
-    if provider == "anthropic":
-        return run_anthropic_agent(dates, system_prompt)
-    if provider in {"command", "custom"}:
-        return run_command_agent(dates, system_prompt)
-    raise ValueError(f"Unsupported AI_PROVIDER: {provider}. Use 'copilot', 'anthropic', or 'command'.")
+    return run_copilot_agent(dates, build_system_prompt())
 
 
 def section_meta(section: dict) -> dict:
