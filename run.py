@@ -17,13 +17,13 @@ except ImportError:
 
 
 SECTION_CONFIG = {
-    "dev-tools": {"title": "Developer Tools", "icon": "monitor", "color": "#2563EB", "badge": "dev"},
-    "ai-tools": {"title": "AI Tools", "icon": "sparkles", "color": "#DB2777", "badge": "ai-tool"},
-    "robotics": {"title": "Robotics", "icon": "bot", "color": "#16A34A", "badge": "robot"},
-    "defense": {"title": "Defense", "icon": "shield", "color": "#DC2626", "badge": "defense"},
-    "space": {"title": "Space", "icon": "rocket", "color": "#7C3AED", "badge": "space"},
-    "startups": {"title": "Startups", "icon": "banknote", "color": "#EA580C", "badge": "startup"},
-    "markets": {"title": "Markets", "icon": "bar-chart-2", "color": "#0F766E", "badge": "market"},
+    "dev-tools": {"title": "Developer Tools", "icon": "monitor", "color": "#2563EB", "badge": "dev", "visual": "DEV"},
+    "ai-tools": {"title": "AI Tools", "icon": "sparkles", "color": "#DB2777", "badge": "ai-tool", "visual": "AI"},
+    "robotics": {"title": "Robotics", "icon": "bot", "color": "#16A34A", "badge": "robot", "visual": "BOT"},
+    "defense": {"title": "Defense", "icon": "shield", "color": "#DC2626", "badge": "defense", "visual": "DEF"},
+    "space": {"title": "Space", "icon": "rocket", "color": "#7C3AED", "badge": "space", "visual": "ORB"},
+    "startups": {"title": "Startups", "icon": "banknote", "color": "#EA580C", "badge": "startup", "visual": "CAP"},
+    "markets": {"title": "Markets", "icon": "bar-chart-2", "color": "#0F766E", "badge": "market", "visual": "MKT"},
 }
 SECTION_ORDER = tuple(SECTION_CONFIG)
 COPILOT_MODEL = "gpt-5.4"
@@ -216,7 +216,10 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .expand-hint [data-lucide] { width: 13px; height: 13px; transition: transform .15s; }
 .news-card[open] .expand-hint [data-lucide] { transform: rotate(180deg); }
 .card-details { border-top: 1px solid var(--border); padding: 14px 18px 16px; display: flex; flex-direction: column; flex: 1; }
-.card-image-placeholder { width: 100%; aspect-ratio: 16/7; background: linear-gradient(135deg, #F3F4F6, #E5E7EB); display: flex; align-items: center; justify-content: center; font-size: 0; }
+.card-image-placeholder { width: 100%; aspect-ratio: 16/7; background: #F3F4F6; background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, #FFFFFF), #F3F4F6); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.card-image-placeholder::before { content: ''; position: absolute; inset: 16px; border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent); border-radius: 18px; }
+.card-visual-svg { width: 100%; height: 100%; display: block; color: var(--accent); }
+.card-visual-label { font: 800 22px/1 Inter, system-ui, sans-serif; letter-spacing: .12em; fill: currentColor; }
 .card-summary .card-image-placeholder { border-bottom: 1px solid var(--border); }
 .card-tags { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
 .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: var(--radius-pill); font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1; white-space: nowrap; }
@@ -466,6 +469,7 @@ def section_meta(section: dict, lang: str = "en") -> dict:
             "icon": defaults["icon"],
             "color": defaults["color"],
             "badge": defaults["badge"],
+            "visual": defaults["visual"],
         }
     return {
         "id": section_id,
@@ -473,6 +477,7 @@ def section_meta(section: dict, lang: str = "en") -> dict:
         "icon": section.get("icon") or "newspaper",
         "color": section.get("color") or "#374151",
         "badge": "custom",
+        "visual": "".join(word[0] for word in section_id.split("-") if word)[:3].upper() or "AI",
     }
 
 
@@ -524,7 +529,17 @@ def render_badges(meta: dict, importance: str, verified: bool) -> str:
 
 
 def render_card_image(meta: dict) -> str:
-    return f'<div class="card-image-placeholder"><i data-lucide="{e(meta["icon"])}"></i></div>'
+    return f"""
+<div class="card-image-placeholder" style="--accent: {e(meta["color"])};">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="{e(meta["title"])} visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">{e(meta["visual"])}</text>
+  </svg>
+</div>"""
 
 
 def render_article(article: dict, meta: dict, index: int, total: int, lang: str) -> str:
@@ -810,10 +825,11 @@ def rebuild_index(outputs_dir: Path) -> None:
     print("updated index.html")
 
 
-def report_has_polish_version(output_path: Path) -> bool:
+def report_is_current_format(output_path: Path) -> bool:
     if not output_path.exists():
         return False
-    return 'data-lang="pl"' in output_path.read_text(encoding="utf-8")
+    html_doc = output_path.read_text(encoding="utf-8")
+    return 'data-lang="pl"' in html_doc and "card-visual-svg" in html_doc
 
 
 def main() -> None:
@@ -824,7 +840,7 @@ def main() -> None:
     outputs_dir.mkdir(exist_ok=True)
 
     output_path = outputs_dir / f"AI_Daily_{dates['date']}.html"
-    if output_path.exists() and report_has_polish_version(output_path):
+    if output_path.exists() and report_is_current_format(output_path):
         print(f"bilingual report already exists: {output_path} — skipping generation")
     else:
         report = run_agent(dates)
