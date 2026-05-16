@@ -117,7 +117,7 @@ The research prompt uses a source-ladder:
 1. Trend scan across search/news surfaces, Google Trends-style interest, YouTube launch/keynote activity, Hacker News, Product Hunt, GitHub Trending, Reddit, and public X/persona posts.
 2. Primary-source confirmation from official blogs, changelogs, filings, press releases, papers, GitHub repos, government releases, or launch videos.
 3. Reputable-reporting corroboration from outlets relevant to the section.
-4. Evidence gate: keep last-24h stories only, prefer 3-4 strong items per section, and mark uncertain items as unverified.
+4. Evidence gate: keep last-24h stories only, publish sections with 3-4 strong items, and omit sparse 1-2 item sections instead of padding with filler.
 
 Useful source families include GitHub/OpenAI/Anthropic/Microsoft/Cursor/Windsurf for developer tools; OpenAI/Google/Runway/Adobe/ElevenLabs/Product Hunt for AI tools; IEEE Spectrum/The Robot Report/company robotics blogs for robotics; DefenseScoop/Breaking Defense/DoD/DARPA/Anduril/Palantir for defense; SpaceNews/NASA/ESA/SpaceX/Rocket Lab for space; TechCrunch/The Information/company and investor posts for startups; and Reuters/Bloomberg/CNBC/SEC filings for markets.
 
