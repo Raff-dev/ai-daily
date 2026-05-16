@@ -375,11 +375,7 @@ def extract_json(text: str) -> dict:
     return data
 
 
-def run_copilot_json(prompt: str, output_path: Path, allow_urls: bool) -> dict:
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    if output_path.exists():
-        output_path.unlink()
-
+def invoke_copilot(prompt: str, output_path: Path, allow_urls: bool) -> subprocess.CompletedProcess:
     allow_tool = f"write({output_path})"
     if allow_urls:
         allow_tool = f"url,{allow_tool}"
@@ -398,13 +394,21 @@ def run_copilot_json(prompt: str, output_path: Path, allow_urls: bool) -> dict:
     if allow_urls:
         command.append("--allow-all-urls")
 
-    result = subprocess.run(
+    return subprocess.run(
         command,
         text=True,
         capture_output=True,
         timeout=int(os.environ.get("AGENT_TIMEOUT_SECONDS", "1800")),
         check=False,
     )
+
+
+def run_copilot_json(prompt: str, output_path: Path, allow_urls: bool) -> dict:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    if output_path.exists():
+        output_path.unlink()
+
+    result = invoke_copilot(prompt, output_path, allow_urls)
     if result.returncode != 0:
         raise RuntimeError(f"Copilot CLI failed with exit code {result.returncode}:\n{result.stderr}\n{result.stdout}")
     if not output_path.exists():
@@ -412,8 +416,27 @@ def run_copilot_json(prompt: str, output_path: Path, allow_urls: bool) -> dict:
     return extract_json(output_path.read_text(encoding="utf-8"))
 
 
+def recover_report_json(research_notes: str, output_path: Path, dates: dict) -> dict:
+    notes = research_notes[-55_000:]
+    prompt = (
+        f"{SYSTEM_PROMPT}\n\n"
+        "You are the synthesis pass for AI Daily. The research pass produced notes but failed to write JSON.\n"
+        f"Date: {dates['date']}\n\n"
+        "Convert the research notes below into the required final JSON object.\n"
+        "Use only facts present in the notes. Do not use web search. Do not add Markdown or explanations.\n"
+        "Omit sections with fewer than 3 strong article candidates. Keep 3-4 articles per included section.\n"
+        f"Write the final JSON object to {output_path} and do not edit any other files.\n\n"
+        f"## RESEARCH NOTES\n\n{notes}"
+    )
+    return run_copilot_json(prompt, output_path, allow_urls=False)
+
+
 def run_copilot_agent(dates: dict, system_prompt: str) -> dict:
     output_path = Path(os.environ.get("COPILOT_OUTPUT_PATH", ".copilot-output/report.json"))
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    if output_path.exists():
+        output_path.unlink()
+
     prompt = (
         "/research\n"
         f"{system_prompt}\n\n"
@@ -421,7 +444,16 @@ def run_copilot_agent(dates: dict, system_prompt: str) -> dict:
         f"Write the final JSON object to {output_path}. "
         "Do not edit any other files. Do not write Markdown. Do not ask follow-up questions."
     )
-    return run_copilot_json(prompt, output_path, allow_urls=True)
+    result = invoke_copilot(prompt, output_path, allow_urls=True)
+    if result.returncode != 0:
+        raise RuntimeError(f"Copilot CLI failed with exit code {result.returncode}:\n{result.stderr}\n{result.stdout}")
+    if output_path.exists():
+        return extract_json(output_path.read_text(encoding="utf-8"))
+    if result.stdout.strip():
+        print("warning: research pass did not write JSON; running synthesis recovery pass")
+        return recover_report_json(result.stdout, output_path, dates)
+    raise RuntimeError(f"Copilot CLI did not create expected JSON file: {output_path}")
+
 
 
 def translate_report(report: dict, dates: dict) -> dict:
