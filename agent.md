@@ -14,7 +14,7 @@ Search for important news from the last 24 hours about:
 6. AI startup funding, acquisitions, launches, and major product announcements.
 7. AI-related market moves only when there is a major event: >5% price move, earnings, major partnership, product launch, or regulatory impact.
 
-Use these sections only, in this exact order when they contain relevant stories:
+Use these sections only, in this exact order. Every canonical section must be returned:
 
 | Topic | `id` | Divider color | Icon |
 |-------|------|---------------|------|
@@ -24,7 +24,7 @@ Use these sections only, in this exact order when they contain relevant stories:
 | Defense | `defense` | `#DC2626` | `shield` |
 | Space | `space` | `#7C3AED` | `rocket` |
 | Startups | `startups` | `#EA580C` | `banknote` |
-| Markets *(conditional)* | `markets` | `#0F766E` | `bar-chart-2` |
+| Markets | `markets` | `#0F766E` | `bar-chart-2` |
 
 ## Search queries
 
@@ -63,9 +63,9 @@ Useful source map by section:
 
 - Keep only articles published in the last 24 hours.
 - Target 3-4 strong stories per section.
-- If a section has fewer than 3 strong stories, broaden searches across the source map before skipping it.
+- If a section has fewer than 3 strong stories, broaden searches across the source map and keep searching.
 - Do not fabricate filler: if a section still has fewer than 3 genuinely relevant last-24h stories after broadening, include only credible stories and mark uncertain ones with `verified=false`.
-- Skip sections with no relevant last-24h news.
+- Return every canonical section id in the JSON: `dev-tools`, `ai-tools`, `robotics`, `defense`, `space`, `startups`, `markets`.
 - Prefer primary sources and reputable reporting.
 - Mark uncertain stories with `[UNVERIFIED]`.
 - Return content only as JSON. Do not write HTML, CSS, Markdown, or layout instructions.

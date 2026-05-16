@@ -59,6 +59,7 @@ UI_COPY = {
         "articles_reviewed": "articles reviewed",
         "breaking": "BREAKING",
         "edition": "Morning Edition",
+        "empty_section": "No articles returned yet. This section should trigger deeper source discovery on the next generation run.",
         "expand": "Read full brief",
         "footer_generated": "Generated",
         "footer_renderer": "by AI Daily structured renderer",
@@ -79,6 +80,7 @@ UI_COPY = {
         "articles_reviewed": "sprawdzonych artykułów",
         "breaking": "PILNE",
         "edition": "Wydanie poranne",
+        "empty_section": "Brak artykułów w tej sekcji. To powinno uruchomić głębszy research przy kolejnej generacji.",
         "expand": "Czytaj pełny brief",
         "footer_generated": "Wygenerowano",
         "footer_renderer": "przez renderer strukturalny AI Daily",
@@ -107,9 +109,9 @@ Process:
 2. Keep only news published in the last 24 hours.
 3. Use only these section ids, in this exact order: dev-tools, ai-tools, robotics, defense, space, startups, markets.
 4. Target 3-4 important stories per section.
-5. If a section has fewer than 3 strong stories, broaden source discovery before skipping it.
+5. If a section has fewer than 3 strong stories, broaden source discovery and continue searching the source map.
 6. Never fabricate filler: if a section still has fewer than 3 strong stories, include only credible stories and mark uncertain ones with verified=false.
-7. Skip empty sections, including markets unless there is a major market-moving event.
+7. Return every canonical section id even when a section has fewer than 3 articles.
 8. Verify dates and sources. Set verified=false if uncertain.
 9. Return JSON only.
 
@@ -209,6 +211,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .section-count { font-size: 11px; font-weight: 600; color: var(--text-muted); background: var(--bg-page); border: 1px solid var(--border); padding: 3px 10px; border-radius: var(--radius-pill); }
 .section-divider { height: 3px; border-radius: 0 0 3px 3px; margin-bottom: 12px; }
 .articles-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; }
+.empty-section { grid-column: span 12; background: #fff; border: 1px dashed var(--border-strong); border-radius: var(--radius); padding: 18px; color: var(--text-muted); font-size: 13px; }
 .news-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); display: flex; flex-direction: column; overflow: hidden; transition: box-shadow 0.15s, transform 0.15s; box-shadow: var(--shadow-sm); }
 .news-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
 .news-card.featured { grid-column: span 7; }
@@ -422,7 +425,7 @@ def recover_report_json(research_notes: str, output_path: Path, dates: dict) -> 
         f"Date: {dates['date']}\n\n"
         "Convert the research notes below into the required final JSON object.\n"
         "Use only facts present in the notes. Do not use web search. Do not add Markdown or explanations.\n"
-        "Keep every non-empty section from the notes. Prefer 3-4 articles per section, but do not drop a credible section solely because it has fewer candidates.\n"
+        "Return every canonical section id: dev-tools, ai-tools, robotics, defense, space, startups, markets. Prefer 3-4 articles per section, but do not drop a section solely because it has fewer candidates.\n"
         f"Write the final JSON object to {output_path} and do not edit any other files.\n\n"
         f"## RESEARCH NOTES\n\n{notes}"
     )
@@ -523,9 +526,9 @@ def section_meta(section: dict, lang: str = "en") -> dict:
 
 
 def ordered_sections(report: dict) -> list[dict]:
-    sections = [section for section in report.get("sections", []) if any(article.get("title") for article in section.get("articles", []))]
+    sections = [section for section in report.get("sections", []) if section.get("id")]
     known = {section.get("id"): section for section in sections if section.get("id") in SECTION_CONFIG}
-    ordered = [known[section_id] for section_id in SECTION_ORDER if section_id in known]
+    ordered = [known.get(section_id, {"id": section_id, "articles": []}) for section_id in SECTION_ORDER]
     ordered.extend(section for section in sections if section.get("id") not in SECTION_CONFIG)
     return ordered
 
@@ -723,9 +726,10 @@ def render_section(section: dict, lang: str) -> str:
     copy = UI_COPY[lang]
     meta = section_meta(section, lang)
     articles = [article for article in section.get("articles", []) if article.get("title")]
-    if not articles:
-        return ""
-    rendered_articles = "\n".join(render_article(article, meta, index, len(articles), lang) for index, article in enumerate(articles))
+    if articles:
+        rendered_articles = "\n".join(render_article(article, meta, index, len(articles), lang) for index, article in enumerate(articles))
+    else:
+        rendered_articles = f'<div class="empty-section">{e(copy["empty_section"])}</div>'
     count_label = copy["article_singular"] if len(articles) == 1 else copy["article_plural"]
     return f"""
 <section class="news-section" id="{e(lang)}-{e(meta["id"])}">
@@ -870,7 +874,7 @@ def render_report(report: dict, dates: dict, translated_report: dict | None = No
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>{REPORT_CSS}</style>
 </head>
-<body data-render-version="source-images-v3">
+<body data-render-version="source-images-v4">
 {''.join(panels)}
 <script>
 const setLanguage = (lang) => {{
@@ -942,7 +946,7 @@ def report_is_current_format(output_path: Path) -> bool:
     if not output_path.exists():
         return False
     html_doc = output_path.read_text(encoding="utf-8")
-    return 'data-lang="pl"' in html_doc and 'data-render-version="source-images-v3"' in html_doc
+    return 'data-lang="pl"' in html_doc and 'data-render-version="source-images-v4"' in html_doc
 
 
 def main() -> None:
