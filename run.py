@@ -134,12 +134,14 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .news-card.full { grid-column: span 12; }
 .news-card > summary { list-style: none; cursor: pointer; }
 .news-card > summary::-webkit-details-marker { display: none; }
-.card-summary { padding: 16px 18px; }
+.card-summary { display: block; }
+.card-summary-content { padding: 16px 18px; }
 .expand-hint { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: #2563EB; }
 .expand-hint [data-lucide] { width: 13px; height: 13px; transition: transform .15s; }
 .news-card[open] .expand-hint [data-lucide] { transform: rotate(180deg); }
 .card-details { border-top: 1px solid var(--border); padding: 14px 18px 16px; display: flex; flex-direction: column; flex: 1; }
-.card-image-placeholder { margin: -14px -18px 14px; width: calc(100% + 36px); aspect-ratio: 16/7; background: linear-gradient(135deg, #F3F4F6, #E5E7EB); display: flex; align-items: center; justify-content: center; font-size: 0; }
+.card-image-placeholder { width: 100%; aspect-ratio: 16/7; background: linear-gradient(135deg, #F3F4F6, #E5E7EB); display: flex; align-items: center; justify-content: center; font-size: 0; }
+.card-summary .card-image-placeholder { border-bottom: 1px solid var(--border); }
 .card-tags { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
 .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: var(--radius-pill); font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1; white-space: nowrap; }
 .badge-dev { background: var(--dev-bg); color: var(--dev); border: 1px solid var(--dev-border); }
@@ -332,13 +334,30 @@ def render_stats(stats: list) -> str:
     return f'<div class="stat-row">{items}</div>'
 
 
+def render_badges(meta: dict, importance: str, verified: bool) -> str:
+    verified_badge = "" if verified else (
+        '<span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span>'
+    )
+    return (
+        f'<div class="card-tags">'
+        f'<span class="badge badge-{e(meta["badge"])}"><i data-lucide="{e(meta["icon"])}"></i> {e(meta["title"])}</span>'
+        f'<span class="badge badge-{e(importance)}"><i data-lucide="sparkles"></i> {e(importance)}</span>'
+        f'{verified_badge}'
+        f'</div>'
+    )
+
+
+def render_card_image(meta: dict) -> str:
+    return f'<div class="card-image-placeholder"><i data-lucide="{e(meta["icon"])}"></i></div>'
+
+
 def render_article(article: dict, meta: dict, index: int, total: int) -> str:
     importance = article.get("importance") or "info"
     if importance not in {"breakthrough", "important", "info"}:
         importance = "info"
-    verified_badge = "" if article.get("verified", True) else (
-        '<span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span>'
-    )
+    badges_html = render_badges(meta, importance, article.get("verified", True))
+    stats_html = render_stats(article.get("stats", []))
+    image_html = render_card_image(meta)
 
     facts = "\n".join(f"<li>{e(fact)}</li>" for fact in article.get("facts", []) if fact)
     facts_html = f'<ul class="bullet-list">{facts}</ul>' if facts else ""
@@ -371,18 +390,16 @@ def render_article(article: dict, meta: dict, index: int, total: int) -> str:
     return f"""
 <details class="news-card {article_class(index, total)}">
   <summary class="card-summary">
-    <h2 class="article-title">{e(article.get("title"))}</h2>
-    <p class="article-deck">{e(article.get("subtitle"))}</p>
-    <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    {image_html}
+    <div class="card-summary-content">
+      {badges_html}
+      <h2 class="article-title">{e(article.get("title"))}</h2>
+      <p class="article-deck">{e(article.get("subtitle"))}</p>
+      {stats_html}
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
   </summary>
   <div class="card-details">
-    <div class="card-image-placeholder"><i data-lucide="{e(meta["icon"])}"></i></div>
-    <div class="card-tags">
-      <span class="badge badge-{e(meta["badge"])}"><i data-lucide="{e(meta["icon"])}"></i> {e(meta["title"])}</span>
-      <span class="badge badge-{e(importance)}"><i data-lucide="sparkles"></i> {e(importance)}</span>
-      {verified_badge}
-    </div>
-    {render_stats(article.get("stats", []))}
     {facts_html}
     <div class="extended-content">
       {body}
