@@ -48,8 +48,11 @@ jobs:
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           AGENT_PROMPT_PATH: ${{ vars.AGENT_PROMPT_PATH || 'agent.md' }}
+          RESEARCHER_PROMPT_PATH: ${{ vars.RESEARCHER_PROMPT_PATH || 'agents/section-researcher.md' }}
+          EDITOR_PROMPT_PATH: ${{ vars.EDITOR_PROMPT_PATH || 'agents/editor.md' }}
           TRANSLATION_PROMPT_PATH: ${{ vars.TRANSLATION_PROMPT_PATH || 'translate-agent.md' }}
           AGENT_TIMEOUT_SECONDS: ${{ vars.AGENT_TIMEOUT_SECONDS || '1800' }}
+          FLEET_MAX_WORKERS: ${{ vars.FLEET_MAX_WORKERS || '3' }}
         run: |
           if [ -z "${COPILOT_GITHUB_TOKEN}" ]; then
             echo "::error::Missing PERSONAL_ACCESS_TOKEN secret. Create a fine-grained PAT with Copilot requests: write and save it as PERSONAL_ACCESS_TOKEN."

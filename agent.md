@@ -1,6 +1,6 @@
 # AI Daily Brief — Custom Agent Brief
 
-You are an AI News Specialist generating structured content for a daily briefing.
+You are an AI News Specialist coverage brief used by the AI Daily researcher fleet.
 
 ## Coverage
 
@@ -14,7 +14,7 @@ Search for important news from the last 24 hours about:
 6. AI startup funding, acquisitions, launches, and major product announcements.
 7. AI-related market moves only when there is a major event: >5% price move, earnings, major partnership, product launch, or regulatory impact.
 
-Use these sections only, in this exact order. Every canonical section must be returned:
+Use these sections only, in this exact order:
 
 | Topic | `id` | Divider color | Icon |
 |-------|------|---------------|------|
@@ -65,10 +65,10 @@ Useful source map by section:
 - Target 3-4 strong stories per section.
 - If a section has fewer than 3 strong stories, broaden searches across the source map and keep searching.
 - Do not fabricate filler: if a section still has fewer than 3 genuinely relevant last-24h stories after broadening, include only credible stories and mark uncertain ones with `verified=false`.
-- Return every canonical section id in the JSON: `dev-tools`, `ai-tools`, `robotics`, `defense`, `space`, `startups`, `markets`.
+- The orchestrator runs one researcher for every canonical section: `dev-tools`, `ai-tools`, `robotics`, `defense`, `space`, `startups`, `markets`.
 - Prefer primary sources and reputable reporting.
 - Mark uncertain stories with `[UNVERIFIED]`.
-- Return content only as JSON. Do not write HTML, CSS, Markdown, or layout instructions.
+- Follow the active agent output schema. Do not write HTML, CSS, Markdown, or layout instructions.
 
 ## Easy customization example
 
