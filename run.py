@@ -5,6 +5,7 @@ import html
 import json
 import os
 import subprocess
+from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import urlparse
@@ -25,6 +26,71 @@ SECTION_CONFIG = {
     "markets": {"title": "Markets", "icon": "bar-chart-2", "color": "#0F766E", "badge": "market"},
 }
 SECTION_ORDER = tuple(SECTION_CONFIG)
+COPILOT_MODEL = "gpt-5.4"
+
+SECTION_TITLES = {
+    "en": {
+        "dev-tools": "Developer Tools",
+        "ai-tools": "AI Tools",
+        "robotics": "Robotics",
+        "defense": "Defense",
+        "space": "Space",
+        "startups": "Startups",
+        "markets": "Markets",
+    },
+    "pl": {
+        "dev-tools": "Narzędzia developerskie",
+        "ai-tools": "Narzędzia AI",
+        "robotics": "Robotyka",
+        "defense": "Obronność",
+        "space": "Kosmos",
+        "startups": "Startupy",
+        "markets": "Rynki",
+    },
+}
+
+UI_COPY = {
+    "en": {
+        "article_singular": "article",
+        "article_plural": "articles",
+        "articles_reviewed": "articles reviewed",
+        "breaking": "BREAKING",
+        "edition": "Morning Edition",
+        "expand": "Read full brief",
+        "footer_generated": "Generated",
+        "footer_renderer": "by AI Daily structured renderer",
+        "footer_sources": "Sources analyzed",
+        "footer_window": "Time window: last 24 hours",
+        "footer_output": "Output: JSON content rendered to HTML",
+        "hero": 'AI Daily — <span>Your Morning</span><br>AI Briefing',
+        "implications": "Implications",
+        "section": "Section",
+        "sources": "All report sources",
+        "topic_sections": "topic sections",
+        "verified_sources": "verified sources",
+        "structured": "Structured",
+    },
+    "pl": {
+        "article_singular": "artykuł",
+        "article_plural": "artykuły",
+        "articles_reviewed": "sprawdzonych artykułów",
+        "breaking": "PILNE",
+        "edition": "Wydanie poranne",
+        "expand": "Czytaj pełny brief",
+        "footer_generated": "Wygenerowano",
+        "footer_renderer": "przez renderer strukturalny AI Daily",
+        "footer_sources": "Przeanalizowane źródła",
+        "footer_window": "Okno czasowe: ostatnie 24 godziny",
+        "footer_output": "Output: treść JSON wyrenderowana do HTML",
+        "hero": 'AI Daily — <span>Twój poranny</span><br>brief AI',
+        "implications": "Znaczenie",
+        "section": "Sekcja",
+        "sources": "Wszystkie źródła raportu",
+        "topic_sections": "sekcji tematycznych",
+        "verified_sources": "zweryfikowanych źródeł",
+        "structured": "Strukturalny",
+    },
+}
 
 SYSTEM_PROMPT = """\
 You are an AI News Specialist. Generate only structured content for a daily news briefing.
@@ -111,6 +177,11 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .masthead-nav a { display: flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 500; color: var(--text-secondary); text-decoration: none; white-space: nowrap; transition: background 0.15s; }
 .masthead-nav a:hover { background: var(--bg-page); }
 .masthead-version { flex-shrink: 0; padding: 4px 12px; background: #111827; color: #fff; border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; }
+.language-toggle { flex-shrink: 0; display: inline-flex; gap: 3px; padding: 3px; background: #F3F4F6; border: 1px solid var(--border); border-radius: var(--radius-pill); }
+.language-toggle button { border: 0; background: transparent; color: var(--text-muted); border-radius: var(--radius-pill); padding: 4px 9px; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; }
+.language-toggle button.active { background: #111827; color: #fff; }
+.language-panel { display: none; }
+.language-panel.active { display: block; }
 .hero-header { background: linear-gradient(135deg, #111827 0%, #1e3a5f 100%); color: white; padding: 48px 16px 40px; margin-bottom: 28px; }
 .hero-inner { max-width: 1180px; margin: 0 auto; }
 .hero-date { font-size: 12px; font-weight: 500; color: #93C5FD; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; }
@@ -206,11 +277,37 @@ def e(value: object) -> str:
 def get_date_info() -> dict:
     warsaw = ZoneInfo("Europe/Warsaw")
     now = datetime.now(warsaw)
+    months_pl = {
+        1: "stycznia",
+        2: "lutego",
+        3: "marca",
+        4: "kwietnia",
+        5: "maja",
+        6: "czerwca",
+        7: "lipca",
+        8: "sierpnia",
+        9: "września",
+        10: "października",
+        11: "listopada",
+        12: "grudnia",
+    }
+    days_pl = {
+        0: "Poniedziałek",
+        1: "Wtorek",
+        2: "Środa",
+        3: "Czwartek",
+        4: "Piątek",
+        5: "Sobota",
+        6: "Niedziela",
+    }
     return {
         "date": now.strftime("%Y-%m-%d"),
         "date_long": now.strftime("%B %d, %Y"),
+        "date_long_pl": f"{now.day} {months_pl[now.month]} {now.year}",
         "date_short": now.strftime("%b %d"),
+        "date_short_pl": f"{now.day:02d}.{now.month:02d}",
         "day": now.strftime("%A"),
+        "day_pl": days_pl[now.weekday()],
         "month": now.strftime("%B"),
         "year": str(now.year),
         "datetime": now.strftime("%Y-%m-%d %H:%M %Z"),
@@ -221,6 +318,13 @@ def load_agent_prompt() -> str:
     prompt_path = Path(os.environ.get("AGENT_PROMPT_PATH", "agent.md"))
     if not prompt_path.exists():
         raise FileNotFoundError(f"Agent prompt file not found: {prompt_path}")
+    return prompt_path.read_text(encoding="utf-8").strip()
+
+
+def load_translation_prompt() -> str:
+    prompt_path = Path(os.environ.get("TRANSLATION_PROMPT_PATH", "translate-agent.md"))
+    if not prompt_path.exists():
+        raise FileNotFoundError(f"Translation prompt file not found: {prompt_path}")
     return prompt_path.read_text(encoding="utf-8").strip()
 
 
@@ -257,32 +361,28 @@ def extract_json(text: str) -> dict:
     return data
 
 
-def run_copilot_agent(dates: dict, system_prompt: str) -> dict:
-    output_path = Path(os.environ.get("COPILOT_OUTPUT_PATH", ".copilot-output/report.json"))
+def run_copilot_json(prompt: str, output_path: Path, allow_urls: bool) -> dict:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     if output_path.exists():
         output_path.unlink()
 
-    prompt = (
-        "/research\n"
-        f"{system_prompt}\n\n"
-        f"{build_user_message(dates)}\n\n"
-        f"Write the final JSON object to {output_path}. "
-        "Do not edit any other files. Do not write Markdown. Do not ask follow-up questions."
-    )
+    allow_tool = f"write({output_path})"
+    if allow_urls:
+        allow_tool = f"url,{allow_tool}"
+
     command = [
         "copilot",
         "-p",
         prompt,
         "-s",
-        "--allow-tool=url,write(.copilot-output/report.json)",
-        "--allow-all-urls",
+        f"--allow-tool={allow_tool}",
         "--deny-tool=shell",
+        "--model",
+        COPILOT_MODEL,
         "--no-ask-user",
     ]
-    model = os.environ.get("COPILOT_MODEL", "").strip()
-    if model:
-        command.extend(["--model", model])
+    if allow_urls:
+        command.append("--allow-all-urls")
 
     result = subprocess.run(
         command,
@@ -298,17 +398,71 @@ def run_copilot_agent(dates: dict, system_prompt: str) -> dict:
     return extract_json(output_path.read_text(encoding="utf-8"))
 
 
+def run_copilot_agent(dates: dict, system_prompt: str) -> dict:
+    output_path = Path(os.environ.get("COPILOT_OUTPUT_PATH", ".copilot-output/report.json"))
+    prompt = (
+        "/research\n"
+        f"{system_prompt}\n\n"
+        f"{build_user_message(dates)}\n\n"
+        f"Write the final JSON object to {output_path}. "
+        "Do not edit any other files. Do not write Markdown. Do not ask follow-up questions."
+    )
+    return run_copilot_json(prompt, output_path, allow_urls=True)
+
+
+def translate_report(report: dict, dates: dict) -> dict:
+    output_path = Path(os.environ.get("COPILOT_TRANSLATION_OUTPUT_PATH", ".copilot-output/report.pl.json"))
+    prompt = (
+        f"{load_translation_prompt()}\n\n"
+        f"Date: {dates['date']}\n\n"
+        f"Translate this JSON report to Polish and write the translated JSON object to {output_path}.\n"
+        "Do not edit any other files. Do not use web search. Do not write Markdown.\n\n"
+        f"{json.dumps(report, ensure_ascii=False)}"
+    )
+    translated = run_copilot_json(prompt, output_path, allow_urls=False)
+    return merge_translation(report, translated)
+
+
 def run_agent(dates: dict) -> dict:
     return run_copilot_agent(dates, build_system_prompt())
 
 
-def section_meta(section: dict) -> dict:
+def merge_translation(report: dict, translated: dict) -> dict:
+    merged = deepcopy(report)
+    for key in ("title", "tagline", "breaking"):
+        if isinstance(translated.get(key), str):
+            merged[key] = translated[key]
+
+    translated_sections = translated.get("sections", [])
+    for section_index, section in enumerate(merged.get("sections", [])):
+        if section_index >= len(translated_sections):
+            break
+        translated_section = translated_sections[section_index]
+        translated_articles = translated_section.get("articles", [])
+        for article_index, article in enumerate(section.get("articles", [])):
+            if article_index >= len(translated_articles):
+                break
+            translated_article = translated_articles[article_index]
+            for key in ("title", "subtitle", "facts", "body", "implications"):
+                if key in translated_article:
+                    article[key] = translated_article[key]
+            if isinstance(article.get("stats"), list) and isinstance(translated_article.get("stats"), list):
+                for stat_index, stat in enumerate(article["stats"]):
+                    if stat_index < len(translated_article["stats"]) and translated_article["stats"][stat_index].get("label"):
+                        stat["label"] = translated_article["stats"][stat_index]["label"]
+            if isinstance(article.get("quote"), dict) and isinstance(translated_article.get("quote"), dict):
+                if translated_article["quote"].get("text"):
+                    article["quote"]["text"] = translated_article["quote"]["text"]
+    return merged
+
+
+def section_meta(section: dict, lang: str = "en") -> dict:
     section_id = section.get("id") or "custom"
     defaults = SECTION_CONFIG.get(section_id, {})
     if defaults:
         return {
             "id": section_id,
-            "title": defaults["title"],
+            "title": SECTION_TITLES.get(lang, SECTION_TITLES["en"]).get(section_id, defaults["title"]),
             "icon": defaults["icon"],
             "color": defaults["color"],
             "badge": defaults["badge"],
@@ -373,7 +527,8 @@ def render_card_image(meta: dict) -> str:
     return f'<div class="card-image-placeholder"><i data-lucide="{e(meta["icon"])}"></i></div>'
 
 
-def render_article(article: dict, meta: dict, index: int, total: int) -> str:
+def render_article(article: dict, meta: dict, index: int, total: int, lang: str) -> str:
+    copy = UI_COPY[lang]
     importance = article.get("importance") or "info"
     if importance not in {"breakthrough", "important", "info"}:
         importance = "info"
@@ -397,7 +552,7 @@ def render_article(article: dict, meta: dict, index: int, total: int) -> str:
     if article.get("implications"):
         implications = (
             f'<p class="body-text implications"><i data-lucide="lightbulb"></i> '
-            f'<strong>Implications:</strong> {e(article.get("implications"))}</p>'
+            f'<strong>{e(copy["implications"])}:</strong> {e(article.get("implications"))}</p>'
         )
 
     source_url = article.get("source_url") or "#"
@@ -418,7 +573,7 @@ def render_article(article: dict, meta: dict, index: int, total: int) -> str:
       <h2 class="article-title">{e(article.get("title"))}</h2>
       <p class="article-deck">{e(article.get("subtitle"))}</p>
       {stats_html}
-      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+      <span class="expand-hint">{e(copy["expand"])} <i data-lucide="chevron-down"></i></span>
     </div>
   </summary>
   <div class="card-details">
@@ -436,19 +591,20 @@ def render_article(article: dict, meta: dict, index: int, total: int) -> str:
 </details>"""
 
 
-def render_section(section: dict) -> str:
-    meta = section_meta(section)
+def render_section(section: dict, lang: str) -> str:
+    copy = UI_COPY[lang]
+    meta = section_meta(section, lang)
     articles = [article for article in section.get("articles", []) if article.get("title")]
     if not articles:
         return ""
-    rendered_articles = "\n".join(render_article(article, meta, index, len(articles)) for index, article in enumerate(articles))
-    count_label = "article" if len(articles) == 1 else "articles"
+    rendered_articles = "\n".join(render_article(article, meta, index, len(articles), lang) for index, article in enumerate(articles))
+    count_label = copy["article_singular"] if len(articles) == 1 else copy["article_plural"]
     return f"""
-<section class="news-section" id="{e(meta["id"])}">
+<section class="news-section" id="{e(lang)}-{e(meta["id"])}">
   <div class="section-header">
     <span class="section-icon"><i data-lucide="{e(meta["icon"])}"></i></span>
     <div class="section-meta">
-      <span class="section-overline">Section</span>
+      <span class="section-overline">{e(copy["section"])}</span>
       <h2 class="section-title">{e(meta["title"])}</h2>
     </div>
     <span class="section-count">{len(articles)} {count_label}</span>
@@ -460,10 +616,10 @@ def render_section(section: dict) -> str:
 </section>"""
 
 
-def collect_sources(report: dict) -> list[dict]:
+def collect_sources(report: dict, lang: str = "en") -> list[dict]:
     sources = []
     for section in ordered_sections(report):
-        meta = section_meta(section)
+        meta = section_meta(section, lang)
         items = []
         for article in section.get("articles", []):
             if article.get("source_url"):
@@ -473,9 +629,9 @@ def collect_sources(report: dict) -> list[dict]:
     return sources
 
 
-def render_sources(report: dict) -> str:
+def render_sources(report: dict, lang: str) -> str:
     sections = []
-    for source_section in collect_sources(report):
+    for source_section in collect_sources(report, lang):
         links = "\n".join(
             f'<li><a href="{e(item["url"])}" target="_blank" rel="noopener">{e(item["name"])}</a></li>'
             for item in source_section["items"]
@@ -487,31 +643,93 @@ def render_sources(report: dict) -> str:
     return "\n".join(sections)
 
 
-def render_nav(report: dict) -> str:
+def render_nav(report: dict, lang: str) -> str:
     links = []
     for section in ordered_sections(report):
-        meta = section_meta(section)
+        meta = section_meta(section, lang)
         if section.get("articles"):
-            links.append(f'<a href="#{e(meta["id"])}"><i data-lucide="{e(meta["icon"])}"></i> {e(meta["title"])}</a>')
-    links.append('<a href="#sources"><i data-lucide="paperclip"></i> Sources</a>')
+            links.append(f'<a href="#{e(lang)}-{e(meta["id"])}"><i data-lucide="{e(meta["icon"])}"></i> {e(meta["title"])}</a>')
+    links.append(f'<a href="#{e(lang)}-sources"><i data-lucide="paperclip"></i> {e(UI_COPY[lang]["sources"])}</a>')
     return "\n".join(links)
 
 
-def render_report(report: dict, dates: dict) -> str:
+def render_language_toggle(active_lang: str, has_translation: bool) -> str:
+    buttons = []
+    languages = (("en", "EN"), ("pl", "PL")) if has_translation else (("en", "EN"),)
+    for lang, label in languages:
+        active = " active" if lang == active_lang else ""
+        buttons.append(f'<button type="button" class="{active.strip()}" data-set-lang="{lang}">{label}</button>')
+    return f'<div class="language-toggle" aria-label="Language">{"".join(buttons)}</div>'
+
+
+def render_report_panel(report: dict, dates: dict, lang: str, active: bool, has_translation: bool) -> str:
+    copy = UI_COPY[lang]
     report_sections = ordered_sections(report)
-    sections = [render_section(section) for section in report_sections]
+    sections = [render_section(section, lang) for section in report_sections]
     sections_html = "\n".join(section for section in sections if section)
     section_count = len(report_sections)
-    source_count = sum(len(source["items"]) for source in collect_sources(report))
+    source_count = sum(len(source["items"]) for source in collect_sources(report, lang))
     articles_count = sum(len(section.get("articles", [])) for section in report_sections)
     reviewed = report.get("articles_reviewed") or articles_count
     tagline = report.get("tagline") or "Everything you need to know from the last 24 hours."
+    day_label = dates.get("day_pl", dates["day"]) if lang == "pl" else dates["day"]
+    date_long = dates.get("date_long_pl", dates["date_long"]) if lang == "pl" else dates["date_long"]
+    date_short = dates.get("date_short_pl", dates["date_short"]) if lang == "pl" else dates["date_short"]
     breaking = ""
     if report.get("breaking"):
         breaking = (
             f'<div class="breaking-banner" role="alert">'
-            f'<span class="breaking-tag"><i data-lucide="zap"></i> BREAKING</span>{e(report["breaking"])}</div>'
+            f'<span class="breaking-tag"><i data-lucide="zap"></i> {e(copy["breaking"])}</span>{e(report["breaking"])}</div>'
         )
+
+    active_class = " active" if active else ""
+    return f"""
+<div class="language-panel{active_class}" data-lang="{e(lang)}">
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-brand">
+      <span class="masthead-title">{e(report.get("title") or "AI Daily")}</span>
+      <span class="masthead-edition">{e(date_short)}</span>
+    </div>
+    <nav class="masthead-nav">{render_nav(report, lang)}</nav>
+    {render_language_toggle(lang, has_translation)}
+    <span class="masthead-version">{e(copy["structured"])}</span>
+  </div>
+</header>
+<div class="hero-header">
+  <div class="hero-inner">
+    <div class="hero-date">{e(day_label)}, {e(date_long)} · {e(copy["edition"])}</div>
+    <h1 class="hero-title">{copy["hero"]}</h1>
+    <p class="hero-tagline">{e(tagline)}</p>
+    <div class="hero-stats">
+      <div class="hero-stat-item"><span class="hero-stat-num">{e(reviewed)}</span><span class="hero-stat-label">{e(copy["articles_reviewed"])}</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">{section_count}</span><span class="hero-stat-label">{e(copy["topic_sections"])}</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">{source_count}</span><span class="hero-stat-label">{e(copy["verified_sources"])}</span></div>
+    </div>
+  </div>
+</div>
+<div class="page-wrapper">
+  {breaking}
+  {sections_html}
+  <footer class="report-footer" id="{e(lang)}-sources">
+    <h3 class="footer-title"><i data-lucide="paperclip"></i> {e(copy["sources"])}</h3>
+    <div class="sources-grid">{render_sources(report, lang)}</div>
+    <div class="footer-meta">
+      <p><i data-lucide="cpu"></i> {e(copy["footer_generated"])}: {e(dates["datetime"])} {e(copy["footer_renderer"])}</p>
+      <p><i data-lucide="clock"></i> {e(copy["footer_window"])}</p>
+      <p><i data-lucide="bar-chart-2"></i> {e(copy["footer_sources"])}: {source_count}</p>
+      <p><i data-lucide="file-text"></i> {e(copy["footer_output"])}</p>
+    </div>
+  </footer>
+</div>
+</div>"""
+
+
+def render_report(report: dict, dates: dict, translated_report: dict | None = None) -> str:
+    has_translation = translated_report is not None
+    panels = [render_report_panel(report, dates, "en", active=True, has_translation=has_translation)]
+    if translated_report:
+        panels.append(render_report_panel(translated_report, dates, "pl", active=False, has_translation=has_translation))
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -525,43 +743,25 @@ def render_report(report: dict, dates: dict) -> str:
 <style>{REPORT_CSS}</style>
 </head>
 <body>
-<header class="masthead">
-  <div class="masthead-inner">
-    <div class="masthead-brand">
-      <span class="masthead-title">{e(report.get("title") or "AI Daily")}</span>
-      <span class="masthead-edition">{e(dates["date_short"])}</span>
-    </div>
-    <nav class="masthead-nav">{render_nav(report)}</nav>
-    <span class="masthead-version">Structured</span>
-  </div>
-</header>
-<div class="hero-header">
-  <div class="hero-inner">
-    <div class="hero-date">{e(dates["day"])}, {e(dates["date_long"])} · Morning Edition</div>
-    <h1 class="hero-title">AI Daily — <span>Your Morning</span><br>AI Briefing</h1>
-    <p class="hero-tagline">{e(tagline)}</p>
-    <div class="hero-stats">
-      <div class="hero-stat-item"><span class="hero-stat-num">{e(reviewed)}</span><span class="hero-stat-label">articles reviewed</span></div>
-      <div class="hero-stat-item"><span class="hero-stat-num">{section_count}</span><span class="hero-stat-label">topic sections</span></div>
-      <div class="hero-stat-item"><span class="hero-stat-num">{source_count}</span><span class="hero-stat-label">verified sources</span></div>
-    </div>
-  </div>
-</div>
-<div class="page-wrapper">
-  {breaking}
-  {sections_html}
-  <footer class="report-footer" id="sources">
-    <h3 class="footer-title"><i data-lucide="paperclip"></i> All report sources</h3>
-    <div class="sources-grid">{render_sources(report)}</div>
-    <div class="footer-meta">
-      <p><i data-lucide="cpu"></i> Generated: {e(dates["datetime"])} by AI Daily structured renderer</p>
-      <p><i data-lucide="clock"></i> Time window: last 24 hours</p>
-      <p><i data-lucide="bar-chart-2"></i> Sources analyzed: {source_count}</p>
-      <p><i data-lucide="file-text"></i> Output: JSON content rendered to HTML</p>
-    </div>
-  </footer>
-</div>
-<script>lucide.createIcons();</script>
+{''.join(panels)}
+<script>
+const setLanguage = (lang) => {{
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.language-panel').forEach((panel) => {{
+    panel.classList.toggle('active', panel.dataset.lang === lang);
+  }});
+  document.querySelectorAll('[data-set-lang]').forEach((button) => {{
+    button.classList.toggle('active', button.dataset.setLang === lang);
+  }});
+  localStorage.setItem('ai-daily-lang', lang);
+  if (window.lucide) window.lucide.createIcons();
+}};
+document.querySelectorAll('[data-set-lang]').forEach((button) => {{
+  button.addEventListener('click', () => setLanguage(button.dataset.setLang));
+}});
+const storedLanguage = localStorage.getItem('ai-daily-lang') || 'en';
+setLanguage(document.querySelector(`.language-panel[data-lang="${{storedLanguage}}"]`) ? storedLanguage : 'en');
+</script>
 </body>
 </html>"""
 
@@ -610,6 +810,12 @@ def rebuild_index(outputs_dir: Path) -> None:
     print("updated index.html")
 
 
+def report_has_polish_version(output_path: Path) -> bool:
+    if not output_path.exists():
+        return False
+    return 'data-lang="pl"' in output_path.read_text(encoding="utf-8")
+
+
 def main() -> None:
     dates = get_date_info()
     print(f"generating AI Daily Brief for {dates['date']}...")
@@ -618,11 +824,12 @@ def main() -> None:
     outputs_dir.mkdir(exist_ok=True)
 
     output_path = outputs_dir / f"AI_Daily_{dates['date']}.html"
-    if output_path.exists():
-        print(f"report already exists: {output_path} — skipping generation")
+    if output_path.exists() and report_has_polish_version(output_path):
+        print(f"bilingual report already exists: {output_path} — skipping generation")
     else:
         report = run_agent(dates)
-        output_path.write_text(render_report(report, dates), encoding="utf-8")
+        translated_report = translate_report(report, dates)
+        output_path.write_text(render_report(report, dates, translated_report), encoding="utf-8")
         print(f"saved {output_path}")
 
     rebuild_index(outputs_dir)

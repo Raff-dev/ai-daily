@@ -47,8 +47,8 @@ jobs:
       - name: Generate brief
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          COPILOT_MODEL: ${{ vars.COPILOT_MODEL }}
           AGENT_PROMPT_PATH: ${{ vars.AGENT_PROMPT_PATH || 'agent.md' }}
+          TRANSLATION_PROMPT_PATH: ${{ vars.TRANSLATION_PROMPT_PATH || 'translate-agent.md' }}
           AGENT_TIMEOUT_SECONDS: ${{ vars.AGENT_TIMEOUT_SECONDS || '1800' }}
         run: |
           if [ -z "${COPILOT_GITHUB_TOKEN}" ]; then
@@ -133,6 +133,7 @@ jobs:
             --allow-tool='url,write(copilot-web-smoke.json)' \
             --allow-url='https://www.githubstatus.com/api/v2/status.json' \
             --deny-tool='shell' \
+            --model='gpt-5.4' \
             --no-ask-user
 
           test -s copilot-web-smoke.json
