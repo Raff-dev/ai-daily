@@ -29,9 +29,7 @@ SECTION_CONFIG = {
 }
 SECTION_ORDER = tuple(SECTION_CONFIG)
 COPILOT_MODEL = "gpt-5.4"
-MIN_ARTICLES_PER_SECTION = 3
 IMAGE_CACHE: dict[str, str] = {}
-SPARSE_SECTION_WARNINGS: set[str] = set()
 
 SECTION_TITLES = {
     "en": {
@@ -110,7 +108,7 @@ Process:
 3. Use only these section ids, in this exact order: dev-tools, ai-tools, robotics, defense, space, startups, markets.
 4. Target 3-4 important stories per section.
 5. If a section has fewer than 3 strong stories, broaden source discovery before skipping it.
-6. Never fabricate filler: omit a section instead of returning a sparse 1-2 article section.
+6. Never fabricate filler: if a section still has fewer than 3 strong stories, include only credible stories and mark uncertain ones with verified=false.
 7. Skip empty sections, including markets unless there is a major market-moving event.
 8. Verify dates and sources. Set verified=false if uncertain.
 9. Return JSON only.
@@ -424,7 +422,7 @@ def recover_report_json(research_notes: str, output_path: Path, dates: dict) -> 
         f"Date: {dates['date']}\n\n"
         "Convert the research notes below into the required final JSON object.\n"
         "Use only facts present in the notes. Do not use web search. Do not add Markdown or explanations.\n"
-        "Omit sections with fewer than 3 strong article candidates. Keep 3-4 articles per included section.\n"
+        "Keep every non-empty section from the notes. Prefer 3-4 articles per section, but do not drop a credible section solely because it has fewer candidates.\n"
         f"Write the final JSON object to {output_path} and do not edit any other files.\n\n"
         f"## RESEARCH NOTES\n\n{notes}"
     )
@@ -525,16 +523,7 @@ def section_meta(section: dict, lang: str = "en") -> dict:
 
 
 def ordered_sections(report: dict) -> list[dict]:
-    sections = []
-    for section in report.get("sections", []):
-        articles = [article for article in section.get("articles", []) if article.get("title")]
-        if len(articles) < MIN_ARTICLES_PER_SECTION:
-            section_id = section.get("id") or "custom"
-            if articles and section_id not in SPARSE_SECTION_WARNINGS:
-                print(f"warning: skipping sparse section {section_id}: {len(articles)} article(s)")
-                SPARSE_SECTION_WARNINGS.add(section_id)
-            continue
-        sections.append(section)
+    sections = [section for section in report.get("sections", []) if any(article.get("title") for article in section.get("articles", []))]
     known = {section.get("id"): section for section in sections if section.get("id") in SECTION_CONFIG}
     ordered = [known[section_id] for section_id in SECTION_ORDER if section_id in known]
     ordered.extend(section for section in sections if section.get("id") not in SECTION_CONFIG)
@@ -881,7 +870,7 @@ def render_report(report: dict, dates: dict, translated_report: dict | None = No
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>{REPORT_CSS}</style>
 </head>
-<body data-render-version="source-images-v2">
+<body data-render-version="source-images-v3">
 {''.join(panels)}
 <script>
 const setLanguage = (lang) => {{
@@ -953,7 +942,7 @@ def report_is_current_format(output_path: Path) -> bool:
     if not output_path.exists():
         return False
     html_doc = output_path.read_text(encoding="utf-8")
-    return 'data-lang="pl"' in html_doc and 'data-render-version="source-images-v2"' in html_doc
+    return 'data-lang="pl"' in html_doc and 'data-render-version="source-images-v3"' in html_doc
 
 
 def main() -> None:

@@ -64,7 +64,7 @@ Useful source map by section:
 - Keep only articles published in the last 24 hours.
 - Target 3-4 strong stories per section.
 - If a section has fewer than 3 strong stories, broaden searches across the source map before skipping it.
-- Do not fabricate filler: if a section still has fewer than 3 genuinely relevant last-24h stories after broadening, omit that section from the JSON instead of returning a sparse 1-2 article section.
+- Do not fabricate filler: if a section still has fewer than 3 genuinely relevant last-24h stories after broadening, include only credible stories and mark uncertain ones with `verified=false`.
 - Skip sections with no relevant last-24h news.
 - Prefer primary sources and reputable reporting.
 - Mark uncertain stories with `[UNVERIFIED]`.
