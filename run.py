@@ -290,14 +290,57 @@ def run_command_agent(dates: dict, system_prompt: str) -> dict:
     return extract_json(result.stdout)
 
 
+def run_copilot_agent(dates: dict, system_prompt: str) -> dict:
+    output_path = Path(os.environ.get("COPILOT_OUTPUT_PATH", ".copilot-output/report.json"))
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    if output_path.exists():
+        output_path.unlink()
+
+    prompt = (
+        "/research\n"
+        f"{system_prompt}\n\n"
+        f"{build_user_message(dates)}\n\n"
+        f"Write the final JSON object to {output_path}. "
+        "Do not edit any other files. Do not write Markdown. Do not ask follow-up questions."
+    )
+    command = [
+        "copilot",
+        "-p",
+        prompt,
+        "-s",
+        "--allow-tool=url,write(.copilot-output/report.json)",
+        "--allow-all-urls",
+        "--deny-tool=shell",
+        "--no-ask-user",
+    ]
+    model = os.environ.get("COPILOT_MODEL", "").strip()
+    if model:
+        command.extend(["--model", model])
+
+    result = subprocess.run(
+        command,
+        text=True,
+        capture_output=True,
+        timeout=int(os.environ.get("AGENT_TIMEOUT_SECONDS", "1800")),
+        check=False,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"Copilot CLI failed with exit code {result.returncode}:\n{result.stderr}\n{result.stdout}")
+    if not output_path.exists():
+        raise RuntimeError(f"Copilot CLI did not create expected JSON file: {output_path}\n{result.stdout}")
+    return extract_json(output_path.read_text(encoding="utf-8"))
+
+
 def run_agent(dates: dict) -> dict:
-    provider = os.environ.get("AI_PROVIDER", "anthropic").strip().lower()
+    provider = os.environ.get("AI_PROVIDER", "copilot").strip().lower()
     system_prompt = build_system_prompt()
+    if provider == "copilot":
+        return run_copilot_agent(dates, system_prompt)
     if provider == "anthropic":
         return run_anthropic_agent(dates, system_prompt)
     if provider in {"command", "custom"}:
         return run_command_agent(dates, system_prompt)
-    raise ValueError(f"Unsupported AI_PROVIDER: {provider}. Use 'anthropic' or 'command'.")
+    raise ValueError(f"Unsupported AI_PROVIDER: {provider}. Use 'copilot', 'anthropic', or 'command'.")
 
 
 def section_meta(section: dict) -> dict:

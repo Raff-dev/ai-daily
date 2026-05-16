@@ -34,21 +34,28 @@ This is the default path. GitHub Actions runs the agent on a schedule and deploy
 
 Click **Fork** on GitHub. Public repositories can use GitHub Pages and scheduled Actions for free within GitHub's limits.
 
-### 2. Add your AI provider secret
+### 2. Add your Copilot CLI token
 
-The default provider is Anthropic Claude because this project uses Claude's hosted web search tool.
+The default provider is GitHub Copilot CLI running in GitHub Actions. Create a fine-grained personal access token from the GitHub account that has an active Copilot subscription:
+
+```text
+https://github.com/settings/personal-access-tokens/new?name=AI+Daily+Copilot+CLI&description=Run+Copilot+CLI+from+GitHub+Actions&copilot_requests=write
+```
+
+Use **Account permissions -> Copilot requests -> Write**.
 
 Go to **Settings -> Secrets and variables -> Actions -> New repository secret**:
 
 | Name | Value |
 |---|---|
-| `ANTHROPIC_API_KEY` | Your key from `https://console.anthropic.com` |
+| `PERSONAL_ACCESS_TOKEN` | Fine-grained PAT with `Copilot requests: write` |
 
 Optional variables in **Settings -> Secrets and variables -> Actions -> Variables**:
 
 | Name | Default | Description |
 |---|---|---|
-| `AI_PROVIDER` | `anthropic` | Use `anthropic` or `command` |
+| `AI_PROVIDER` | `copilot` | Use `copilot`, `anthropic`, or `command` |
+| `COPILOT_MODEL` | Copilot CLI default | Optional Copilot model override |
 | `CLAUDE_MODEL` | `claude-sonnet-4-6` | Claude model override |
 | `AGENT_PROMPT_PATH` | `agent.md` | Prompt file to load |
 | `AGENT_COMMAND` | empty | Command to run when `AI_PROVIDER=command` |
@@ -70,11 +77,28 @@ https://<your-username>.github.io/<repo-name>/
 
 Open the **Actions** tab and enable workflows if GitHub asks. The workflow runs daily at **05:00 UTC**. You can also trigger it from **Actions -> Daily AI Brief -> Run workflow**.
 
+## How publishing is guarded
+
+The scheduled workflow renders a dated report and then commits it back to the repository so GitHub Pages updates automatically.
+
+The commit step is intentionally locked down. The workflow fails if the generation step changes anything except:
+
+```text
+index.html
+outputs/AI_Daily_YYYY-MM-DD.html
+```
+
+Copilot CLI is also granted write access only to a temporary ignored JSON file (`.copilot-output/report.json`). The app, not Copilot, renders and commits the final HTML.
+
 ## Using another agent or subscription
 
-Claude API is the simplest fully automated setup because the script can call Claude with web search directly from GitHub Actions.
+Copilot CLI is the default because it runs on GitHub's hosted agent harness with a Copilot subscription. If you prefer Anthropic Claude, set `AI_PROVIDER=anthropic` and add:
 
-Copilot Chat subscriptions do not expose a safe headless API for scheduled GitHub Actions runs. If you want to use Copilot CLI, another CLI agent, or a company-hosted agent, use `AI_PROVIDER=command`. The command must read the full prompt from stdin and print the structured JSON content to stdout.
+| Name | Value |
+|---|---|
+| `ANTHROPIC_API_KEY` | Your key from `https://console.anthropic.com` |
+
+If you want another CLI agent or a company-hosted agent, use `AI_PROVIDER=command`. The command must read the full prompt from stdin and print the structured JSON content to stdout.
 
 Example repository variable:
 
@@ -147,7 +171,7 @@ cd ai-daily
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-export ANTHROPIC_API_KEY=sk-ant-...
+export COPILOT_GITHUB_TOKEN=github_pat_...
 python run.py
 ```
 
@@ -157,10 +181,13 @@ The agent returns JSON, then `run.py` saves the rendered report to `outputs/AI_D
 
 | Env variable | Default | Description |
 |---|---|---|
-| `AI_PROVIDER` | `anthropic` | `anthropic` or `command` |
-| `ANTHROPIC_API_KEY` | required for Claude | Anthropic API key |
+| `AI_PROVIDER` | `copilot` | `copilot`, `anthropic`, or `command` |
+| `PERSONAL_ACCESS_TOKEN` | required for Copilot | Fine-grained PAT with `Copilot requests: write` |
+| `COPILOT_MODEL` | Copilot CLI default | Copilot model |
+| `ANTHROPIC_API_KEY` | required for Claude fallback | Anthropic API key |
 | `CLAUDE_MODEL` | `claude-sonnet-4-6` | Claude model |
 | `AGENT_PROMPT_PATH` | `agent.md` | Custom prompt file |
+| `COPILOT_OUTPUT_PATH` | `.copilot-output/report.json` | Temporary JSON file written by Copilot CLI |
 | `AGENT_COMMAND` | empty | Custom agent command for `AI_PROVIDER=command` |
 | `AGENT_TIMEOUT_SECONDS` | `1800` | Timeout for command-based agents |
 
@@ -168,7 +195,7 @@ To change the schedule, edit the `cron` line in `.github/workflows/daily.yml`. C
 
 ## Cost and safety
 
-Each Claude run performs web searches and generates structured report content. The repository renders HTML itself, so repeated CSS/layout tokens are not spent on every run.
+Each Copilot run consumes Copilot premium requests from the account behind `PERSONAL_ACCESS_TOKEN`. The repository renders HTML itself, so repeated CSS/layout tokens are not spent on every run.
 
 Safety rules:
 
