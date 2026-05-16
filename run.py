@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""AI Daily Brief — generates a daily AI news HTML report using Claude."""
+"""AI Daily Brief — asks an agent for structured content and renders stable HTML."""
 
-import anthropic
+import html
+import json
 import os
+import subprocess
 from datetime import datetime
 from pathlib import Path
+from urllib.parse import urlparse
 
 try:
     from zoneinfo import ZoneInfo
@@ -12,53 +15,67 @@ except ImportError:
     from backports.zoneinfo import ZoneInfo  # Python < 3.9
 
 
+SECTION_CONFIG = {
+    "dev-tools": {"title": "Developer Tools", "icon": "monitor", "color": "#2563EB", "badge": "dev"},
+    "robotics": {"title": "Robotics", "icon": "bot", "color": "#16A34A", "badge": "robot"},
+    "defense": {"title": "Defense", "icon": "shield", "color": "#DC2626", "badge": "defense"},
+    "space": {"title": "Space", "icon": "rocket", "color": "#7C3AED", "badge": "space"},
+    "startups": {"title": "Startups", "icon": "banknote", "color": "#EA580C", "badge": "startup"},
+    "markets": {"title": "Markets", "icon": "bar-chart-2", "color": "#0F766E", "badge": "market"},
+}
+
 SYSTEM_PROMPT = """\
-You are an AI News Specialist. Your task is to generate a daily AI Daily Brief — \
-a complete, self-contained HTML file covering AI world events from the last 24 hours.
+You are an AI News Specialist. Generate only structured content for a daily news briefing.
+Do not generate HTML, CSS, Markdown, code fences, or explanations.
 
-## STEP 1 — Searches
+Use the repository owner's custom brief from agent.md. If it conflicts with default topics,
+the custom brief wins.
 
-Use web_search for each of the following queries (replace {DATE} with today's date, \
-{YEAR} with the year, {MONTH} with the month):
+Process:
+1. Run the searches requested by agent.md, replacing {DATE}, {YEAR}, and {MONTH}.
+2. Keep only news published in the last 24 hours.
+3. Pick max 4 important stories per section.
+4. Skip empty sections.
+5. Verify dates and sources. Set verified=false if uncertain.
+6. Return JSON only.
 
-1. "Claude OR Anthropic OR Copilot OR Cursor OR Codex OR Windsurf AI coding news {DATE} {YEAR}"
-2. "humanoid robot drone AI news {DATE} {YEAR}"
-3. "AI military defense autonomous weapons news {DATE} {YEAR}"
-4. "AI space NASA SpaceX astronautics news {DATE} {YEAR}"
-5. "AI startup funding investment Series {DATE} {YEAR}"
-6. "Nvidia Meta Tesla Microsoft Google Apple stock AI news today {DATE}"
-7. "AI stock emerging company IPO {MONTH} {YEAR}"
-8. "energy AI data center power nuclear stock news {DATE} {YEAR}"
+JSON shape:
+{
+  "title": "AI Daily",
+  "tagline": "Everything you need to know about artificial intelligence from the last 24 hours.",
+  "articles_reviewed": 24,
+  "breaking": "optional urgent one-sentence item or empty string",
+  "sections": [
+    {
+      "id": "dev-tools",
+      "title": "Developer Tools",
+      "icon": "monitor",
+      "color": "#2563EB",
+      "articles": [
+        {
+          "title": "Short factual headline",
+          "subtitle": "One-sentence summary shown in collapsed view.",
+          "importance": "breakthrough|important|info",
+          "verified": true,
+          "stats": [{"number": "2x", "label": "short label"}],
+          "facts": ["Fact 1", "Fact 2", "Fact 3"],
+          "body": ["Context paragraph 1", "Context paragraph 2"],
+          "quote": {"text": "Optional quote", "cite": "Optional source"},
+          "implications": "Why this matters.",
+          "source_name": "Source",
+          "source_url": "https://example.com/article",
+          "published_at": "2026-05-16"
+        }
+      ]
+    }
+  ]
+}
 
-## STEP 2 — Filtering
+Allowed default section ids: dev-tools, robotics, defense, space, startups, markets.
+For custom topics, use lowercase kebab-case ids and include title, icon, and color.
+"""
 
-Keep only articles published in the last 24 hours. For each section select max 4 most \
-important stories. Add the Markets section ONLY if: price change >±5%, earnings report, \
-or a major announcement. Skip any topical section with no last-24h news.
-
-## STEP 3 — Verification
-
-For each story: verify the publication date. Prefer Tier 1 sources (anthropic.com, \
-openai.com, techcrunch.com, crunchbase.com, defenseone.com, ieee.org, space.com, \
-spaceflightnow.com, nvidianews.nvidia.com). Mark unverified stories as [UNVERIFIED].
-
-## STEP 4 — Generate HTML
-
-Generate a complete HTML file matching the specification below.
-
-### HTML Template:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Daily — {DATE_LONG} · Extended Edition</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-<style>
+REPORT_CSS = """
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height: 1.65; color: #111827; background: #F3F4F6; -webkit-font-smoothing: antialiased; }
@@ -78,15 +95,6 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .section-icon [data-lucide] { width: 20px; height: 20px; stroke-width: 1.75; }
 .badge [data-lucide] { width: 11px; height: 11px; stroke-width: 2.5; vertical-align: -1px; }
 .card-image-placeholder [data-lucide] { width: 48px; height: 48px; stroke-width: 1.25; color: #C4C9D4; }
-.masthead-nav a [data-lucide] { width: 13px; height: 13px; }
-.footer-title [data-lucide] { width: 15px; height: 15px; vertical-align: -3px; }
-.sources-section h4 [data-lucide] { width: 12px; height: 12px; }
-.footer-meta p [data-lucide] { width: 12px; height: 12px; }
-.breaking-tag [data-lucide] { width: 10px; height: 10px; stroke-width: 2.5; vertical-align: -1px; }
-.implications [data-lucide] { width: 14px; height: 14px; vertical-align: -2px; }
-.bullet-list li [data-lucide] { width: 13px; height: 13px; vertical-align: -2px; margin-right: 2px; }
-.stock-change [data-lucide] { width: 14px; height: 14px; vertical-align: -3px; }
-.card-image-placeholder { font-size: 0; }
 .page-wrapper { max-width: 1180px; margin: 0 auto; padding: 0 16px 60px; }
 .masthead { background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
 .masthead-inner { max-width: 1180px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; gap: 24px; height: 56px; }
@@ -103,10 +111,10 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .hero-date { font-size: 12px; font-weight: 500; color: #93C5FD; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; }
 .hero-title { font-size: 42px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 12px; }
 .hero-title span { color: #60A5FA; }
-.hero-tagline { font-size: 15px; color: #9CA3AF; max-width: 480px; line-height: 1.6; margin-bottom: 24px; }
+.hero-tagline { font-size: 15px; color: #9CA3AF; max-width: 520px; line-height: 1.6; margin-bottom: 24px; }
 .hero-stats { display: flex; gap: 32px; flex-wrap: wrap; }
 .hero-stat-num { font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -0.03em; display: block; }
-.hero-stat-label { font-size: 11px; color: #6B7280; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+.hero-stat-label { font-size: 11px; color: #9CA3AF; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
 .breaking-banner { background: #FEF2F2; border: 1px solid #FECACA; border-radius: var(--radius-sm); padding: 10px 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; color: #991B1B; }
 .breaking-tag { background: #DC2626; color: white; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; }
 .news-section { margin-bottom: 36px; }
@@ -124,27 +132,33 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .news-card.secondary { grid-column: span 5; }
 .news-card.standard { grid-column: span 6; }
 .news-card.full { grid-column: span 12; }
-.card-image-placeholder { width: 100%; aspect-ratio: 16/7; background: linear-gradient(135deg, #F3F4F6, #E5E7EB); display: flex; align-items: center; justify-content: center; }
-.card-body { padding: 16px 18px; flex: 1; display: flex; flex-direction: column; }
+.news-card > summary { list-style: none; cursor: pointer; }
+.news-card > summary::-webkit-details-marker { display: none; }
+.card-summary { padding: 16px 18px; }
+.expand-hint { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: #2563EB; }
+.expand-hint [data-lucide] { width: 13px; height: 13px; transition: transform .15s; }
+.news-card[open] .expand-hint [data-lucide] { transform: rotate(180deg); }
+.card-details { border-top: 1px solid var(--border); padding: 14px 18px 16px; display: flex; flex-direction: column; flex: 1; }
+.card-image-placeholder { margin: -14px -18px 14px; width: calc(100% + 36px); aspect-ratio: 16/7; background: linear-gradient(135deg, #F3F4F6, #E5E7EB); display: flex; align-items: center; justify-content: center; font-size: 0; }
 .card-tags { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
 .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: var(--radius-pill); font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1; white-space: nowrap; }
-.badge-dev     { background: var(--dev-bg);     color: var(--dev);     border: 1px solid var(--dev-border); }
-.badge-robot   { background: var(--robot-bg);   color: var(--robot);   border: 1px solid var(--robot-border); }
+.badge-dev { background: var(--dev-bg); color: var(--dev); border: 1px solid var(--dev-border); }
+.badge-robot { background: var(--robot-bg); color: var(--robot); border: 1px solid var(--robot-border); }
 .badge-defense { background: var(--defense-bg); color: var(--defense); border: 1px solid var(--defense-border); }
-.badge-space   { background: var(--space-bg);   color: var(--space);   border: 1px solid var(--space-border); }
+.badge-space { background: var(--space-bg); color: var(--space); border: 1px solid var(--space-border); }
 .badge-startup { background: var(--startup-bg); color: var(--startup); border: 1px solid var(--startup-border); }
-.badge-market  { background: var(--market-bg);  color: var(--market);  border: 1px solid var(--market-border); }
+.badge-market { background: var(--market-bg); color: var(--market); border: 1px solid var(--market-border); }
+.badge-custom { background: #F9FAFB; color: #374151; border: 1px solid #E5E7EB; }
 .badge-breakthrough { background: #F5F3FF; color: #7C3AED; border: 1px solid #DDD6FE; }
-.badge-important    { background: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; }
-.badge-info         { background: #F9FAFB; color: #6B7280; border: 1px solid #E5E7EB; }
-.badge-unverified   { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
+.badge-important { background: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; }
+.badge-info { background: #F9FAFB; color: #6B7280; border: 1px solid #E5E7EB; }
+.badge-unverified { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
 .article-title { font-size: 17px; font-weight: 700; line-height: 1.3; color: var(--text-primary); margin-bottom: 8px; letter-spacing: -0.02em; }
 .news-card.featured .article-title { font-size: 21px; }
-.article-deck { font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 14px; font-style: italic; }
+.article-deck { font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 10px; font-style: italic; }
 .bullet-list { list-style: none; margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
 .bullet-list li { font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; padding-left: 14px; position: relative; }
 .bullet-list li::before { content: '•'; position: absolute; left: 0; color: var(--text-muted); font-weight: 700; }
-.bullet-list strong { color: var(--text-primary); font-weight: 600; }
 .stat-row { display: flex; flex-wrap: wrap; margin-bottom: 12px; }
 .stat-highlight { display: inline-flex; align-items: baseline; gap: 4px; padding: 6px 12px; background: var(--bg-page); border: 1px solid var(--border); border-radius: var(--radius-sm); margin: 4px 4px 4px 0; }
 .stat-number { font-size: 22px; font-weight: 700; letter-spacing: -0.03em; color: var(--text-primary); }
@@ -160,23 +174,6 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .source-link:hover { background: #DBEAFE; }
 .source-link img { width: 12px; height: 12px; border-radius: 2px; }
 .pub-time { font-size: 11.5px; color: var(--text-muted); margin-left: auto; }
-.funding-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 12px; }
-.funding-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; box-shadow: var(--shadow-sm); }
-.funding-amount { font-size: 26px; font-weight: 700; letter-spacing: -0.04em; color: var(--startup); display: block; margin-bottom: 2px; }
-.funding-company { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
-.funding-details { font-size: 11.5px; color: var(--text-muted); line-height: 1.5; }
-.funding-stage { display: inline-block; padding: 2px 7px; background: var(--startup-bg); color: var(--startup); border: 1px solid var(--startup-border); border-radius: 4px; font-size: 10px; font-weight: 600; margin-top: 6px; }
-.stocks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
-.stock-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; box-shadow: var(--shadow-sm); }
-.stock-ticker { font-size: 13px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 2px; }
-.stock-name { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
-.stock-price { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; color: var(--text-primary); }
-.stock-change { font-size: 13px; font-weight: 600; margin: 2px 0 8px; display: flex; align-items: center; gap: 3px; }
-.stock-change.positive { color: #16A34A; }
-.stock-change.negative { color: #DC2626; }
-.stock-reason { font-size: 11.5px; color: var(--text-muted); line-height: 1.4; margin-bottom: 8px; }
-.stock-news-link { font-size: 11.5px; color: #2563EB; text-decoration: none; font-weight: 500; }
-.market-intro { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 14px; box-shadow: var(--shadow-sm); }
 .report-footer { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; margin-top: 36px; box-shadow: var(--shadow-sm); }
 .footer-title { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
 .sources-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 20px; }
@@ -191,180 +188,11 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
   .hero-title { font-size: 30px; }
   .masthead-nav { display: none; }
 }
-</style>
-</head>
-<body>
-
-<!-- STICKY NAV -->
-<header class="masthead">
-  <div class="masthead-inner">
-    <div class="masthead-brand">
-      <span class="masthead-title">AI Daily</span>
-      <span class="masthead-edition">{DATE_SHORT}</span>
-    </div>
-    <nav class="masthead-nav">
-      <a href="#dev-tools"><i data-lucide="monitor"></i> Dev Tools</a>
-      <a href="#robotics"><i data-lucide="bot"></i> Robotics</a>
-      <a href="#defense"><i data-lucide="shield"></i> Defense</a>
-      <a href="#space"><i data-lucide="rocket"></i> Space</a>
-      <a href="#startups"><i data-lucide="banknote"></i> Startups</a>
-      <a href="#markets"><i data-lucide="bar-chart-2"></i> Markets</a>
-      <a href="#sources"><i data-lucide="paperclip"></i> Sources</a>
-    </nav>
-    <span class="masthead-version">Extended</span>
-  </div>
-</header>
-
-<!-- HERO -->
-<div class="hero-header">
-  <div class="hero-inner">
-    <div class="hero-date">{DAY_OF_WEEK}, {DATE_LONG} · Morning Edition</div>
-    <h1 class="hero-title">AI Daily — <span>Your Morning</span><br>AI Briefing</h1>
-    <p class="hero-tagline">Everything you need to know about artificial intelligence from the last 24 hours.</p>
-    <div class="hero-stats">
-      <div class="hero-stat-item">
-        <span class="hero-stat-num">{ARTICLES_REVIEWED}</span>
-        <span class="hero-stat-label">articles reviewed</span>
-      </div>
-      <div class="hero-stat-item">
-        <span class="hero-stat-num">{SECTIONS_COUNT}</span>
-        <span class="hero-stat-label">topic sections</span>
-      </div>
-      <div class="hero-stat-item">
-        <span class="hero-stat-num">{SOURCES_COUNT}</span>
-        <span class="hero-stat-label">verified sources</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="page-wrapper">
-
-  <!-- BREAKING BANNER — include only if there is urgent news, otherwise remove this block -->
-  <!-- <div class="breaking-banner" role="alert">
-    <span class="breaking-tag"><i data-lucide="zap"></i> BREAKING</span>
-    {BREAKING_NEWS_TEXT}
-  </div> -->
-
-  <!-- TOPIC SECTIONS — generate only those with last-24h news -->
-
-  <!-- Dev Tools section example: -->
-  <section class="news-section" id="dev-tools">
-    <div class="section-header">
-      <span class="section-icon"><i data-lucide="monitor"></i></span>
-      <div class="section-meta">
-        <span class="section-overline">Section</span>
-        <h2 class="section-title">Developer Tools</h2>
-      </div>
-      <span class="section-count">{N} articles</span>
-    </div>
-    <div class="section-divider" style="background: #2563EB;"></div>
-    <div class="articles-grid">
-      <!-- First (most important) story: class="featured" -->
-      <!-- Second: class="secondary" -->
-      <!-- Third–fourth: class="standard" -->
-      <!-- Full-width article: class="full" -->
-    </div>
-  </section>
-
-  <!-- Other sections with their colors and icons:
-    Robotics:  id="robotics", divider #16A34A, icon: bot
-    Defense:   id="defense",  divider #DC2626, icon: shield
-    Space:     id="space",    divider #7C3AED, icon: rocket
-    Startups:  id="startups", divider #EA580C, icon: banknote
-    Markets (conditional): id="markets", divider #0F766E, icon: bar-chart-2
-  -->
-
-  <!-- SOURCES FOOTER -->
-  <footer class="report-footer" id="sources">
-    <h3 class="footer-title"><i data-lucide="paperclip"></i> All report sources</h3>
-    <div class="sources-grid">
-      <!-- one div.sources-section per content section -->
-    </div>
-    <div class="footer-meta">
-      <p><i data-lucide="cpu"></i> Generated: {DATETIME} by Claude AI News Specialist</p>
-      <p><i data-lucide="clock"></i> Time window: last 24 hours</p>
-      <p><i data-lucide="bar-chart-2"></i> Sources analyzed: {N}</p>
-      <p><i data-lucide="file-text"></i> Edition: Extended</p>
-    </div>
-  </footer>
-
-</div>
-<script>lucide.createIcons();</script>
-</body>
-</html>
-```
-
-### Article Card Structure:
-
-```html
-<article class="news-card featured">  <!-- or secondary / standard / full -->
-  <div class="card-image-placeholder"><i data-lucide="{SECTION_ICON}"></i></div>
-  <div class="card-body">
-    <div class="card-tags">
-      <span class="badge badge-{SECTION}"><i data-lucide="{ICON}"></i> {SECTION NAME}</span>
-      <span class="badge badge-breakthrough"><i data-lucide="sparkles"></i> Breakthrough</span>  <!-- or badge-important / badge-info -->
-      <!-- optionally: <span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span> -->
-    </div>
-    <h2 class="article-title">{TITLE}</h2>
-    <p class="article-deck">{LEAD — 1 sentence}</p>
-    <!-- optional stat-row for key numbers -->
-    <div class="stat-row">
-      <div class="stat-highlight"><span class="stat-number">{NUMBER}</span><span class="stat-label">{DESCRIPTION}</span></div>
-    </div>
-    <ul class="bullet-list">
-      <li>Fact 1 — <strong>key value</strong></li>
-      <li>Fact 2</li>
-      <li>Fact 3</li>
-    </ul>
-    <!-- Extended version — add for BREAKTHROUGH or IMPORTANT: -->
-    <div class="extended-content">
-      <p class="body-text">Context...</p>
-      <blockquote class="article-quote"><p>"Quote"</p><cite>— Person, Title</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> ...</p>
-    </div>
-    <div class="card-footer">
-      <a href="{URL}" class="source-link" target="_blank" rel="noopener">
-        <img src="https://www.google.com/s2/favicons?domain={DOMAIN}&sz=16" alt="">
-        {SOURCE NAME}
-      </a>
-      <span class="pub-time">{PUBLICATION DATE}</span>
-    </div>
-  </div>
-</article>
-```
-
-### Layout Rule:
-- 1st article in section → `featured` (span 7)
-- 2nd article → `secondary` (span 5)
-- 3rd–4th articles → `standard` (span 6) × 2
-- Full-width article → `full` (span 12)
-
-### Section Icons (Lucide):
-- Dev Tools: `monitor` / badge: `badge-dev`
-- Robotics: `bot` / badge: `badge-robot`
-- Drones: `plane`
-- Defense: `shield` / badge: `badge-defense`
-- Space: `rocket` / badge: `badge-space`
-- AI in Space: `satellite`
-- Startups: `banknote` / badge: `badge-startup`
-- Markets: `bar-chart-2` / badge: `badge-market`
-- BREAKTHROUGH: `sparkles`
-- IMPORTANT: `alert-circle`
-- UNVERIFIED: `alert-triangle`
-- Implications: `lightbulb`
-- Stock up: `trending-up`
-- Stock down: `trending-down`
-
-### Markets Section — conditional only:
-Add ONLY if price change >±5%, earnings report, or major announcement for:
-NVDA, META, TSLA, MSFT, GOOGL, AAPL, AMZN, ORCL, AMD, PLTR, VST, CEG, SMR, NEE.
-
-## STEP 5 — Output
-
-Output ONLY the complete HTML document. No explanations, no markdown fences. \
-Start directly with <!DOCTYPE html>.
 """
+
+
+def e(value: object) -> str:
+    return html.escape(str(value or ""), quote=True)
 
 
 def get_date_info() -> dict:
@@ -373,6 +201,7 @@ def get_date_info() -> dict:
     return {
         "date": now.strftime("%Y-%m-%d"),
         "date_long": now.strftime("%B %d, %Y"),
+        "date_short": now.strftime("%b %d"),
         "day": now.strftime("%A"),
         "month": now.strftime("%B"),
         "year": str(now.year),
@@ -380,62 +209,321 @@ def get_date_info() -> dict:
     }
 
 
-def run_agent(client: anthropic.Anthropic, dates: dict) -> str:
-    model = os.environ.get("CLAUDE_MODEL", "claude-sonnet-4-6")
-    user_message = (
-        f"Generate today's AI Daily Brief.\n\n"
+def load_agent_prompt() -> str:
+    prompt_path = Path(os.environ.get("AGENT_PROMPT_PATH", "agent.md"))
+    if not prompt_path.exists():
+        raise FileNotFoundError(f"Agent prompt file not found: {prompt_path}")
+    return prompt_path.read_text(encoding="utf-8").strip()
+
+
+def build_system_prompt() -> str:
+    return f"{SYSTEM_PROMPT}\n\n## CUSTOM AGENT BRIEF FROM agent.md\n\n{load_agent_prompt()}"
+
+
+def build_user_message(dates: dict) -> str:
+    return (
+        f"Generate today's structured AI Daily Brief content.\n\n"
         f"Date: {dates['date']}\n"
         f"Day: {dates['day']}\n"
         f"Month: {dates['month']}\n"
         f"Year: {dates['year']}\n\n"
-        "Run all 8 searches, filter results to the last 24 hours, verify sources, "
-        "then output the complete HTML document starting with <!DOCTYPE html>."
+        "Return JSON only. The app will render HTML."
     )
 
-    messages: list = [{"role": "user", "content": user_message}]
 
-    for iteration in range(30):
-        response = client.messages.create(
-            model=model,
-            max_tokens=32000,
-            system=SYSTEM_PROMPT,
-            tools=[{
-                "type": "web_search_20250305",
-                "name": "web_search",
-                "max_uses": 10,
-            }],
-            messages=messages,
+def extract_json(text: str) -> dict:
+    stripped = text.strip()
+    if stripped.startswith("```"):
+        stripped = stripped.strip("`")
+        if stripped.startswith("json"):
+            stripped = stripped[4:].strip()
+
+    start = stripped.find("{")
+    end = stripped.rfind("}")
+    if start < 0 or end < start:
+        raise RuntimeError("The agent did not return a JSON object.")
+
+    data = json.loads(stripped[start : end + 1])
+    if not isinstance(data.get("sections"), list):
+        raise RuntimeError("Agent JSON must contain a 'sections' array.")
+    return data
+
+
+def run_copilot_agent(dates: dict, system_prompt: str) -> dict:
+    output_path = Path(os.environ.get("COPILOT_OUTPUT_PATH", ".copilot-output/report.json"))
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    if output_path.exists():
+        output_path.unlink()
+
+    prompt = (
+        "/research\n"
+        f"{system_prompt}\n\n"
+        f"{build_user_message(dates)}\n\n"
+        f"Write the final JSON object to {output_path}. "
+        "Do not edit any other files. Do not write Markdown. Do not ask follow-up questions."
+    )
+    command = [
+        "copilot",
+        "-p",
+        prompt,
+        "-s",
+        "--allow-tool=url,write(.copilot-output/report.json)",
+        "--allow-all-urls",
+        "--deny-tool=shell",
+        "--no-ask-user",
+    ]
+    model = os.environ.get("COPILOT_MODEL", "").strip()
+    if model:
+        command.extend(["--model", model])
+
+    result = subprocess.run(
+        command,
+        text=True,
+        capture_output=True,
+        timeout=int(os.environ.get("AGENT_TIMEOUT_SECONDS", "1800")),
+        check=False,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"Copilot CLI failed with exit code {result.returncode}:\n{result.stderr}\n{result.stdout}")
+    if not output_path.exists():
+        raise RuntimeError(f"Copilot CLI did not create expected JSON file: {output_path}\n{result.stdout}")
+    return extract_json(output_path.read_text(encoding="utf-8"))
+
+
+def run_agent(dates: dict) -> dict:
+    return run_copilot_agent(dates, build_system_prompt())
+
+
+def section_meta(section: dict) -> dict:
+    section_id = section.get("id") or "custom"
+    defaults = SECTION_CONFIG.get(section_id, {})
+    return {
+        "id": section_id,
+        "title": section.get("title") or defaults.get("title") or section_id.replace("-", " ").title(),
+        "icon": section.get("icon") or defaults.get("icon") or "newspaper",
+        "color": section.get("color") or defaults.get("color") or "#374151",
+        "badge": defaults.get("badge", "custom"),
+    }
+
+
+def article_class(index: int, total: int) -> str:
+    if total == 1:
+        return "full"
+    if index == 0:
+        return "featured"
+    if index == 1:
+        return "secondary"
+    return "standard"
+
+
+def domain_from_url(url: str) -> str:
+    parsed = urlparse(url)
+    return parsed.netloc or parsed.path.split("/")[0]
+
+
+def render_stats(stats: list) -> str:
+    if not stats:
+        return ""
+    items = "\n".join(
+        f'<div class="stat-highlight"><span class="stat-number">{e(s.get("number"))}</span>'
+        f'<span class="stat-label">{e(s.get("label"))}</span></div>'
+        for s in stats
+    )
+    return f'<div class="stat-row">{items}</div>'
+
+
+def render_article(article: dict, meta: dict, index: int, total: int) -> str:
+    importance = article.get("importance") or "info"
+    if importance not in {"breakthrough", "important", "info"}:
+        importance = "info"
+    verified_badge = "" if article.get("verified", True) else (
+        '<span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span>'
+    )
+
+    facts = "\n".join(f"<li>{e(fact)}</li>" for fact in article.get("facts", []) if fact)
+    facts_html = f'<ul class="bullet-list">{facts}</ul>' if facts else ""
+    body = "\n".join(f'<p class="body-text">{e(paragraph)}</p>' for paragraph in article.get("body", []) if paragraph)
+
+    quote = article.get("quote") or {}
+    quote_html = ""
+    if quote.get("text"):
+        quote_html = (
+            f'<blockquote class="article-quote"><p>"{e(quote.get("text"))}"</p>'
+            f'<cite>{e(quote.get("cite"))}</cite></blockquote>'
         )
 
-        messages.append({"role": "assistant", "content": response.content})
+    implications = ""
+    if article.get("implications"):
+        implications = (
+            f'<p class="body-text implications"><i data-lucide="lightbulb"></i> '
+            f'<strong>Implications:</strong> {e(article.get("implications"))}</p>'
+        )
 
-        if response.stop_reason == "end_turn":
-            break
+    source_url = article.get("source_url") or "#"
+    source_name = article.get("source_name") or domain_from_url(source_url) or "Source"
+    domain = domain_from_url(source_url)
+    source_html = (
+        f'<a href="{e(source_url)}" class="source-link" target="_blank" rel="noopener">'
+        f'<img src="https://www.google.com/s2/favicons?domain={e(domain)}&sz=16" alt="">'
+        f'{e(source_name)}</a>'
+    )
 
-        if response.stop_reason == "tool_use":
-            tool_results = []
-            for block in response.content:
-                if block.type == "tool_use":
-                    query = getattr(block, "input", {}).get("query", "")
-                    print(f"  searching: {query}")
-                    tool_results.append({
-                        "type": "tool_result",
-                        "tool_use_id": block.id,
-                        "content": [],
-                    })
-            if tool_results:
-                messages.append({"role": "user", "content": tool_results})
+    return f"""
+<details class="news-card {article_class(index, total)}">
+  <summary class="card-summary">
+    <h2 class="article-title">{e(article.get("title"))}</h2>
+    <p class="article-deck">{e(article.get("subtitle"))}</p>
+    <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+  </summary>
+  <div class="card-details">
+    <div class="card-image-placeholder"><i data-lucide="{e(meta["icon"])}"></i></div>
+    <div class="card-tags">
+      <span class="badge badge-{e(meta["badge"])}"><i data-lucide="{e(meta["icon"])}"></i> {e(meta["title"])}</span>
+      <span class="badge badge-{e(importance)}"><i data-lucide="sparkles"></i> {e(importance)}</span>
+      {verified_badge}
+    </div>
+    {render_stats(article.get("stats", []))}
+    {facts_html}
+    <div class="extended-content">
+      {body}
+      {quote_html}
+      {implications}
+    </div>
+    <div class="card-footer">
+      {source_html}
+      <span class="pub-time">{e(article.get("published_at"))}</span>
+    </div>
+  </div>
+</details>"""
 
-    for block in response.content:
-        if hasattr(block, "text"):
-            text = block.text
-            idx = text.find("<!DOCTYPE html>")
-            if idx == -1:
-                idx = text.find("<html")
-            if idx >= 0:
-                return text[idx:]
 
-    raise RuntimeError("Claude did not return an HTML document in its response.")
+def render_section(section: dict) -> str:
+    meta = section_meta(section)
+    articles = [article for article in section.get("articles", []) if article.get("title")]
+    if not articles:
+        return ""
+    rendered_articles = "\n".join(render_article(article, meta, index, len(articles)) for index, article in enumerate(articles))
+    count_label = "article" if len(articles) == 1 else "articles"
+    return f"""
+<section class="news-section" id="{e(meta["id"])}">
+  <div class="section-header">
+    <span class="section-icon"><i data-lucide="{e(meta["icon"])}"></i></span>
+    <div class="section-meta">
+      <span class="section-overline">Section</span>
+      <h2 class="section-title">{e(meta["title"])}</h2>
+    </div>
+    <span class="section-count">{len(articles)} {count_label}</span>
+  </div>
+  <div class="section-divider" style="background: {e(meta["color"])};"></div>
+  <div class="articles-grid">
+    {rendered_articles}
+  </div>
+</section>"""
+
+
+def collect_sources(report: dict) -> list[dict]:
+    sources = []
+    for section in report.get("sections", []):
+        meta = section_meta(section)
+        items = []
+        for article in section.get("articles", []):
+            if article.get("source_url"):
+                items.append({"name": article.get("source_name") or domain_from_url(article["source_url"]), "url": article["source_url"]})
+        if items:
+            sources.append({"title": meta["title"], "icon": meta["icon"], "items": items})
+    return sources
+
+
+def render_sources(report: dict) -> str:
+    sections = []
+    for source_section in collect_sources(report):
+        links = "\n".join(
+            f'<li><a href="{e(item["url"])}" target="_blank" rel="noopener">{e(item["name"])}</a></li>'
+            for item in source_section["items"]
+        )
+        sections.append(
+            f'<div class="sources-section"><h4><i data-lucide="{e(source_section["icon"])}"></i> '
+            f'{e(source_section["title"])}</h4><ul>{links}</ul></div>'
+        )
+    return "\n".join(sections)
+
+
+def render_nav(report: dict) -> str:
+    links = []
+    for section in report.get("sections", []):
+        meta = section_meta(section)
+        if section.get("articles"):
+            links.append(f'<a href="#{e(meta["id"])}"><i data-lucide="{e(meta["icon"])}"></i> {e(meta["title"])}</a>')
+    links.append('<a href="#sources"><i data-lucide="paperclip"></i> Sources</a>')
+    return "\n".join(links)
+
+
+def render_report(report: dict, dates: dict) -> str:
+    sections = [render_section(section) for section in report.get("sections", [])]
+    sections_html = "\n".join(section for section in sections if section)
+    section_count = sum(1 for section in report.get("sections", []) if section.get("articles"))
+    source_count = sum(len(source["items"]) for source in collect_sources(report))
+    articles_count = sum(len(section.get("articles", [])) for section in report.get("sections", []))
+    reviewed = report.get("articles_reviewed") or articles_count
+    tagline = report.get("tagline") or "Everything you need to know from the last 24 hours."
+    breaking = ""
+    if report.get("breaking"):
+        breaking = (
+            f'<div class="breaking-banner" role="alert">'
+            f'<span class="breaking-tag"><i data-lucide="zap"></i> BREAKING</span>{e(report["breaking"])}</div>'
+        )
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{e(report.get("title") or "AI Daily")} — {e(dates["date_long"])}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>{REPORT_CSS}</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-brand">
+      <span class="masthead-title">{e(report.get("title") or "AI Daily")}</span>
+      <span class="masthead-edition">{e(dates["date_short"])}</span>
+    </div>
+    <nav class="masthead-nav">{render_nav(report)}</nav>
+    <span class="masthead-version">Structured</span>
+  </div>
+</header>
+<div class="hero-header">
+  <div class="hero-inner">
+    <div class="hero-date">{e(dates["day"])}, {e(dates["date_long"])} · Morning Edition</div>
+    <h1 class="hero-title">AI Daily — <span>Your Morning</span><br>AI Briefing</h1>
+    <p class="hero-tagline">{e(tagline)}</p>
+    <div class="hero-stats">
+      <div class="hero-stat-item"><span class="hero-stat-num">{e(reviewed)}</span><span class="hero-stat-label">articles reviewed</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">{section_count}</span><span class="hero-stat-label">topic sections</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">{source_count}</span><span class="hero-stat-label">verified sources</span></div>
+    </div>
+  </div>
+</div>
+<div class="page-wrapper">
+  {breaking}
+  {sections_html}
+  <footer class="report-footer" id="sources">
+    <h3 class="footer-title"><i data-lucide="paperclip"></i> All report sources</h3>
+    <div class="sources-grid">{render_sources(report)}</div>
+    <div class="footer-meta">
+      <p><i data-lucide="cpu"></i> Generated: {e(dates["datetime"])} by AI Daily structured renderer</p>
+      <p><i data-lucide="clock"></i> Time window: last 24 hours</p>
+      <p><i data-lucide="bar-chart-2"></i> Sources analyzed: {source_count}</p>
+      <p><i data-lucide="file-text"></i> Output: JSON content rendered to HTML</p>
+    </div>
+  </footer>
+</div>
+<script>lucide.createIcons();</script>
+</body>
+</html>"""
 
 
 def rebuild_index(outputs_dir: Path) -> None:
@@ -449,7 +537,7 @@ def rebuild_index(outputs_dir: Path) -> None:
     if not items:
         items = '    <li style="color:#6B7280;padding:14px">No reports generated yet.</li>'
 
-    html = f"""<!DOCTYPE html>
+    html_doc = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -470,7 +558,7 @@ def rebuild_index(outputs_dir: Path) -> None:
 <body>
 <div class="container">
   <h1>AI Daily</h1>
-  <p class="sub">Daily AI news briefing — generated automatically every morning.</p>
+  <p class="sub">Daily news briefing — generated automatically every morning.</p>
   <ul>
 {items}
   </ul>
@@ -478,12 +566,11 @@ def rebuild_index(outputs_dir: Path) -> None:
 </body>
 </html>"""
 
-    Path("index.html").write_text(html, encoding="utf-8")
+    Path("index.html").write_text(html_doc, encoding="utf-8")
     print("updated index.html")
 
 
 def main() -> None:
-    client = anthropic.Anthropic()
     dates = get_date_info()
     print(f"generating AI Daily Brief for {dates['date']}...")
 
@@ -494,8 +581,8 @@ def main() -> None:
     if output_path.exists():
         print(f"report already exists: {output_path} — skipping generation")
     else:
-        html = run_agent(client, dates)
-        output_path.write_text(html, encoding="utf-8")
+        report = run_agent(dates)
+        output_path.write_text(render_report(report, dates), encoding="utf-8")
         print(f"saved {output_path}")
 
     rebuild_index(outputs_dir)

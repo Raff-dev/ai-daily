@@ -4,7 +4,16 @@ on:
   schedule:
     # 05:00 UTC = 06:00 Warsaw (CET) / 07:00 Warsaw (CEST)
     - cron: "0 5 * * *"
-  workflow_dispatch: # allow manual trigger from GitHub UI
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Run mode"
+        required: false
+        default: "generate"
+        type: choice
+        options:
+          - generate
+          - copilot-smoke
 
 permissions:
   contents: write
@@ -13,6 +22,7 @@ permissions:
 
 jobs:
   generate:
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.mode == 'generate' }}
     runs-on: ubuntu-latest
     concurrency:
       group: daily-brief
@@ -21,26 +31,109 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: pip
+
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
 
       - name: Install dependencies
         run: pip install -r requirements.txt
 
       - name: Generate brief
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          # Optional: override the Claude model
-          # CLAUDE_MODEL: claude-opus-4-5
-        run: python run.py
+          COPILOT_GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          COPILOT_MODEL: ${{ vars.COPILOT_MODEL }}
+          AGENT_PROMPT_PATH: ${{ vars.AGENT_PROMPT_PATH || 'agent.md' }}
+          AGENT_TIMEOUT_SECONDS: ${{ vars.AGENT_TIMEOUT_SECONDS || '1800' }}
+        run: |
+          if [ -z "${COPILOT_GITHUB_TOKEN}" ]; then
+            echo "::error::Missing PERSONAL_ACCESS_TOKEN secret. Create a fine-grained PAT with Copilot requests: write and save it as PERSONAL_ACCESS_TOKEN."
+            exit 1
+          fi
+          python run.py
+
+      - name: Guard generated files
+        run: |
+          changed="$(git status --porcelain --untracked-files=all | sed 's/^...//')"
+          if [ -z "$changed" ]; then
+            echo "no generated changes"
+            exit 0
+          fi
+
+          bad="$(printf '%s\n' "$changed" | grep -Ev '^(index\.html|outputs/AI_Daily_[0-9]{4}-[0-9]{2}-[0-9]{2}\.html)$' || true)"
+          if [ -n "$bad" ]; then
+            echo "::error::Workflow may only change index.html and dated reports in outputs/."
+            printf '%s\n' "$bad"
+            exit 1
+          fi
 
       - name: Commit and push
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add outputs/ index.html
+          git add index.html outputs/AI_Daily_*.html
           git diff --staged --quiet && echo "nothing to commit" && exit 0
           git commit -m "chore: AI Daily Brief $(date -u +%Y-%m-%d)"
           git push
+
+      - name: Prepare Pages artifact
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          rm -rf _site
+          mkdir -p _site
+          cp index.html _site/
+          cp -R outputs _site/outputs
+
+      - uses: actions/configure-pages@v5
+        if: ${{ github.ref == 'refs/heads/main' }}
+
+      - uses: actions/upload-pages-artifact@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          path: _site
+
+  deploy:
+    if: ${{ github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.mode == 'generate') }}
+    needs: generate
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+
+    steps:
+      - uses: actions/deploy-pages@v4
+
+  copilot-smoke:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'copilot-smoke' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
+
+      - name: Ask Copilot to fetch a live URL
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$COPILOT_GITHUB_TOKEN" ]; then
+            echo "::error::Missing PERSONAL_ACCESS_TOKEN secret. Create a fine-grained PAT with Copilot Requests permission and save it as PERSONAL_ACCESS_TOKEN."
+            exit 1
+          fi
+
+          copilot -p 'Fetch https://www.githubstatus.com/api/v2/status.json using the URL fetch tool, then write copilot-web-smoke.json with exactly this JSON shape: {"fetched":true,"url":"https://www.githubstatus.com/api/v2/status.json","indicator":"...","description":"...","updated_at":"..."}. Do not use shell commands, curl, Python, Node.js, or repository files to get the data. Use the live URL content only.' \
+            -s \
+            --allow-tool='url,write(copilot-web-smoke.json)' \
+            --allow-url='https://www.githubstatus.com/api/v2/status.json' \
+            --deny-tool='shell' \
+            --no-ask-user
+
+          test -s copilot-web-smoke.json
+          cat copilot-web-smoke.json
