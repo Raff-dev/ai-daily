@@ -136,7 +136,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 }
 </style>
 </head>
-<body data-render-version="source-images-v1">
+<body data-render-version="source-images-v2">
 
 <div class="language-panel active" data-lang="en">
 <header class="masthead">
@@ -145,11 +145,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
       <span class="masthead-title">AI Daily</span>
       <span class="masthead-edition">May 16</span>
     </div>
-    <nav class="masthead-nav"><a href="#en-dev-tools"><i data-lucide="monitor"></i> Developer Tools</a>
-<a href="#en-ai-tools"><i data-lucide="sparkles"></i> AI Tools</a>
-<a href="#en-defense"><i data-lucide="shield"></i> Defense</a>
-<a href="#en-space"><i data-lucide="rocket"></i> Space</a>
-<a href="#en-startups"><i data-lucide="banknote"></i> Startups</a>
+    <nav class="masthead-nav"><a href="#en-space"><i data-lucide="rocket"></i> Space</a>
 <a href="#en-sources"><i data-lucide="paperclip"></i> All report sources</a></nav>
     <div class="language-toggle" aria-label="Language"><button type="button" class="active" data-set-lang="en">EN</button><button type="button" class="" data-set-lang="pl">PL</button></div>
     <span class="masthead-version">Structured</span>
@@ -161,408 +157,15 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
     <h1 class="hero-title">AI Daily — <span>Your Morning</span><br>AI Briefing</h1>
     <p class="hero-tagline">Everything you need to know about artificial intelligence from the last 24 hours.</p>
     <div class="hero-stats">
-      <div class="hero-stat-item"><span class="hero-stat-num">30</span><span class="hero-stat-label">articles reviewed</span></div>
-      <div class="hero-stat-item"><span class="hero-stat-num">5</span><span class="hero-stat-label">topic sections</span></div>
-      <div class="hero-stat-item"><span class="hero-stat-num">13</span><span class="hero-stat-label">verified sources</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">105</span><span class="hero-stat-label">articles reviewed</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">1</span><span class="hero-stat-label">topic sections</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">4</span><span class="hero-stat-label">verified sources</span></div>
     </div>
   </div>
 </div>
 <div class="page-wrapper">
   
   
-<section class="news-section" id="en-dev-tools">
-  <div class="section-header">
-    <span class="section-icon"><i data-lucide="monitor"></i></span>
-    <div class="section-meta">
-      <span class="section-overline">Section</span>
-      <h2 class="section-title">Developer Tools</h2>
-    </div>
-    <span class="section-count">3 articles</span>
-  </div>
-  <div class="section-divider" style="background: #2563EB;"></div>
-  <div class="articles-grid">
-    
-<details class="news-card featured">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #2563EB;">
-  <img class="card-image" src="https://github.blog/wp-content/themes/github-2021-child/dist/img/social-v3-improvements.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Developer Tools visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEV</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Developer Tools</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">GitHub adds override header for new app token format</h2>
-      <p class="article-deck">GitHub published a temporary per-request header so developers can test or defer its new stateless installation token rollout.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">~520</span><span class="stat-label">JWT chars</span></div></div>
-      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>GitHub published the change on 2026-05-16.</li>
-<li>The new header is X-GitHub-Stateless-S2S-Token on the installation access-token endpoint.</li>
-<li>Developers can force either the new stateless JWT-style token or the legacy opaque format per request.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">GitHub is giving app developers a narrow migration window before its new installation token format becomes the default. The changelog says teams can opt into or out of the stateless format one request at a time while they validate storage, regex, and workflow assumptions.</p>
-<p class="body-text">That matters for Copilot and broader GitHub App ecosystems because token length and structure change materially. GitHub explicitly warned developers to remove hardcoded token-length assumptions and update validation logic before the temporary override disappears.</p>
-      <blockquote class="article-quote"><p>"Setting X-GitHub-Stateless-S2S-Token on a POST /app/installations/:installation_id/access_tokens request overrides the server-side rollout decision for that single request."</p><cite>GitHub Changelog</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> GitHub is pushing integrators to harden auth handling ahead of a platform-wide token format shift that will touch app backends, Actions flows, and Copilot-adjacent tooling.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://github.blog/changelog/2026-05-15-github-app-installation-tokens-per-request-override-header" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=github.blog&sz=16" alt="">GitHub Changelog</a>
-      <span class="pub-time">2026-05-16</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card secondary">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #2563EB;">
-  <img class="card-image" src="https://github.blog/wp-content/uploads/2026/05/593242455-0c33f4ae-e109-4fd6-bd63-d6016de5f500.png" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Developer Tools visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEV</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Developer Tools</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">Copilot Memory now stores user-level preferences</h2>
-      <p class="article-deck">GitHub expanded Copilot Memory so Pro and Pro+ users can carry personal preferences across repositories and agents.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">2</span><span class="stat-label">plans included</span></div></div>
-      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>The feature was posted on 2026-05-15.</li>
-<li>GitHub says it is in early access for Copilot Pro and Copilot Pro+ users.</li>
-<li>Preferences can include commit style, PR structure, and communication tone.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">GitHub is moving Copilot Memory beyond repository-scoped context by adding user-scoped preferences. That means Copilot can reuse individual working styles across repositories instead of relearning them inside each project.</p>
-<p class="body-text">The company also says users can review and delete those memories in personal Copilot settings. This is a notable product step because persistent personalization is becoming a core competitive layer for coding agents.</p>
-      <blockquote class="article-quote"><p>"Today, Copilot Memory can also capture personal preferences that apply to you rather than the repository."</p><cite>GitHub Changelog</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Coding assistants are shifting from one-off chat tools toward persistent collaborators that remember how each developer likes to work.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://github.blog/changelog/2026-05-15-copilot-memory-supports-user-preferences-for-pro-pro-users" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=github.blog&sz=16" alt="">GitHub Changelog</a>
-      <span class="pub-time">2026-05-15</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card standard">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #2563EB;">
-  <img class="card-image" src="https://github.blog/wp-content/uploads/2026/05/592728785-7cbe54fd-3e34-4b36-adba-29fe8a1f4986.jpeg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Developer Tools visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEV</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Developer Tools</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span></div>
-      <h2 class="article-title">GitHub deprecates Grok Code Fast 1 in Copilot</h2>
-      <p class="article-deck">GitHub removed Grok Code Fast 1 across Copilot chat, agent, edit, and completion experiences and pointed users to alternative models.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">2</span><span class="stat-label">suggested replacements</span></div></div>
-      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>GitHub posted the deprecation on 2026-05-15.</li>
-<li>The changelog says the model was deprecated across all Copilot experiences that same day.</li>
-<li>GitHub suggested GPT-5 mini and Claude Haiku 4.5 as alternatives.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">The removal is a reminder that model menus inside coding tools remain fluid even after broad rollout. GitHub said enterprise admins may need to enable replacement models through Copilot policy settings so developers can keep existing workflows running.</p>
-<p class="body-text">For teams standardizing on specific model behavior, deprecations like this are operationally relevant because they can affect chat responses, inline edits, code completion behavior, and automation scripts that expect a particular model to remain available.</p>
-      <blockquote class="article-quote"><p>"We have deprecated Grok Code Fast 1 across all GitHub Copilot experiences today, May 15, 2026."</p><cite>GitHub Changelog</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Model governance is becoming part of day-to-day developer tooling, not just an admin concern, as vendors rotate supported foundation models more aggressively.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://github.blog/changelog/2026-05-15-grok-code-fast-1-deprecated" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=github.blog&sz=16" alt="">GitHub Changelog</a>
-      <span class="pub-time">2026-05-15</span>
-    </div>
-  </div>
-</details>
-  </div>
-</section>
-
-<section class="news-section" id="en-ai-tools">
-  <div class="section-header">
-    <span class="section-icon"><i data-lucide="sparkles"></i></span>
-    <div class="section-meta">
-      <span class="section-overline">Section</span>
-      <h2 class="section-title">AI Tools</h2>
-    </div>
-    <span class="section-count">3 articles</span>
-  </div>
-  <div class="section-divider" style="background: #DB2777;"></div>
-  <div class="articles-grid">
-    
-<details class="news-card featured">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder" style="--accent: #DB2777;">
-  
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="AI Tools visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">AI</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> AI Tools</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">OpenAI and Malta strike nationwide ChatGPT Plus deal</h2>
-      <p class="article-deck">OpenAI said Malta will offer ChatGPT Plus access and training to citizens as part of a country-scale AI adoption program.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">1</span><span class="stat-label">nationwide rollout</span></div></div>
-      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>OpenAI published the partnership on 2026-05-16.</li>
-<li>The company said the plan includes ChatGPT Plus access and AI training.</li>
-<li>OpenAI framed the deal as a practical AI-skills and responsible-use initiative.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">The Malta agreement stands out because it packages consumer access with public education rather than just enterprise deployment. OpenAI said the goal is to broaden AI skills across the population while encouraging responsible use.</p>
-<p class="body-text">National partnerships of this kind matter because they test whether mainstream AI products can move from individual subscriptions into quasi-public digital infrastructure.</p>
-      <blockquote class="article-quote"><p>"OpenAI and Malta partner to expand AI access, offering ChatGPT Plus and training to help citizens build practical AI skills and use AI responsibly."</p><cite>OpenAI News RSS</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Expect more governments to explore bulk-access consumer AI deals as they race to turn general-purpose assistants into public capability platforms.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://openai.com/index/malta-chatgpt-plus-partnership" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=openai.com&sz=16" alt="">OpenAI</a>
-      <span class="pub-time">2026-05-16</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card secondary">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder" style="--accent: #DB2777;">
-  
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="AI Tools visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">AI</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> AI Tools</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">ChatGPT gets a personal finance dashboard for Pro users</h2>
-      <p class="article-deck">OpenAI previewed account-linked financial guidance inside ChatGPT for U.S. Pro subscribers.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">U.S.</span><span class="stat-label">initial market</span></div></div>
-      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>OpenAI published the feature on 2026-05-15.</li>
-<li>The preview is for ChatGPT Pro users in the United States.</li>
-<li>OpenAI said users can securely connect financial accounts for context-grounded insights.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">OpenAI is pushing ChatGPT deeper into high-trust personal workflows by adding financial account connectivity. The company says the feature is designed to ground advice in a user&#x27;s own financial context, priorities, and goals.</p>
-<p class="body-text">That moves ChatGPT closer to becoming an action-oriented personal operating layer rather than just a conversational assistant. Financial use cases are especially important because they test user trust, compliance design, and whether AI assistants can handle sensitive data without breaking confidence.</p>
-      <blockquote class="article-quote"><p>"Securely connect your financial accounts and get AI-powered insights and guidance grounded in your financial context, goals, and priorities."</p><cite>OpenAI News RSS</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Consumer AI products are moving into regulated, high-sensitivity domains where trust, permissions, and product liability become as important as model quality.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://openai.com/index/personal-finance-chatgpt" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=openai.com&sz=16" alt="">OpenAI</a>
-      <span class="pub-time">2026-05-15</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card standard">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #DB2777;">
-  <img class="card-image" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/01/STK419_DEEPFAKE_3_CVIRGINIA_A.jpg?quality=90&amp;strip=all&amp;crop=0%2C0%2C100%2C100&amp;w=2400" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="AI Tools visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">AI</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> AI Tools</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">YouTube broadens its AI deepfake detection to all adults</h2>
-      <p class="article-deck">The Verge reported that YouTube’s likeness-detection system will now be available to any adult user with a YouTube account.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">18+</span><span class="stat-label">eligible users</span></div></div>
-      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>The Verge published the update on 2026-05-15.</li>
-<li>The tool scans YouTube for facial matches to help detect AI-generated likeness misuse.</li>
-<li>The expansion applies to adult users with YouTube accounts.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">YouTube is turning a previously narrower anti-deepfake capability into a much broader consumer-facing safeguard. The Verge described the rollout as an expansion of likeness detection, which scans for facial matches across uploaded videos.</p>
-<p class="body-text">This matters because generative video abuse is moving from celebrity-only risk into mainstream creator risk. Platform-level detection tools are starting to become a standard defensive layer for consumer AI media ecosystems.</p>
-      <blockquote class="article-quote"><p>"Likeness detection, which scans YouTube for facial matches, will now be available to anyone 18 years or older with a YouTube account."</p><cite>The Verge</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> AI product competition is no longer just about generation quality; it is increasingly about safety tooling for identity, consent, and abuse response.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxNUTJDdjEybzdIZkZhdkc0Z1FVVnBtUjg5czRtd3VnTXcxZDZyLWVHTkZ5SDlrZnlwNHRES2loTmlmMTVkSHlUU2ZYX2RydjhxeEljRHN0U2J6NTFtb3Bpa3BjOXk4aFlaQ1JJZ3Z4MzZGREpvdkNDMVMtU1E5NFlwbVJGcVFJTXZMYl9na1BSNXpITThTdjNmV29acVY?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">The Verge</a>
-      <span class="pub-time">2026-05-15</span>
-    </div>
-  </div>
-</details>
-  </div>
-</section>
-
-<section class="news-section" id="en-defense">
-  <div class="section-header">
-    <span class="section-icon"><i data-lucide="shield"></i></span>
-    <div class="section-meta">
-      <span class="section-overline">Section</span>
-      <h2 class="section-title">Defense</h2>
-    </div>
-    <span class="section-count">3 articles</span>
-  </div>
-  <div class="section-divider" style="background: #DC2626;"></div>
-  <div class="articles-grid">
-    
-<details class="news-card featured">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #DC2626;">
-  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Defense visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEF</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-defense"><i data-lucide="shield"></i> Defense</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">Ukraine leans harder into AI-enabled drone swarms</h2>
-      <p class="article-deck">Fresh reporting highlighted Ukraine’s effort to turn coordinated drone swarms from sci-fi concept into battlefield practice.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">24h</span><span class="stat-label">fresh reporting</span></div></div>
-      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>The Japan Times carried the report on 2026-05-16.</li>
-<li>The story focused on Ukraine&#x27;s push toward coordinated drone-swarm operations.</li>
-<li>The topic sits at the center of the autonomous-weapons debate because it blends AI, low-cost systems, and mass deployment.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">Ukraine remains the clearest live theater for rapid iteration in autonomous and semi-autonomous drone warfare. The latest reporting emphasized swarm tactics, where large numbers of drones are coordinated to overwhelm defenses or improve strike reliability.</p>
-<p class="body-text">That makes the conflict an important real-world proving ground for AI-enabled military systems, especially as governments weigh export controls, doctrine changes, and the ethics of increasingly automated kill chains.</p>
-      <blockquote class="article-quote"><p>"Sci-fi or battlefield reality? Ukraine&#x27;s bet on drone swarms."</p><cite>The Japan Times</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Drone-swarm experimentation in Ukraine is accelerating the timeline for military adoption of autonomy, forcing faster policy and procurement responses elsewhere.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxNb1FxZmVxcjBReWxYbmRIU2p2VUM4QVFSem56blhJU05fV3lqSWNsNnJ2T3pnREVHSEdEVW05M1VoSWk5blFnMVRwRExfTDVpTnJqa1FTcTUwVFM2aV9XQ3lySzhtWWhibmIxQ25ubTJ2ZmR4N1VtY1lOaDF4R0FlXzE0NGc?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">The Japan Times</a>
-      <span class="pub-time">2026-05-16</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card secondary">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #DC2626;">
-  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Defense visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEF</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-defense"><i data-lucide="shield"></i> Defense</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">India deploys robots along the Line of Control</h2>
-      <p class="article-deck">The Times of India reported that India is fielding robots on the LoC as combat automation spreads from Ukraine into other militaries.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">LoC</span><span class="stat-label">deployment zone</span></div></div>
-      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>The Times of India published the report on 2026-05-16.</li>
-<li>The story tied India’s deployment to lessons emerging from robot use in Ukraine.</li>
-<li>It described robots moving from demonstration roles toward operational border use.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">The shift is notable because it suggests ground robotics is no longer confined to lab demos, exhibitions, or rear-area logistics. Border deployment makes the technology operationally relevant in surveillance and force-protection contexts.</p>
-<p class="body-text">The broader takeaway is that combat robotics is diffusing internationally much faster than formal doctrine usually does, especially when militaries can point to wartime proof points from Ukraine.</p>
-      <blockquote class="article-quote"><p>"As Ukraine takes the lead in robot in combat, India deploys them on LoC."</p><cite>The Times of India</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Military robotics is spreading from headline battlefield experiments into routine border and security deployments, widening the real-world market for autonomous defense systems.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://news.google.com/rss/articles/CBMi6gFBVV95cUxPbzc5SWhLU3JxQTA2ZXZCSXk3MVpMdFRHNnBVZzRkbk5haW13V0tYcFFwdGJ2aWNtMWMtVEFtTFpBV2w4ampORmtPTHoxUTdpQmJhbUNMMkFjcDNkQlRIN296VFN3RmhpQnBkODdvZEs5VmtMUTg5VEs5N3dLV1VMcFBaelNTaEF3NGVfZTREcUJmVnVOMGFsUmxfSWY5d21WeEdpeEliNVZwaFV4N0Q5ZFFrbzRqTTlINVdwcWY2YWRRYTB0WHdlOXM2VjZ5VmpjZ1Q4SGNsUWZqVjZqYW1qRkdxWUdwX2RLS2fSAe8BQVVfeXFMTVMxaWZ0Mkc5aEdtb1ZfNEhVd1FzcGJfTzZoVDRrSk1TWW5ucHBVYUVnVU1BLXZheTVfd0h6Tmk5Zk1xTzNNMVg5anZUdG5takF5aUo3MTduNEdQejVHZEpHOWtZT1dJcFpJeDNUc0Rpb0U2U0pDX3pqRFcwODR5SFE5eW1GNUdNMEl6MnR4cmtpMEtBNVZfcGRIeFQxUkxoWTE2MHNqYk9ueGdEeXBfTnktc0QwcjIyMm9JYnFIZVVnU052NGplNGNxa3ZmdEZiVFoyTkI0UnZJemQzbG5VUDc2VnlNLW5uczdkeVVQVWM?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">The Times of India</a>
-      <span class="pub-time">2026-05-16</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card standard">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #DC2626;">
-  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Defense visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEF</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-defense"><i data-lucide="shield"></i> Defense</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
-      <h2 class="article-title">Golden Dome pitch sharpens focus on next-gen air defense</h2>
-      <p class="article-deck">Army Recognition outlined a U.S. Golden Dome concept aimed at Russian and Chinese hypersonic missile threats.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">2</span><span class="stat-label">threat actors named</span></div></div>
-      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>Army Recognition published the piece on 2026-05-16.</li>
-<li>The report framed Golden Dome as an answer to Russian and Chinese hypersonic threats.</li>
-<li>The write-up did not clearly establish the maturity or procurement status of the concept.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">The article reflects how missile defense planning is increasingly tied to AI-heavy sensing, command, and interception layers rather than traditional static shield concepts. Hypersonic defense especially depends on faster detection, tracking, and decision support.</p>
-<p class="body-text">Because the public details remain thin and the outlet’s description is not a primary government release, the core thrust is credible but the exact program framing is less certain than the other items in this section.</p>
-      <blockquote class="article-quote"><p>"U.S. Golden Dome Air Defense Designed to Counter Russian Chinese Hypersonic Missile Threats."</p><cite>Army Recognition</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Even concept-stage missile defense programs are being framed around software, sensors, and autonomy, underscoring how AI is becoming central to strategic defense architecture.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://news.google.com/rss/articles/CBMi1AFBVV95cUxPOG9RR2ZjVHZtZW1rUlFoN1YzTDY4SzZRUGJRazBtWHBCNzR4N1EtMGFYWVJKb0NsMHRWVGZjdTdaLWdxX25jckoyaVFPSTFuRko4QVQ4MWU1YWtEckxkY203YTFVbzVQQkgwNWtJQWM1QTZMZ1RzY1FFQnQwSDhoQkhHM0dQZThQLW1CQm1rM0NCcURNVVNBWkxXdS16ajExdERLcnBBcjhlcWNfQzhQTzBwN3kza2tVV2lDQ2FRLVk0WkVUQU50NHB1ZmZqQ3ZWZ1ZzUw?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">Army Recognition</a>
-      <span class="pub-time">2026-05-16</span>
-    </div>
-  </div>
-</details>
-  </div>
-</section>
-
 <section class="news-section" id="en-space">
   <div class="section-header">
     <span class="section-icon"><i data-lucide="rocket"></i></span>
@@ -570,7 +173,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
       <span class="section-overline">Section</span>
       <h2 class="section-title">Space</h2>
     </div>
-    <span class="section-count">3 articles</span>
+    <span class="section-count">4 articles</span>
   </div>
   <div class="section-divider" style="background: #7C3AED;"></div>
   <div class="articles-grid">
@@ -579,7 +182,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
   <summary class="card-summary">
     
 <div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
-  <img class="card-image" src="https://www.nasa.gov/wp-content/uploads/2026/05/crs-34-mission-dragon-liftoff-image-2.png?w=1024" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <img class="card-image" src="https://www.nasa.gov/wp-content/uploads/2026/05/crs-34-mission-dragon-liftoff-image-2.png" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
   <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Space visual" xmlns="http://www.w3.org/2000/svg">
     <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
     <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
@@ -591,25 +194,26 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 </div>
     <div class="card-summary-content">
       <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Space</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">SpaceX launches CRS-34 cargo mission to the ISS</h2>
-      <p class="article-deck">A Falcon 9 sent nearly 6,500 pounds of NASA cargo and science experiments toward the International Space Station.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">6,500 lb</span><span class="stat-label">cargo mass</span></div></div>
+      <h2 class="article-title">SpaceX launches CRS-34 to the ISS as Cargo Dragon logs a record sixth flight</h2>
+      <p class="article-deck">Dragon delivered 2,948 kilograms of cargo to the ISS and became the first cargo Dragon to reach a sixth mission.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">2,948 kg</span><span class="stat-label">cargo delivered</span></div>
+<div class="stat-highlight"><span class="stat-number">6th</span><span class="stat-label">Dragon flight</span></div></div>
       <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
     </div>
   </summary>
   <div class="card-details">
-    <ul class="bullet-list"><li>NASA said Falcon 9 lifted off at 6:05 p.m. EDT on Friday.</li>
-<li>Dragon is carrying nearly 6,500 pounds of cargo for Expedition 74.</li>
-<li>NASA said docking is scheduled for about 7 a.m. on Sunday, May 17.</li></ul>
+    <ul class="bullet-list"><li>Dragon C209 is making its sixth cargo mission, the first cargo Dragon to reach that milestone, and the Falcon 9 first stage also flew its sixth mission and landed successfully at Cape Canaveral.</li>
+<li>The mission carried about 2,948 kilograms of cargo for NASA Expedition 74, including more than 50 science experiments.</li>
+<li>SpaceX has now completed its 57th orbital launch of 2026, putting it on pace for roughly 154 launches this year.</li></ul>
     <div class="extended-content">
-      <p class="body-text">CRS-34 is another reminder that ISS logistics remains a critical backbone for both station science and broader U.S. commercial launch cadence. NASA highlighted a mix of biological, Earth science, and space environment payloads on this run.</p>
-<p class="body-text">The mission also carries instruments tied to high-value measurement and orbital particle research, reinforcing how cargo flights continue to serve as routine delivery systems for frontier science rather than just resupply runs.</p>
-      <blockquote class="article-quote"><p>"The 34th SpaceX commercial resupply mission under contract with NASA is headed to the International Space Station with new scientific experiments after lifting off at 6:05 p.m. EDT Friday."</p><cite>NASA</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Commercial launch reliability remains central to NASA science and station operations, with Dragon missions now functioning as recurring science infrastructure.</p>
+      <p class="body-text">SpaceX launched CRS-34 at 6:05 PM EDT on May 15, sending Dragon to the International Space Station with science payloads that include the CLARREO Pathfinder climate instrument, the STORIE charged-particle study, bone scaffold research, and red blood cell experiments.</p>
+<p class="body-text">The reuse milestone underscores how far SpaceX has pushed orbital logistics economics. With the ISS nearing the end of its operating life, each successful resupply mission also carries outsized weight for the station&#x27;s remaining science window.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> This reinforces SpaceX&#x27;s lead in reusable orbital transport while keeping NASA&#x27;s ISS science pipeline moving with increasingly flight-proven hardware.</p>
     </div>
     <div class="card-footer">
-      <a href="https://www.nasa.gov/news-release/nasa-science-cargo-launch-on-34th-spacex-resupply-mission-to-station/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.nasa.gov&sz=16" alt="">NASA</a>
-      <span class="pub-time">2026-05-16</span>
+      <a href="https://spacenews.com/spacex-launches-crs-34-cargo-mission-to-iss/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=spacenews.com&sz=16" alt="">SpaceNews</a>
+      <span class="pub-time">2026-05-15</span>
     </div>
   </div>
 </details>
@@ -618,7 +222,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
   <summary class="card-summary">
     
 <div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
-  <img class="card-image" src="https://www.nasa.gov/wp-content/uploads/2026/05/nhq202506250014.jpg?w=1024" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <img class="card-image" src="https://cdn.mos.cms.futurecdn.net/RiC6rtyJHBJ6Hie5wQPRvd.png" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
   <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Space visual" xmlns="http://www.w3.org/2000/svg">
     <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
     <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
@@ -629,25 +233,26 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
   </svg>
 </div>
     <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Space</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">NASA taps Brian Hughes for launch operations leadership</h2>
-      <p class="article-deck">NASA named Brian Hughes senior director of launch operations to oversee Kennedy and Wallops launch infrastructure.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">2</span><span class="stat-label">sites under remit</span></div></div>
+      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Space</span><span class="badge badge-breakthrough"><i data-lucide="sparkles"></i> breakthrough</span></div>
+      <h2 class="article-title">NASA&#x27;s Psyche uses Mars flyby to gain speed for its 2029 metal-asteroid rendezvous</h2>
+      <p class="article-deck">The spacecraft skimmed past Mars on May 15 and picked up roughly 2 kilometers per second of heliocentric velocity without burning propellant.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">12,333 mph</span><span class="stat-label">flyby speed</span></div>
+<div class="stat-highlight"><span class="stat-number">2 km/s</span><span class="stat-label">velocity gain</span></div></div>
       <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
     </div>
   </summary>
   <div class="card-details">
-    <ul class="bullet-list"><li>NASA published the appointment on 2026-05-16.</li>
-<li>Hughes will oversee launch operations at Kennedy and Wallops.</li>
-<li>NASA said the role is meant to support increased launch cadence and national space policy execution.</li></ul>
+    <ul class="bullet-list"><li>Psyche flew past Mars on May 15 at about 12,333 mph, passing closer to the planet than either Phobos or Deimos.</li>
+<li>The gravity assist added roughly 2 kilometers per second of velocity relative to the sun without requiring propellant.</li>
+<li>Its target, asteroid 16 Psyche, is about 173 miles wide and may be the exposed metallic core of a shattered protoplanet.</li></ul>
     <div class="extended-content">
-      <p class="body-text">This is more than a personnel move because NASA explicitly tied Hughes&#x27; remit to launch cadence, stakeholder coordination, and enterprise-level oversight of launch infrastructure. That makes it relevant for civil, commercial, and national-security launch activity.</p>
-<p class="body-text">As U.S. launch traffic increases, roles that coordinate multiple spaceports and public-private interfaces become strategically important. NASA is signaling that operational governance is now a first-order space policy issue.</p>
-      <blockquote class="article-quote"><p>"His return comes as NASA continues advancing a growing portfolio of civil, commercial, and national security launch activities across its spaceport infrastructure."</p><cite>NASA</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> The U.S. launch ecosystem is becoming busy enough that management of infrastructure and interagency coordination is now headline-worthy space news on its own.</p>
+      <p class="body-text">The Mars gravity assist was one of the most important checkpoints in Psyche&#x27;s journey because the mission relies on solar-electric propulsion, which is efficient but low-thrust. The maneuver redirected the spacecraft toward the asteroid belt on schedule for arrival in July 2029.</p>
+<p class="body-text">If 16 Psyche is truly exposed core material, the mission could give scientists a rare direct look at the kind of metal-rich interior normally hidden deep inside rocky worlds such as Earth.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> A successful gravity-assist keeps one of NASA&#x27;s most unusual planetary missions on track and advances the study of how rocky planets formed and differentiated.</p>
     </div>
     <div class="card-footer">
-      <a href="https://www.nasa.gov/news-release/nasa-names-brian-hughes-to-launch-operations-role/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.nasa.gov&sz=16" alt="">NASA</a>
+      <a href="https://www.space.com/space-exploration/asteroid-comet-missions/nasas-psyche-spacecraft-is-flying-to-a-metal-asteroid-so-why-did-it-just-visit-mars" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.space.com&sz=16" alt="">Space.com</a>
       <span class="pub-time">2026-05-16</span>
     </div>
   </div>
@@ -657,7 +262,47 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
   <summary class="card-summary">
     
 <div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
-  <img class="card-image" src="https://www.nasa.gov/wp-content/uploads/2026/05/janetp.jpg?w=802" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <img class="card-image" src="https://cdn.mos.cms.futurecdn.net/a5drT8Sba3h7zF4aA9LAq5.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Space visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">ORB</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Space</span><span class="badge badge-breakthrough"><i data-lucide="sparkles"></i> breakthrough</span></div>
+      <h2 class="article-title">Rubin found interstellar comet 3I/ATLAS before discovery, while two Jupiter probes captured a first</h2>
+      <p class="article-deck">New reporting shows Rubin imaged 3I/ATLAS 10 days early and that JUICE and Europa Clipper made the first joint observations of an interstellar comet.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">9</span><span class="stat-label">early Rubin images</span></div>
+<div class="stat-highlight"><span class="stat-number">140,000 mph</span><span class="stat-label">comet velocity</span></div></div>
+      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>The Vera C. Rubin Observatory imaged 3I/ATLAS nine times between June 21 and July 2, 2025, about 10 days before the comet&#x27;s official discovery on July 1, 2025.</li>
+<li>ESA&#x27;s JUICE and NASA&#x27;s Europa Clipper observed the comet&#x27;s dayside and nightside simultaneously during perihelion, creating the first coordinated multi-spacecraft observation of an interstellar comet.</li>
+<li>The observations found elevated carbon abundance, reinforcing earlier JWST evidence that 3I/ATLAS formed in a different solar system.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">The Rubin pre-discovery images are an early proof point for the observatory&#x27;s role in finding future interstellar visitors. The research suggests Rubin could become the leading detector of such objects once its full data pipeline is running.</p>
+<p class="body-text">JUICE and Europa Clipper also produced an unusually rich geometry for studying an extrasolar body by observing opposite hemispheres at once, adding rare compositional evidence about matter formed around another star.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> This is a major sign that next-generation survey telescopes and multi-mission coordination are transforming how quickly scientists can detect and characterize objects from beyond the solar system.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://www.space.com/astronomy/comets/astronomers-find-interstellar-comet-3i-atlas-hiding-in-images-taken-before-its-official-discovery" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.space.com&sz=16" alt="">Space.com</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card standard">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
+  <img class="card-image" src="https://cdn.mos.cms.futurecdn.net/ftwGW3eemBcY2qoi4VAAV3.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
   <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Space visual" xmlns="http://www.w3.org/2000/svg">
     <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
     <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
@@ -669,78 +314,26 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 </div>
     <div class="card-summary-content">
       <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Space</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">Kennedy Space Center director Janet Petro is retiring</h2>
-      <p class="article-deck">NASA announced the retirement of Kennedy Space Center director Janet Petro and named Kelvin Manning acting director.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">11th</span><span class="stat-label">KSC director</span></div></div>
+      <h2 class="article-title">Mars Express releases new views of Shalbatana Vallis, a flood channel carved on ancient Mars</h2>
+      <p class="article-deck">Fresh coverage of ESA imagery highlights an 800-mile Martian valley cut by catastrophic groundwater floods around 3.5 billion years ago.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">1,300 km</span><span class="stat-label">channel length</span></div>
+<div class="stat-highlight"><span class="stat-number">23 years</span><span class="stat-label">mission duration</span></div></div>
       <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
     </div>
   </summary>
   <div class="card-details">
-    <ul class="bullet-list"><li>NASA announced the retirement on 2026-05-16.</li>
-<li>Petro previously served as acting NASA administrator in 2025.</li>
-<li>NASA said Kelvin Manning is stepping in as acting center director effective Friday.</li></ul>
+    <ul class="bullet-list"><li>Shalbatana Vallis stretches about 1,300 kilometers near Mars&#x27;s equator, with a main channel roughly 10 kilometers wide and about 500 meters deep.</li>
+<li>Scientists believe catastrophic groundwater outbursts carved the channel about 3.5 billion years ago.</li>
+<li>The new imagery also shows volcanic ash deposits, impact craters, wrinkle ridges, and layered terrain that point to repeated flooding, lava flows, and erosion.</li></ul>
     <div class="extended-content">
-      <p class="body-text">Petro helped guide Kennedy through its transformation into a multi-user spaceport, which is one of the most consequential organizational shifts in modern U.S. space operations. Her exit lands at a moment when the center is balancing government missions with rising commercial launch activity.</p>
-<p class="body-text">Leadership turnover at Kennedy matters because the center now sits at the intersection of Artemis, commercial launch growth, and broader U.S. spaceport modernization.</p>
-      <blockquote class="article-quote"><p>"Janet has served as a profoundly influential leader, guiding both the agency and our Kennedy Space Center through some of the most significant transitions in our shared history."</p><cite>NASA Administrator Jared Isaacman</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Leadership changes at Kennedy can have ripple effects across NASA operations, commercial launch partnerships, and the pace of spaceport modernization.</p>
+      <p class="body-text">Space.com&#x27;s May 15 coverage highlighted ESA&#x27;s latest Mars Express imagery of Shalbatana Vallis, a geologically rich region that drains toward Chryse Planitia, one of Mars&#x27;s lowest areas and a candidate site for an ancient ocean.</p>
+<p class="body-text">The release is a reminder that Mars Express remains scientifically productive after 23 years in operation, continuing to sharpen the map of where ancient water once moved and pooled on Mars.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Better imaging of ancient flood terrain helps refine Mars habitability models and informs future landing-site and resource-mapping decisions for robotic and eventual human missions.</p>
     </div>
     <div class="card-footer">
-      <a href="https://www.nasa.gov/news-release/nasa-kennedy-center-director-announces-plans-to-retire/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.nasa.gov&sz=16" alt="">NASA</a>
-      <span class="pub-time">2026-05-16</span>
-    </div>
-  </div>
-</details>
-  </div>
-</section>
-
-<section class="news-section" id="en-startups">
-  <div class="section-header">
-    <span class="section-icon"><i data-lucide="banknote"></i></span>
-    <div class="section-meta">
-      <span class="section-overline">Section</span>
-      <h2 class="section-title">Startups</h2>
-    </div>
-    <span class="section-count">1 article</span>
-  </div>
-  <div class="section-divider" style="background: #EA580C;"></div>
-  <div class="articles-grid">
-    
-<details class="news-card full">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #EA580C;">
-  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Startups visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">CAP</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-startup"><i data-lucide="banknote"></i> Startups</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">OpenAI buys voice-cloning startup Weights.gg</h2>
-      <p class="article-deck">The New York Times reported that OpenAI acquired Weights.gg, a startup known for celebrity-style voice cloning tools.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">1</span><span class="stat-label">AI audio deal</span></div></div>
-      <span class="expand-hint">Read full brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>The New York Times reported the acquisition on 2026-05-16.</li>
-<li>Weights.gg was known for tools that could clone voices and imitate celebrities.</li>
-<li>The deal points to continued consolidation around voice and audio AI capabilities.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">Voice remains one of the most strategically contested layers in consumer AI because it touches assistants, media generation, accessibility, identity, and risk management. Acquiring a specialist startup gives OpenAI a faster path than building every stack component organically.</p>
-<p class="body-text">The deal also fits a broader pattern: major AI platforms are increasingly buying niche product teams and technical IP to deepen modality coverage, especially where the user experience depends on low-latency and high-quality generation.</p>
-      <blockquote class="article-quote"><p>"OpenAI Bought Company That Offered A.I. Tools for Cloning Voices."</p><cite>The New York Times</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Implications:</strong> Startup exits in AI are still clustering around modality specialists, with voice one of the clearest acquisition magnets as bigger platforms race to own multimodal user experiences.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxNVDh4dllxNlBxZHVoZ0sxdlpCZEZvWXhQOWRBTHEtWGFMR01EeUNxX3V5QjJ2NkU3M1JwRHJXaHJhMnJQclFuQk40UUdraVY2QjhrQ1YwQzRqc0VKT2swcWVnRlFFT3duaEJzTHNfb29GVEpZRW1YRmh6d2ZxdGNob1ZnUHNzT0Y4?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">The New York Times</a>
-      <span class="pub-time">2026-05-16</span>
+      <a href="https://www.space.com/astronomy/mars/mars-orbiter-captures-striking-images-of-chaos-and-craters-carved-by-ancient-floods" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.space.com&sz=16" alt="">Space.com</a>
+      <span class="pub-time">2026-05-15</span>
     </div>
   </div>
 </details>
@@ -748,23 +341,14 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 </section>
   <footer class="report-footer" id="en-sources">
     <h3 class="footer-title"><i data-lucide="paperclip"></i> All report sources</h3>
-    <div class="sources-grid"><div class="sources-section"><h4><i data-lucide="monitor"></i> Developer Tools</h4><ul><li><a href="https://github.blog/changelog/2026-05-15-github-app-installation-tokens-per-request-override-header" target="_blank" rel="noopener">GitHub Changelog</a></li>
-<li><a href="https://github.blog/changelog/2026-05-15-copilot-memory-supports-user-preferences-for-pro-pro-users" target="_blank" rel="noopener">GitHub Changelog</a></li>
-<li><a href="https://github.blog/changelog/2026-05-15-grok-code-fast-1-deprecated" target="_blank" rel="noopener">GitHub Changelog</a></li></ul></div>
-<div class="sources-section"><h4><i data-lucide="sparkles"></i> AI Tools</h4><ul><li><a href="https://openai.com/index/malta-chatgpt-plus-partnership" target="_blank" rel="noopener">OpenAI</a></li>
-<li><a href="https://openai.com/index/personal-finance-chatgpt" target="_blank" rel="noopener">OpenAI</a></li>
-<li><a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxNUTJDdjEybzdIZkZhdkc0Z1FVVnBtUjg5czRtd3VnTXcxZDZyLWVHTkZ5SDlrZnlwNHRES2loTmlmMTVkSHlUU2ZYX2RydjhxeEljRHN0U2J6NTFtb3Bpa3BjOXk4aFlaQ1JJZ3Z4MzZGREpvdkNDMVMtU1E5NFlwbVJGcVFJTXZMYl9na1BSNXpITThTdjNmV29acVY?oc=5" target="_blank" rel="noopener">The Verge</a></li></ul></div>
-<div class="sources-section"><h4><i data-lucide="shield"></i> Defense</h4><ul><li><a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxNb1FxZmVxcjBReWxYbmRIU2p2VUM4QVFSem56blhJU05fV3lqSWNsNnJ2T3pnREVHSEdEVW05M1VoSWk5blFnMVRwRExfTDVpTnJqa1FTcTUwVFM2aV9XQ3lySzhtWWhibmIxQ25ubTJ2ZmR4N1VtY1lOaDF4R0FlXzE0NGc?oc=5" target="_blank" rel="noopener">The Japan Times</a></li>
-<li><a href="https://news.google.com/rss/articles/CBMi6gFBVV95cUxPbzc5SWhLU3JxQTA2ZXZCSXk3MVpMdFRHNnBVZzRkbk5haW13V0tYcFFwdGJ2aWNtMWMtVEFtTFpBV2w4ampORmtPTHoxUTdpQmJhbUNMMkFjcDNkQlRIN296VFN3RmhpQnBkODdvZEs5VmtMUTg5VEs5N3dLV1VMcFBaelNTaEF3NGVfZTREcUJmVnVOMGFsUmxfSWY5d21WeEdpeEliNVZwaFV4N0Q5ZFFrbzRqTTlINVdwcWY2YWRRYTB0WHdlOXM2VjZ5VmpjZ1Q4SGNsUWZqVjZqYW1qRkdxWUdwX2RLS2fSAe8BQVVfeXFMTVMxaWZ0Mkc5aEdtb1ZfNEhVd1FzcGJfTzZoVDRrSk1TWW5ucHBVYUVnVU1BLXZheTVfd0h6Tmk5Zk1xTzNNMVg5anZUdG5takF5aUo3MTduNEdQejVHZEpHOWtZT1dJcFpJeDNUc0Rpb0U2U0pDX3pqRFcwODR5SFE5eW1GNUdNMEl6MnR4cmtpMEtBNVZfcGRIeFQxUkxoWTE2MHNqYk9ueGdEeXBfTnktc0QwcjIyMm9JYnFIZVVnU052NGplNGNxa3ZmdEZiVFoyTkI0UnZJemQzbG5VUDc2VnlNLW5uczdkeVVQVWM?oc=5" target="_blank" rel="noopener">The Times of India</a></li>
-<li><a href="https://news.google.com/rss/articles/CBMi1AFBVV95cUxPOG9RR2ZjVHZtZW1rUlFoN1YzTDY4SzZRUGJRazBtWHBCNzR4N1EtMGFYWVJKb0NsMHRWVGZjdTdaLWdxX25jckoyaVFPSTFuRko4QVQ4MWU1YWtEckxkY203YTFVbzVQQkgwNWtJQWM1QTZMZ1RzY1FFQnQwSDhoQkhHM0dQZThQLW1CQm1rM0NCcURNVVNBWkxXdS16ajExdERLcnBBcjhlcWNfQzhQTzBwN3kza2tVV2lDQ2FRLVk0WkVUQU50NHB1ZmZqQ3ZWZ1ZzUw?oc=5" target="_blank" rel="noopener">Army Recognition</a></li></ul></div>
-<div class="sources-section"><h4><i data-lucide="rocket"></i> Space</h4><ul><li><a href="https://www.nasa.gov/news-release/nasa-science-cargo-launch-on-34th-spacex-resupply-mission-to-station/" target="_blank" rel="noopener">NASA</a></li>
-<li><a href="https://www.nasa.gov/news-release/nasa-names-brian-hughes-to-launch-operations-role/" target="_blank" rel="noopener">NASA</a></li>
-<li><a href="https://www.nasa.gov/news-release/nasa-kennedy-center-director-announces-plans-to-retire/" target="_blank" rel="noopener">NASA</a></li></ul></div>
-<div class="sources-section"><h4><i data-lucide="banknote"></i> Startups</h4><ul><li><a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxNVDh4dllxNlBxZHVoZ0sxdlpCZEZvWXhQOWRBTHEtWGFMR01EeUNxX3V5QjJ2NkU3M1JwRHJXaHJhMnJQclFuQk40UUdraVY2QjhrQ1YwQzRqc0VKT2swcWVnRlFFT3duaEJzTHNfb29GVEpZRW1YRmh6d2ZxdGNob1ZnUHNzT0Y4?oc=5" target="_blank" rel="noopener">The New York Times</a></li></ul></div></div>
+    <div class="sources-grid"><div class="sources-section"><h4><i data-lucide="rocket"></i> Space</h4><ul><li><a href="https://spacenews.com/spacex-launches-crs-34-cargo-mission-to-iss/" target="_blank" rel="noopener">SpaceNews</a></li>
+<li><a href="https://www.space.com/space-exploration/asteroid-comet-missions/nasas-psyche-spacecraft-is-flying-to-a-metal-asteroid-so-why-did-it-just-visit-mars" target="_blank" rel="noopener">Space.com</a></li>
+<li><a href="https://www.space.com/astronomy/comets/astronomers-find-interstellar-comet-3i-atlas-hiding-in-images-taken-before-its-official-discovery" target="_blank" rel="noopener">Space.com</a></li>
+<li><a href="https://www.space.com/astronomy/mars/mars-orbiter-captures-striking-images-of-chaos-and-craters-carved-by-ancient-floods" target="_blank" rel="noopener">Space.com</a></li></ul></div></div>
     <div class="footer-meta">
-      <p><i data-lucide="cpu"></i> Generated: 2026-05-16 15:49 CEST by AI Daily structured renderer</p>
+      <p><i data-lucide="cpu"></i> Generated: 2026-05-16 16:15 CEST by AI Daily structured renderer</p>
       <p><i data-lucide="clock"></i> Time window: last 24 hours</p>
-      <p><i data-lucide="bar-chart-2"></i> Sources analyzed: 13</p>
+      <p><i data-lucide="bar-chart-2"></i> Sources analyzed: 4</p>
       <p><i data-lucide="file-text"></i> Output: JSON content rendered to HTML</p>
     </div>
   </footer>
@@ -777,11 +361,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
       <span class="masthead-title">AI Daily</span>
       <span class="masthead-edition">16.05</span>
     </div>
-    <nav class="masthead-nav"><a href="#pl-dev-tools"><i data-lucide="monitor"></i> Narzędzia developerskie</a>
-<a href="#pl-ai-tools"><i data-lucide="sparkles"></i> Narzędzia AI</a>
-<a href="#pl-defense"><i data-lucide="shield"></i> Obronność</a>
-<a href="#pl-space"><i data-lucide="rocket"></i> Kosmos</a>
-<a href="#pl-startups"><i data-lucide="banknote"></i> Startupy</a>
+    <nav class="masthead-nav"><a href="#pl-space"><i data-lucide="rocket"></i> Kosmos</a>
 <a href="#pl-sources"><i data-lucide="paperclip"></i> Wszystkie źródła raportu</a></nav>
     <div class="language-toggle" aria-label="Language"><button type="button" class="" data-set-lang="en">EN</button><button type="button" class="active" data-set-lang="pl">PL</button></div>
     <span class="masthead-version">Strukturalny</span>
@@ -793,408 +373,15 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
     <h1 class="hero-title">AI Daily — <span>Twój poranny</span><br>brief AI</h1>
     <p class="hero-tagline">Wszystko, co musisz wiedzieć o sztucznej inteligencji z ostatnich 24 godzin.</p>
     <div class="hero-stats">
-      <div class="hero-stat-item"><span class="hero-stat-num">30</span><span class="hero-stat-label">sprawdzonych artykułów</span></div>
-      <div class="hero-stat-item"><span class="hero-stat-num">5</span><span class="hero-stat-label">sekcji tematycznych</span></div>
-      <div class="hero-stat-item"><span class="hero-stat-num">13</span><span class="hero-stat-label">zweryfikowanych źródeł</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">105</span><span class="hero-stat-label">sprawdzonych artykułów</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">1</span><span class="hero-stat-label">sekcji tematycznych</span></div>
+      <div class="hero-stat-item"><span class="hero-stat-num">4</span><span class="hero-stat-label">zweryfikowanych źródeł</span></div>
     </div>
   </div>
 </div>
 <div class="page-wrapper">
   
   
-<section class="news-section" id="pl-dev-tools">
-  <div class="section-header">
-    <span class="section-icon"><i data-lucide="monitor"></i></span>
-    <div class="section-meta">
-      <span class="section-overline">Sekcja</span>
-      <h2 class="section-title">Narzędzia developerskie</h2>
-    </div>
-    <span class="section-count">3 artykuły</span>
-  </div>
-  <div class="section-divider" style="background: #2563EB;"></div>
-  <div class="articles-grid">
-    
-<details class="news-card featured">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #2563EB;">
-  <img class="card-image" src="https://github.blog/wp-content/themes/github-2021-child/dist/img/social-v3-improvements.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Narzędzia developerskie visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEV</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Narzędzia developerskie</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">GitHub dodaje nagłówek override dla nowego formatu tokenów aplikacji</h2>
-      <p class="article-deck">GitHub opublikował tymczasowy nagłówek per request, aby deweloperzy mogli testować lub odroczyć wdrożenie nowego bezstanowego formatu tokenów instalacyjnych.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">~520</span><span class="stat-label">znaków JWT</span></div></div>
-      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>GitHub opublikował zmianę 2026-05-16.</li>
-<li>Nowy nagłówek to X-GitHub-Stateless-S2S-Token na endpointcie tokenu dostępu instalacji.</li>
-<li>Deweloperzy mogą wymuszać per request zarówno nowy bezstanowy token w stylu JWT, jak i starszy nieprzezroczysty format.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">GitHub daje deweloperom aplikacji krótki okres migracyjny, zanim nowy format tokenów instalacyjnych stanie się domyślny. Z changeloga wynika, że zespoły mogą włączać lub wyłączać format bezstanowy po jednym żądaniu naraz, aby zweryfikować założenia dotyczące przechowywania, regexów i workflowów.</p>
-<p class="body-text">To ma znaczenie dla Copilot i szerzej dla ekosystemu GitHub App, ponieważ długość i struktura tokena istotnie się zmieniają. GitHub wprost ostrzegł deweloperów, aby usunęli zakodowane na sztywno założenia o długości tokena i zaktualizowali logikę walidacji, zanim tymczasowy override zniknie.</p>
-      <blockquote class="article-quote"><p>"Ustawienie X-GitHub-Stateless-S2S-Token w żądaniu POST /app/installations/:installation_id/access_tokens nadpisuje decyzję o wdrożeniu po stronie serwera dla tego pojedynczego żądania."</p><cite>GitHub Changelog</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> GitHub naciska, by integratorzy wzmocnili obsługę uwierzytelniania przed ogólnoplatformową zmianą formatu tokenów, która obejmie backendy aplikacji, przepływy Actions i narzędzia powiązane z Copilot.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://github.blog/changelog/2026-05-15-github-app-installation-tokens-per-request-override-header" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=github.blog&sz=16" alt="">GitHub Changelog</a>
-      <span class="pub-time">2026-05-16</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card secondary">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #2563EB;">
-  <img class="card-image" src="https://github.blog/wp-content/uploads/2026/05/593242455-0c33f4ae-e109-4fd6-bd63-d6016de5f500.png" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Narzędzia developerskie visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEV</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Narzędzia developerskie</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">Copilot Memory przechowuje teraz preferencje na poziomie użytkownika</h2>
-      <p class="article-deck">GitHub rozszerzył Copilot Memory, dzięki czemu użytkownicy Pro i Pro+ mogą przenosić osobiste preferencje między repozytoriami i agentami.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">2</span><span class="stat-label">objęte plany</span></div></div>
-      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>Funkcję opublikowano 2026-05-15.</li>
-<li>GitHub podaje, że jest we wczesnym dostępie dla użytkowników Copilot Pro i Copilot Pro+.</li>
-<li>Preferencje mogą obejmować styl commitów, strukturę PR i ton komunikacji.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">GitHub wyprowadza Copilot Memory poza kontekst ograniczony do repozytorium, dodając preferencje przypisane do użytkownika. Oznacza to, że Copilot może wykorzystywać indywidualny styl pracy między repozytoriami, zamiast uczyć się go od nowa w każdym projekcie.</p>
-<p class="body-text">Firma podaje też, że użytkownicy mogą przeglądać i usuwać te wspomnienia w osobistych ustawieniach Copilot. To istotny krok produktowy, ponieważ trwała personalizacja staje się kluczową warstwą konkurencji dla agentów kodujących.</p>
-      <blockquote class="article-quote"><p>"Dziś Copilot Memory może również przechwytywać osobiste preferencje, które dotyczą ciebie, a nie repozytorium."</p><cite>GitHub Changelog</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Asystenci kodowania przesuwają się od jednorazowych narzędzi czatowych w stronę trwałych współpracowników, którzy pamiętają, jak każdy deweloper lubi pracować.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://github.blog/changelog/2026-05-15-copilot-memory-supports-user-preferences-for-pro-pro-users" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=github.blog&sz=16" alt="">GitHub Changelog</a>
-      <span class="pub-time">2026-05-15</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card standard">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #2563EB;">
-  <img class="card-image" src="https://github.blog/wp-content/uploads/2026/05/592728785-7cbe54fd-3e34-4b36-adba-29fe8a1f4986.jpeg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Narzędzia developerskie visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEV</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-dev"><i data-lucide="monitor"></i> Narzędzia developerskie</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span></div>
-      <h2 class="article-title">GitHub wycofuje Grok Code Fast 1 z Copilot</h2>
-      <p class="article-deck">GitHub usunął Grok Code Fast 1 z funkcji czatu, agenta, edycji i uzupełniania w Copilot oraz wskazał użytkownikom modele alternatywne.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">2</span><span class="stat-label">sugerowane zamienniki</span></div></div>
-      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>GitHub opublikował informację o wycofaniu 2026-05-15.</li>
-<li>Z changeloga wynika, że model został wycofany tego samego dnia we wszystkich doświadczeniach Copilot.</li>
-<li>GitHub wskazał GPT-5 mini i Claude Haiku 4.5 jako alternatywy.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">To usunięcie przypomina, że lista modeli w narzędziach do kodowania pozostaje płynna nawet po szerokim wdrożeniu. GitHub podał, że administratorzy enterprise mogą potrzebować włączyć modele zastępcze przez ustawienia polityk Copilot, aby deweloperzy mogli utrzymać dotychczasowe workflowy.</p>
-<p class="body-text">Dla zespołów standaryzujących się na konkretnym zachowaniu modelu takie wycofania są operacyjnie istotne, ponieważ mogą wpływać na odpowiedzi czatu, edycje inline, działanie uzupełniania kodu i skrypty automatyzacji, które zakładają dostępność danego modelu.</p>
-      <blockquote class="article-quote"><p>"Wycofaliśmy dziś, 15 maja 2026 r., Grok Code Fast 1 we wszystkich doświadczeniach GitHub Copilot."</p><cite>GitHub Changelog</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Zarządzanie modelami staje się częścią codziennych narzędzi deweloperskich, a nie wyłącznie sprawą administratorów, ponieważ dostawcy coraz agresywniej rotują wspierane modele bazowe.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://github.blog/changelog/2026-05-15-grok-code-fast-1-deprecated" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=github.blog&sz=16" alt="">GitHub Changelog</a>
-      <span class="pub-time">2026-05-15</span>
-    </div>
-  </div>
-</details>
-  </div>
-</section>
-
-<section class="news-section" id="pl-ai-tools">
-  <div class="section-header">
-    <span class="section-icon"><i data-lucide="sparkles"></i></span>
-    <div class="section-meta">
-      <span class="section-overline">Sekcja</span>
-      <h2 class="section-title">Narzędzia AI</h2>
-    </div>
-    <span class="section-count">3 artykuły</span>
-  </div>
-  <div class="section-divider" style="background: #DB2777;"></div>
-  <div class="articles-grid">
-    
-<details class="news-card featured">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder" style="--accent: #DB2777;">
-  
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Narzędzia AI visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">AI</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> Narzędzia AI</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">OpenAI i Malta zawierają ogólnokrajową umowę na ChatGPT Plus</h2>
-      <p class="article-deck">OpenAI podało, że Malta zaoferuje obywatelom dostęp do ChatGPT Plus i szkolenia w ramach programu wdrażania AI na skalę kraju.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">1</span><span class="stat-label">wdrożenie ogólnokrajowe</span></div></div>
-      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>OpenAI opublikowało partnerstwo 2026-05-16.</li>
-<li>Firma podała, że plan obejmuje dostęp do ChatGPT Plus i szkolenia z AI.</li>
-<li>OpenAI przedstawiło umowę jako praktyczną inicjatywę rozwoju kompetencji AI i odpowiedzialnego korzystania.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">Porozumienie z Maltą wyróżnia się tym, że łączy dostęp konsumencki z edukacją publiczną, a nie tylko wdrożeniem korporacyjnym. OpenAI podało, że celem jest poszerzenie umiejętności AI w całej populacji przy jednoczesnym promowaniu odpowiedzialnego użycia.</p>
-<p class="body-text">Takie partnerstwa na poziomie państwa są istotne, ponieważ testują, czy mainstreamowe produkty AI mogą przejść od indywidualnych subskrypcji do quasi-publicznej infrastruktury cyfrowej.</p>
-      <blockquote class="article-quote"><p>"OpenAI i Malta współpracują, by poszerzyć dostęp do AI, oferując ChatGPT Plus i szkolenia, które pomogą obywatelom rozwijać praktyczne umiejętności AI i korzystać z AI odpowiedzialnie."</p><cite>OpenAI News RSS</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Można oczekiwać, że więcej rządów zacznie badać hurtowe umowy na konsumenckie AI, ścigając się o przekształcenie asystentów ogólnego przeznaczenia w publiczne platformy kompetencyjne.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://openai.com/index/malta-chatgpt-plus-partnership" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=openai.com&sz=16" alt="">OpenAI</a>
-      <span class="pub-time">2026-05-16</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card secondary">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder" style="--accent: #DB2777;">
-  
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Narzędzia AI visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">AI</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> Narzędzia AI</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">ChatGPT dostaje panel finansów osobistych dla użytkowników Pro</h2>
-      <p class="article-deck">OpenAI zaprezentowało podgląd wskazówek finansowych powiązanych z kontami bezpośrednio w ChatGPT dla subskrybentów Pro w USA.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">U.S.</span><span class="stat-label">rynek początkowy</span></div></div>
-      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>OpenAI opublikowało funkcję 2026-05-15.</li>
-<li>Podgląd jest przeznaczony dla użytkowników ChatGPT Pro w Stanach Zjednoczonych.</li>
-<li>OpenAI podało, że użytkownicy mogą bezpiecznie podłączać konta finansowe, aby uzyskać analizy oparte na kontekście.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">OpenAI wprowadza ChatGPT głębiej w obszar wysokozaufanych osobistych workflowów, dodając łączność z kontami finansowymi. Firma twierdzi, że funkcja ma osadzać porady w indywidualnym kontekście finansowym, priorytetach i celach użytkownika.</p>
-<p class="body-text">To przybliża ChatGPT do roli zorientowanej na działanie osobistej warstwy operacyjnej, a nie tylko konwersacyjnego asystenta. Przypadki użycia w finansach są szczególnie ważne, ponieważ testują zaufanie użytkowników, projektowanie zgodności i to, czy asystenci AI potrafią obsługiwać wrażliwe dane bez utraty wiarygodności.</p>
-      <blockquote class="article-quote"><p>"Bezpiecznie połącz swoje konta finansowe i uzyskaj analizy oraz wskazówki napędzane przez AI, osadzone w twoim kontekście finansowym, celach i priorytetach."</p><cite>OpenAI News RSS</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Konsumenckie produkty AI wchodzą w regulowane, wysoko wrażliwe obszary, gdzie zaufanie, uprawnienia i odpowiedzialność produktowa stają się równie ważne jak jakość modelu.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://openai.com/index/personal-finance-chatgpt" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=openai.com&sz=16" alt="">OpenAI</a>
-      <span class="pub-time">2026-05-15</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card standard">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #DB2777;">
-  <img class="card-image" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/01/STK419_DEEPFAKE_3_CVIRGINIA_A.jpg?quality=90&amp;strip=all&amp;crop=0%2C0%2C100%2C100&amp;w=2400" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Narzędzia AI visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">AI</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-ai-tool"><i data-lucide="sparkles"></i> Narzędzia AI</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">YouTube rozszerza wykrywanie deepfake&#x27;ów AI na wszystkich dorosłych</h2>
-      <p class="article-deck">The Verge poinformował, że system wykrywania podobizny w YouTube będzie teraz dostępny dla każdego pełnoletniego użytkownika z kontem YouTube.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">18+</span><span class="stat-label">uprawnieni użytkownicy</span></div></div>
-      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>The Verge opublikował aktualizację 2026-05-15.</li>
-<li>Narzędzie skanuje YouTube pod kątem zgodności twarzy, aby pomagać wykrywać nadużycia AI związane z podobizną.</li>
-<li>Rozszerzenie dotyczy pełnoletnich użytkowników posiadających konta YouTube.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">YouTube przekształca wcześniej węższą funkcję przeciwdziałania deepfake&#x27;om w znacznie szersze zabezpieczenie skierowane do konsumentów. The Verge opisał wdrożenie jako rozszerzenie wykrywania podobizny, które skanuje przesłane filmy pod kątem zgodności twarzy.</p>
-<p class="body-text">To istotne, ponieważ nadużycia związane z generatywnym wideo przechodzą od ryzyka dotyczącego wyłącznie celebrytów do ryzyka dla zwykłych twórców. Narzędzia detekcyjne na poziomie platformy zaczynają stawać się standardową warstwą obronną w konsumenckich ekosystemach mediów AI.</p>
-      <blockquote class="article-quote"><p>"Wykrywanie podobizny, które skanuje YouTube pod kątem zgodności twarzy, będzie teraz dostępne dla każdej osoby w wieku 18 lat lub starszej posiadającej konto YouTube."</p><cite>The Verge</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Konkurencja w produktach AI nie dotyczy już tylko jakości generowania; coraz częściej chodzi o narzędzia bezpieczeństwa dla tożsamości, zgody i reagowania na nadużycia.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxNUTJDdjEybzdIZkZhdkc0Z1FVVnBtUjg5czRtd3VnTXcxZDZyLWVHTkZ5SDlrZnlwNHRES2loTmlmMTVkSHlUU2ZYX2RydjhxeEljRHN0U2J6NTFtb3Bpa3BjOXk4aFlaQ1JJZ3Z4MzZGREpvdkNDMVMtU1E5NFlwbVJGcVFJTXZMYl9na1BSNXpITThTdjNmV29acVY?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">The Verge</a>
-      <span class="pub-time">2026-05-15</span>
-    </div>
-  </div>
-</details>
-  </div>
-</section>
-
-<section class="news-section" id="pl-defense">
-  <div class="section-header">
-    <span class="section-icon"><i data-lucide="shield"></i></span>
-    <div class="section-meta">
-      <span class="section-overline">Sekcja</span>
-      <h2 class="section-title">Obronność</h2>
-    </div>
-    <span class="section-count">3 artykuły</span>
-  </div>
-  <div class="section-divider" style="background: #DC2626;"></div>
-  <div class="articles-grid">
-    
-<details class="news-card featured">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #DC2626;">
-  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Obronność visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEF</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-defense"><i data-lucide="shield"></i> Obronność</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">Ukraina mocniej stawia na roje dronów wspierane przez AI</h2>
-      <p class="article-deck">Nowe doniesienia pokazały wysiłki Ukrainy, by zamienić skoordynowane roje dronów z koncepcji science fiction w praktykę pola walki.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">24h</span><span class="stat-label">świeże doniesienia</span></div></div>
-      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>The Japan Times opublikował reportaż 2026-05-16.</li>
-<li>Materiał koncentrował się na dążeniu Ukrainy do skoordynowanych operacji rojów dronów.</li>
-<li>Temat znajduje się w centrum debaty o broni autonomicznej, ponieważ łączy AI, niskokosztowe systemy i masowe wdrożenie.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">Ukraina pozostaje najwyraźniejszym żywym teatrem szybkiej iteracji w wojnie dronów autonomicznych i półautonomicznych. Najnowsze doniesienia podkreślały taktyki rojowe, w których duże liczby dronów są koordynowane, aby przeciążać obronę lub zwiększać niezawodność uderzeń.</p>
-<p class="body-text">To czyni ten konflikt ważnym rzeczywistym poligonem dla wojskowych systemów wspieranych przez AI, zwłaszcza gdy rządy rozważają kontrole eksportowe, zmiany doktryn i etykę coraz bardziej zautomatyzowanych łańcuchów zabijania.</p>
-      <blockquote class="article-quote"><p>"Science fiction czy rzeczywistość pola walki? Zakład Ukrainy na roje dronów."</p><cite>The Japan Times</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Eksperymenty z rojami dronów w Ukrainie przyspieszają harmonogram wojskowego wdrażania autonomii, wymuszając szybsze reakcje polityczne i zakupowe gdzie indziej.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxNb1FxZmVxcjBReWxYbmRIU2p2VUM4QVFSem56blhJU05fV3lqSWNsNnJ2T3pnREVHSEdEVW05M1VoSWk5blFnMVRwRExfTDVpTnJqa1FTcTUwVFM2aV9XQ3lySzhtWWhibmIxQ25ubTJ2ZmR4N1VtY1lOaDF4R0FlXzE0NGc?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">The Japan Times</a>
-      <span class="pub-time">2026-05-16</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card secondary">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #DC2626;">
-  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Obronność visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEF</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-defense"><i data-lucide="shield"></i> Obronność</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">Indie rozmieszczają roboty wzdłuż Line of Control</h2>
-      <p class="article-deck">The Times of India podał, że Indie rozmieszczają roboty na LoC, gdy automatyzacja walki rozprzestrzenia się z Ukrainy do innych armii.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">LoC</span><span class="stat-label">strefa rozmieszczenia</span></div></div>
-      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>The Times of India opublikował materiał 2026-05-16.</li>
-<li>Artykuł powiązał rozmieszczenie Indii z wnioskami płynącymi z użycia robotów w Ukrainie.</li>
-<li>Opisano przejście robotów od ról demonstracyjnych do operacyjnego użycia na granicy.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">Ta zmiana jest istotna, ponieważ sugeruje, że robotyka lądowa nie jest już ograniczona do demonstracji laboratoryjnych, targów czy logistyki na tyłach. Rozmieszczenie na granicy nadaje tej technologii znaczenie operacyjne w kontekstach nadzoru i ochrony sił.</p>
-<p class="body-text">Szerszy wniosek jest taki, że robotyka bojowa rozprzestrzenia się międzynarodowo znacznie szybciej niż zwykle formalna doktryna, zwłaszcza gdy armie mogą wskazywać wojenne dowody skuteczności z Ukrainy.</p>
-      <blockquote class="article-quote"><p>"Gdy Ukraina obejmuje prowadzenie w wykorzystaniu robotów w walce, Indie rozmieszczają je na LoC."</p><cite>The Times of India</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Robotyka wojskowa przechodzi od głośnych eksperymentów na polu walki do rutynowych wdrożeń granicznych i bezpieczeństwa, poszerzając realny rynek autonomicznych systemów obronnych.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://news.google.com/rss/articles/CBMi6gFBVV95cUxPbzc5SWhLU3JxQTA2ZXZCSXk3MVpMdFRHNnBVZzRkbk5haW13V0tYcFFwdGJ2aWNtMWMtVEFtTFpBV2w4ampORmtPTHoxUTdpQmJhbUNMMkFjcDNkQlRIN296VFN3RmhpQnBkODdvZEs5VmtMUTg5VEs5N3dLV1VMcFBaelNTaEF3NGVfZTREcUJmVnVOMGFsUmxfSWY5d21WeEdpeEliNVZwaFV4N0Q5ZFFrbzRqTTlINVdwcWY2YWRRYTB0WHdlOXM2VjZ5VmpjZ1Q4SGNsUWZqVjZqYW1qRkdxWUdwX2RLS2fSAe8BQVVfeXFMTVMxaWZ0Mkc5aEdtb1ZfNEhVd1FzcGJfTzZoVDRrSk1TWW5ucHBVYUVnVU1BLXZheTVfd0h6Tmk5Zk1xTzNNMVg5anZUdG5takF5aUo3MTduNEdQejVHZEpHOWtZT1dJcFpJeDNUc0Rpb0U2U0pDX3pqRFcwODR5SFE5eW1GNUdNMEl6MnR4cmtpMEtBNVZfcGRIeFQxUkxoWTE2MHNqYk9ueGdEeXBfTnktc0QwcjIyMm9JYnFIZVVnU052NGplNGNxa3ZmdEZiVFoyTkI0UnZJemQzbG5VUDc2VnlNLW5uczdkeVVQVWM?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">The Times of India</a>
-      <span class="pub-time">2026-05-16</span>
-    </div>
-  </div>
-</details>
-
-<details class="news-card standard">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #DC2626;">
-  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Obronność visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">DEF</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-defense"><i data-lucide="shield"></i> Obronność</span><span class="badge badge-info"><i data-lucide="sparkles"></i> info</span><span class="badge badge-unverified"><i data-lucide="alert-triangle"></i> UNVERIFIED</span></div>
-      <h2 class="article-title">Propozycja Golden Dome wyostrza uwagę na obronę powietrzną nowej generacji</h2>
-      <p class="article-deck">Army Recognition opisał amerykańską koncepcję Golden Dome ukierunkowaną na rosyjskie i chińskie zagrożenia pociskami hipersonicznymi.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">2</span><span class="stat-label">wskazani przeciwnicy</span></div></div>
-      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>Army Recognition opublikował tekst 2026-05-16.</li>
-<li>Raport przedstawiał Golden Dome jako odpowiedź na rosyjskie i chińskie zagrożenia hipersoniczne.</li>
-<li>Opis nie ustalał jasno dojrzałości ani statusu zakupowego tej koncepcji.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">Artykuł pokazuje, jak planowanie obrony przeciwrakietowej coraz mocniej wiąże się z warstwami wykrywania, dowodzenia i przechwytywania opartymi na AI, a nie z tradycyjną koncepcją statycznej tarczy. Obrona przed bronią hipersoniczną szczególnie zależy od szybszego wykrywania, śledzenia i wsparcia decyzji.</p>
-<p class="body-text">Ponieważ publicznych szczegółów pozostaje niewiele, a opis portalu nie jest pierwotnym komunikatem rządowym, główny kierunek jest wiarygodny, ale dokładne ujęcie programu jest mniej pewne niż w innych pozycjach tej sekcji.</p>
-      <blockquote class="article-quote"><p>"Amerykańska obrona powietrzna Golden Dome zaprojektowana, by przeciwdziałać rosyjskim i chińskim zagrożeniom pociskami hipersonicznymi."</p><cite>Army Recognition</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Nawet programy obrony przeciwrakietowej na etapie koncepcji są opisywane przez pryzmat oprogramowania, sensorów i autonomii, co podkreśla, jak centralna dla architektury obrony strategicznej staje się AI.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://news.google.com/rss/articles/CBMi1AFBVV95cUxPOG9RR2ZjVHZtZW1rUlFoN1YzTDY4SzZRUGJRazBtWHBCNzR4N1EtMGFYWVJKb0NsMHRWVGZjdTdaLWdxX25jckoyaVFPSTFuRko4QVQ4MWU1YWtEckxkY203YTFVbzVQQkgwNWtJQWM1QTZMZ1RzY1FFQnQwSDhoQkhHM0dQZThQLW1CQm1rM0NCcURNVVNBWkxXdS16ajExdERLcnBBcjhlcWNfQzhQTzBwN3kza2tVV2lDQ2FRLVk0WkVUQU50NHB1ZmZqQ3ZWZ1ZzUw?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">Army Recognition</a>
-      <span class="pub-time">2026-05-16</span>
-    </div>
-  </div>
-</details>
-  </div>
-</section>
-
 <section class="news-section" id="pl-space">
   <div class="section-header">
     <span class="section-icon"><i data-lucide="rocket"></i></span>
@@ -1202,7 +389,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
       <span class="section-overline">Sekcja</span>
       <h2 class="section-title">Kosmos</h2>
     </div>
-    <span class="section-count">3 artykuły</span>
+    <span class="section-count">4 artykuły</span>
   </div>
   <div class="section-divider" style="background: #7C3AED;"></div>
   <div class="articles-grid">
@@ -1211,7 +398,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
   <summary class="card-summary">
     
 <div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
-  <img class="card-image" src="https://www.nasa.gov/wp-content/uploads/2026/05/crs-34-mission-dragon-liftoff-image-2.png?w=1024" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <img class="card-image" src="https://www.nasa.gov/wp-content/uploads/2026/05/crs-34-mission-dragon-liftoff-image-2.png" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
   <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Kosmos visual" xmlns="http://www.w3.org/2000/svg">
     <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
     <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
@@ -1223,25 +410,26 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 </div>
     <div class="card-summary-content">
       <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Kosmos</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">SpaceX wysyła misję cargo CRS-34 na ISS</h2>
-      <p class="article-deck">Falcon 9 wysłał w stronę Międzynarodowej Stacji Kosmicznej niemal 6,500 funtów ładunku NASA i eksperymentów naukowych.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">6,500 lb</span><span class="stat-label">masa ładunku</span></div></div>
+      <h2 class="article-title">SpaceX wysyła CRS-34 na ISS, a Cargo Dragon notuje rekordowy szósty lot</h2>
+      <p class="article-deck">Dragon dostarczył 2,948 kilograma ładunku na ISS i został pierwszym cargo Dragonem, który zrealizował szóstą misję.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">2,948 kg</span><span class="stat-label">dostarczony ładunek</span></div>
+<div class="stat-highlight"><span class="stat-number">6th</span><span class="stat-label">lot Dragona</span></div></div>
       <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
     </div>
   </summary>
   <div class="card-details">
-    <ul class="bullet-list"><li>NASA podała, że Falcon 9 wystartował w piątek o 6:05 p.m. EDT.</li>
-<li>Dragon przewozi niemal 6,500 funtów ładunku dla Expedition 74.</li>
-<li>NASA podała, że dokowanie zaplanowano na około 7 a.m. w niedzielę, May 17.</li></ul>
+    <ul class="bullet-list"><li>Dragon C209 realizuje swoją szóstą misję cargo, jako pierwszy cargo Dragon osiągając ten kamień milowy, a pierwszy stopień Falcona 9 również odbył swój szósty lot i pomyślnie wylądował na Cape Canaveral.</li>
+<li>Misja dostarczyła około 2,948 kilogramów ładunku dla NASA Expedition 74, w tym ponad 50 eksperymentów naukowych.</li>
+<li>SpaceX zakończył już 57. start orbitalny w 2026 roku, co daje tempo około 154 startów w tym roku.</li></ul>
     <div class="extended-content">
-      <p class="body-text">CRS-34 to kolejne przypomnienie, że logistyka ISS pozostaje kluczowym kręgosłupem zarówno dla badań prowadzonych na stacji, jak i dla szerszego tempa amerykańskich komercyjnych startów. NASA podkreśliła mieszankę ładunków z zakresu biologii, nauk o Ziemi i środowiska kosmicznego na tym locie.</p>
-<p class="body-text">Misja przewozi też instrumenty związane z wysokowartościowymi pomiarami i badaniami cząstek na orbicie, co wzmacnia obraz lotów cargo jako rutynowych systemów dostaw dla nauki z pogranicza, a nie tylko misji zaopatrzeniowych.</p>
-      <blockquote class="article-quote"><p>"34. komercyjna misja zaopatrzeniowa SpaceX realizowana na kontrakcie z NASA zmierza na Międzynarodową Stację Kosmiczną z nowymi eksperymentami naukowymi po starcie w piątek o 6:05 p.m. EDT."</p><cite>NASA</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Niezawodność komercyjnych startów pozostaje kluczowa dla nauki NASA i operacji stacyjnych, a misje Dragon pełnią dziś rolę powtarzalnej infrastruktury naukowej.</p>
+      <p class="body-text">SpaceX wystartował z misją CRS-34 o 6:05 PM EDT 15 maja, wysyłając Dragona na Międzynarodową Stację Kosmiczną z ładunkami naukowymi obejmującymi instrument klimatyczny CLARREO Pathfinder, badanie naładowanych cząstek STORIE, badania rusztowań kostnych oraz eksperymenty na czerwonych krwinkach.</p>
+<p class="body-text">Ten kamień milowy w zakresie ponownego użycia pokazuje, jak daleko SpaceX przesunął ekonomikę logistyki orbitalnej. Ponieważ ISS zbliża się do końca okresu eksploatacji, każda udana misja zaopatrzeniowa ma też ponadprzeciętne znaczenie dla pozostałego okna badawczego stacji.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> To umacnia przewagę SpaceX w wielokrotnego użytku transporcie orbitalnym, a jednocześnie podtrzymuje naukowy pipeline ISS NASA dzięki coraz bardziej sprawdzonemu w lotach sprzętowi.</p>
     </div>
     <div class="card-footer">
-      <a href="https://www.nasa.gov/news-release/nasa-science-cargo-launch-on-34th-spacex-resupply-mission-to-station/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.nasa.gov&sz=16" alt="">NASA</a>
-      <span class="pub-time">2026-05-16</span>
+      <a href="https://spacenews.com/spacex-launches-crs-34-cargo-mission-to-iss/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=spacenews.com&sz=16" alt="">SpaceNews</a>
+      <span class="pub-time">2026-05-15</span>
     </div>
   </div>
 </details>
@@ -1250,7 +438,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
   <summary class="card-summary">
     
 <div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
-  <img class="card-image" src="https://www.nasa.gov/wp-content/uploads/2026/05/nhq202506250014.jpg?w=1024" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <img class="card-image" src="https://cdn.mos.cms.futurecdn.net/RiC6rtyJHBJ6Hie5wQPRvd.png" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
   <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Kosmos visual" xmlns="http://www.w3.org/2000/svg">
     <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
     <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
@@ -1261,25 +449,26 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
   </svg>
 </div>
     <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Kosmos</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">NASA powierza Brianowi Hughesowi kierowanie operacjami startowymi</h2>
-      <p class="article-deck">NASA mianowała Briana Hughesa starszym dyrektorem ds. operacji startowych, który będzie nadzorował infrastrukturę startową Kennedy i Wallops.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">2</span><span class="stat-label">lokalizacje w zakresie odpowiedzialności</span></div></div>
+      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Kosmos</span><span class="badge badge-breakthrough"><i data-lucide="sparkles"></i> breakthrough</span></div>
+      <h2 class="article-title">Psyche NASA wykorzystuje przelot koło Marsa, by nabrać prędkości przed spotkaniem z metalową asteroidą w 2029 roku</h2>
+      <p class="article-deck">Sonda minęła Marsa 15 maja i zyskała około 2 kilometry na sekundę prędkości heliocentrycznej bez zużycia paliwa.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">12,333 mph</span><span class="stat-label">prędkość przelotu</span></div>
+<div class="stat-highlight"><span class="stat-number">2 km/s</span><span class="stat-label">przyrost prędkości</span></div></div>
       <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
     </div>
   </summary>
   <div class="card-details">
-    <ul class="bullet-list"><li>NASA opublikowała nominację 2026-05-16.</li>
-<li>Hughes będzie nadzorował operacje startowe w Kennedy i Wallops.</li>
-<li>NASA podała, że rola ma wspierać rosnące tempo startów i realizację krajowej polityki kosmicznej.</li></ul>
+    <ul class="bullet-list"><li>Psyche minęła Marsa 15 maja z prędkością około 12,333 mph, przelatując bliżej planety niż Phobos czy Deimos.</li>
+<li>Asysta grawitacyjna dodała około 2 kilometrów na sekundę prędkości względem Słońca bez potrzeby użycia paliwa.</li>
+<li>Jej celem jest asteroida 16 Psyche o szerokości około 173 mil, która może być odsłoniętym metalicznym jądrem rozbitej protoplanety.</li></ul>
     <div class="extended-content">
-      <p class="body-text">To więcej niż zmiana kadrowa, ponieważ NASA wprost powiązała zakres odpowiedzialności Hughesa z tempem startów, koordynacją interesariuszy i nadzorem nad infrastrukturą startową na poziomie całej organizacji. To czyni tę decyzję istotną dla aktywności startowej cywilnej, komercyjnej i związanej z bezpieczeństwem narodowym.</p>
-<p class="body-text">W miarę wzrostu liczby startów w USA strategicznego znaczenia nabierają role koordynujące wiele kosmoportów i interfejsy publiczno-prywatne. NASA sygnalizuje, że zarządzanie operacyjne jest dziś kwestią kosmicznej polityki pierwszego rzędu.</p>
-      <blockquote class="article-quote"><p>"Jego powrót następuje w momencie, gdy NASA nadal rozwija rosnące portfolio cywilnych, komercyjnych i związanych z bezpieczeństwem narodowym działań startowych w ramach swojej infrastruktury kosmoportowej."</p><cite>NASA</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Amerykański ekosystem startowy staje się na tyle intensywny, że samo zarządzanie infrastrukturą i koordynacja międzyagencyjna są już wiadomością kosmiczną z pierwszych stron.</p>
+      <p class="body-text">Asysta grawitacyjna Marsa była jednym z najważniejszych punktów kontrolnych w podróży Psyche, ponieważ misja opiera się na napędzie słoneczno-elektrycznym, który jest wydajny, ale zapewnia niski ciąg. Manewr skierował statek kosmiczny zgodnie z harmonogramem w stronę pasa asteroid, gdzie ma dotrzeć w lipcu 2029 roku.</p>
+<p class="body-text">Jeśli 16 Psyche rzeczywiście jest odsłoniętym materiałem jądra, misja może dać naukowcom rzadką, bezpośrednią możliwość zbadania bogatego w metale wnętrza, które zwykle pozostaje głęboko ukryte wewnątrz skalistych światów takich jak Ziemia.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Udana asysta grawitacyjna utrzymuje jedną z najbardziej niezwykłych misji planetarnych NASA na właściwym kursie i rozwija badania nad tym, jak powstawały i różnicowały się skaliste planety.</p>
     </div>
     <div class="card-footer">
-      <a href="https://www.nasa.gov/news-release/nasa-names-brian-hughes-to-launch-operations-role/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.nasa.gov&sz=16" alt="">NASA</a>
+      <a href="https://www.space.com/space-exploration/asteroid-comet-missions/nasas-psyche-spacecraft-is-flying-to-a-metal-asteroid-so-why-did-it-just-visit-mars" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.space.com&sz=16" alt="">Space.com</a>
       <span class="pub-time">2026-05-16</span>
     </div>
   </div>
@@ -1289,7 +478,47 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
   <summary class="card-summary">
     
 <div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
-  <img class="card-image" src="https://www.nasa.gov/wp-content/uploads/2026/05/janetp.jpg?w=802" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <img class="card-image" src="https://cdn.mos.cms.futurecdn.net/a5drT8Sba3h7zF4aA9LAq5.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Kosmos visual" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
+    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
+    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
+    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
+    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
+    <text x="320" y="154" text-anchor="middle" class="card-visual-label">ORB</text>
+  </svg>
+</div>
+    <div class="card-summary-content">
+      <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Kosmos</span><span class="badge badge-breakthrough"><i data-lucide="sparkles"></i> breakthrough</span></div>
+      <h2 class="article-title">Rubin wykrył międzygwiezdną kometę 3I/ATLAS jeszcze przed odkryciem, a dwie sondy badające Jowisza dokonały historycznej obserwacji</h2>
+      <p class="article-deck">Nowe doniesienia pokazują, że Rubin sfotografował 3I/ATLAS 10 dni wcześniej, a JUICE i Europa Clipper przeprowadziły pierwsze wspólne obserwacje międzygwiezdnej komety.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">9</span><span class="stat-label">wczesne obrazy Rubina</span></div>
+<div class="stat-highlight"><span class="stat-number">140,000 mph</span><span class="stat-label">prędkość komety</span></div></div>
+      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
+    </div>
+  </summary>
+  <div class="card-details">
+    <ul class="bullet-list"><li>Obserwatorium Vera C. Rubin sfotografowało 3I/ATLAS dziewięć razy między 21 czerwca a 2 lipca 2025 roku, około 10 dni przed oficjalnym odkryciem komety 1 lipca 2025 roku.</li>
+<li>JUICE ESA i Europa Clipper NASA obserwowały jednocześnie dzienną i nocną stronę komety podczas peryhelium, tworząc pierwszą skoordynowaną obserwację międzygwiezdnej komety z użyciem wielu statków kosmicznych.</li>
+<li>Obserwacje wykazały podwyższoną zawartość węgla, wzmacniając wcześniejsze dowody z JWST, że 3I/ATLAS powstała w innym układzie słonecznym.</li></ul>
+    <div class="extended-content">
+      <p class="body-text">Zdjęcia Rubina wykonane przed oficjalnym odkryciem są wczesnym potwierdzeniem roli obserwatorium w wykrywaniu przyszłych międzygwiezdnych gości. Badanie sugeruje, że Rubin może stać się głównym narzędziem do wykrywania takich obiektów po uruchomieniu pełnego pipeline&#x27;u danych.</p>
+<p class="body-text">JUICE i Europa Clipper zapewniły też wyjątkowo bogatą geometrię do badania obiektu pozasłonecznego, obserwując jednocześnie przeciwległe półkule i dostarczając rzadkich danych o składzie materii powstałej wokół innej gwiazdy.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> To ważny sygnał, że teleskopy przeglądowe nowej generacji i koordynacja wielu misji zmieniają tempo, w jakim naukowcy mogą wykrywać i charakteryzować obiekty spoza Układu Słonecznego.</p>
+    </div>
+    <div class="card-footer">
+      <a href="https://www.space.com/astronomy/comets/astronomers-find-interstellar-comet-3i-atlas-hiding-in-images-taken-before-its-official-discovery" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.space.com&sz=16" alt="">Space.com</a>
+      <span class="pub-time">2026-05-16</span>
+    </div>
+  </div>
+</details>
+
+<details class="news-card standard">
+  <summary class="card-summary">
+    
+<div class="card-image-placeholder has-image" style="--accent: #7C3AED;">
+  <img class="card-image" src="https://cdn.mos.cms.futurecdn.net/ftwGW3eemBcY2qoi4VAAV3.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
   <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Kosmos visual" xmlns="http://www.w3.org/2000/svg">
     <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
     <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
@@ -1301,78 +530,26 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 </div>
     <div class="card-summary-content">
       <div class="card-tags"><span class="badge badge-space"><i data-lucide="rocket"></i> Kosmos</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">Dyrektor Kennedy Space Center Janet Petro przechodzi na emeryturę</h2>
-      <p class="article-deck">NASA ogłosiła odejście na emeryturę dyrektor Kennedy Space Center Janet Petro i wyznaczyła Kelvina Manninga na pełniącego obowiązki dyrektora.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">11th</span><span class="stat-label">dyrektor KSC</span></div></div>
+      <h2 class="article-title">Mars Express publikuje nowe ujęcia Shalbatana Vallis, kanału powodziowego wyrzeźbionego na dawnym Marsie</h2>
+      <p class="article-deck">Nowe omówienie zdjęć ESA pokazuje marsjańską dolinę o długości 800 mil, wyrzeźbioną przez katastrofalne powodzie wód gruntowych około 3.5 miliarda lat temu.</p>
+      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">1,300 km</span><span class="stat-label">długość kanału</span></div>
+<div class="stat-highlight"><span class="stat-number">23 years</span><span class="stat-label">czas trwania misji</span></div></div>
       <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
     </div>
   </summary>
   <div class="card-details">
-    <ul class="bullet-list"><li>NASA ogłosiła emeryturę 2026-05-16.</li>
-<li>Petro wcześniej pełniła funkcję p.o. administratora NASA w 2025 r.</li>
-<li>NASA podała, że Kelvin Manning obejmuje funkcję pełniącego obowiązki dyrektora centrum ze skutkiem od piątku.</li></ul>
+    <ul class="bullet-list"><li>Shalbatana Vallis rozciąga się na około 1,300 kilometrów w pobliżu równika Marsa, a główny kanał ma około 10 kilometrów szerokości i około 500 metrów głębokości.</li>
+<li>Naukowcy uważają, że kanał został wyrzeźbiony przez katastrofalne wyrzuty wód gruntowych około 3.5 miliarda lat temu.</li>
+<li>Nowe obrazy pokazują także osady popiołu wulkanicznego, kratery uderzeniowe, grzbiety tektoniczne i warstwowy teren, wskazujące na powtarzające się powodzie, przepływy lawy i erozję.</li></ul>
     <div class="extended-content">
-      <p class="body-text">Petro pomagała prowadzić Kennedy przez transformację w wieloużytkownikowy kosmoport, co jest jedną z najbardziej znaczących zmian organizacyjnych we współczesnych amerykańskich operacjach kosmicznych. Jej odejście następuje w momencie, gdy centrum równoważy misje rządowe z rosnącą aktywnością komercyjnych startów.</p>
-<p class="body-text">Zmiany przywództwa w Kennedy mają znaczenie, ponieważ centrum znajduje się dziś na styku Artemis, wzrostu komercyjnych startów i szerszej modernizacji amerykańskich kosmoportów.</p>
-      <blockquote class="article-quote"><p>"Janet była niezwykle wpływową liderką, prowadząc zarówno agencję, jak i nasze Kennedy Space Center przez niektóre z najważniejszych przejść w naszej wspólnej historii."</p><cite>NASA Administrator Jared Isaacman</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Zmiany kadrowe w Kennedy mogą wywoływać efekt fali w operacjach NASA, partnerstwach z komercyjnymi operatorami startów i tempie modernizacji kosmoportu.</p>
+      <p class="body-text">W materiale Space.com z 15 maja pokazano najnowsze zdjęcia regionu Shalbatana Vallis z Mars Express ESA, bogatego geologicznie obszaru odprowadzającego wodę w stronę Chryse Planitia, jednego z najniżej położonych regionów Marsa i kandydata na lokalizację dawnego oceanu.</p>
+<p class="body-text">Publikacja przypomina, że Mars Express pozostaje naukowo produktywny po 23 latach działania, nadal precyzując mapę miejsc, w których starożytna woda na Marsie płynęła i gromadziła się.</p>
+      
+      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Lepsze obrazowanie dawnego terenu powodziowego pomaga doprecyzować modele habitabilności Marsa i wspiera decyzje dotyczące przyszłych miejsc lądowania oraz mapowania zasobów dla misji robotycznych i późniejszych załogowych.</p>
     </div>
     <div class="card-footer">
-      <a href="https://www.nasa.gov/news-release/nasa-kennedy-center-director-announces-plans-to-retire/" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.nasa.gov&sz=16" alt="">NASA</a>
-      <span class="pub-time">2026-05-16</span>
-    </div>
-  </div>
-</details>
-  </div>
-</section>
-
-<section class="news-section" id="pl-startups">
-  <div class="section-header">
-    <span class="section-icon"><i data-lucide="banknote"></i></span>
-    <div class="section-meta">
-      <span class="section-overline">Sekcja</span>
-      <h2 class="section-title">Startupy</h2>
-    </div>
-    <span class="section-count">1 artykuł</span>
-  </div>
-  <div class="section-divider" style="background: #EA580C;"></div>
-  <div class="articles-grid">
-    
-<details class="news-card full">
-  <summary class="card-summary">
-    
-<div class="card-image-placeholder has-image" style="--accent: #EA580C;">
-  <img class="card-image" src="https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="Startupy visual" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="86" cy="76" r="42" fill="currentColor" opacity=".10"/>
-    <circle cx="544" cy="214" r="58" fill="currentColor" opacity=".12"/>
-    <path d="M110 205 C210 115, 330 265, 505 92" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".18"/>
-    <path d="M140 86 H500" stroke="currentColor" stroke-width="2" opacity=".20"/>
-    <path d="M140 194 H500" stroke="currentColor" stroke-width="2" opacity=".16"/>
-    <text x="320" y="154" text-anchor="middle" class="card-visual-label">CAP</text>
-  </svg>
-</div>
-    <div class="card-summary-content">
-      <div class="card-tags"><span class="badge badge-startup"><i data-lucide="banknote"></i> Startupy</span><span class="badge badge-important"><i data-lucide="sparkles"></i> important</span></div>
-      <h2 class="article-title">OpenAI kupuje startup Weights.gg zajmujący się klonowaniem głosu</h2>
-      <p class="article-deck">The New York Times podał, że OpenAI przejęło Weights.gg, startup znany z narzędzi do klonowania głosu w stylu celebrytów.</p>
-      <div class="stat-row"><div class="stat-highlight"><span class="stat-number">1</span><span class="stat-label">transakcja AI audio</span></div></div>
-      <span class="expand-hint">Czytaj pełny brief <i data-lucide="chevron-down"></i></span>
-    </div>
-  </summary>
-  <div class="card-details">
-    <ul class="bullet-list"><li>The New York Times poinformował o przejęciu 2026-05-16.</li>
-<li>Weights.gg był znany z narzędzi, które potrafiły klonować głosy i imitować celebrytów.</li>
-<li>Transakcja wskazuje na dalszą konsolidację wokół możliwości AI w obszarze głosu i audio.</li></ul>
-    <div class="extended-content">
-      <p class="body-text">Głos pozostaje jedną z najbardziej strategicznie spornych warstw konsumenckiego AI, ponieważ dotyka asystentów, generowania mediów, dostępności, tożsamości i zarządzania ryzykiem. Przejęcie wyspecjalizowanego startupu daje OpenAI szybszą ścieżkę niż organiczne budowanie każdego elementu stosu.</p>
-<p class="body-text">Transakcja wpisuje się też w szerszy wzorzec: duże platformy AI coraz częściej kupują niszowe zespoły produktowe i własność intelektualną, aby pogłębiać pokrycie modalności, zwłaszcza tam, gdzie doświadczenie użytkownika zależy od niskich opóźnień i wysokiej jakości generowania.</p>
-      <blockquote class="article-quote"><p>"OpenAI kupiło firmę, która oferowała narzędzia A.I. do klonowania głosów."</p><cite>The New York Times</cite></blockquote>
-      <p class="body-text implications"><i data-lucide="lightbulb"></i> <strong>Znaczenie:</strong> Wyjścia startupów AI nadal koncentrują się wokół specjalistów od modalności, a głos jest jednym z najsilniejszych magnesów akwizycyjnych, gdy większe platformy ścigają się o przejęcie multimodalnych doświadczeń użytkownika.</p>
-    </div>
-    <div class="card-footer">
-      <a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxNVDh4dllxNlBxZHVoZ0sxdlpCZEZvWXhQOWRBTHEtWGFMR01EeUNxX3V5QjJ2NkU3M1JwRHJXaHJhMnJQclFuQk40UUdraVY2QjhrQ1YwQzRqc0VKT2swcWVnRlFFT3duaEJzTHNfb29GVEpZRW1YRmh6d2ZxdGNob1ZnUHNzT0Y4?oc=5" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=news.google.com&sz=16" alt="">The New York Times</a>
-      <span class="pub-time">2026-05-16</span>
+      <a href="https://www.space.com/astronomy/mars/mars-orbiter-captures-striking-images-of-chaos-and-craters-carved-by-ancient-floods" class="source-link" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=www.space.com&sz=16" alt="">Space.com</a>
+      <span class="pub-time">2026-05-15</span>
     </div>
   </div>
 </details>
@@ -1380,23 +557,14 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 </section>
   <footer class="report-footer" id="pl-sources">
     <h3 class="footer-title"><i data-lucide="paperclip"></i> Wszystkie źródła raportu</h3>
-    <div class="sources-grid"><div class="sources-section"><h4><i data-lucide="monitor"></i> Narzędzia developerskie</h4><ul><li><a href="https://github.blog/changelog/2026-05-15-github-app-installation-tokens-per-request-override-header" target="_blank" rel="noopener">GitHub Changelog</a></li>
-<li><a href="https://github.blog/changelog/2026-05-15-copilot-memory-supports-user-preferences-for-pro-pro-users" target="_blank" rel="noopener">GitHub Changelog</a></li>
-<li><a href="https://github.blog/changelog/2026-05-15-grok-code-fast-1-deprecated" target="_blank" rel="noopener">GitHub Changelog</a></li></ul></div>
-<div class="sources-section"><h4><i data-lucide="sparkles"></i> Narzędzia AI</h4><ul><li><a href="https://openai.com/index/malta-chatgpt-plus-partnership" target="_blank" rel="noopener">OpenAI</a></li>
-<li><a href="https://openai.com/index/personal-finance-chatgpt" target="_blank" rel="noopener">OpenAI</a></li>
-<li><a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxNUTJDdjEybzdIZkZhdkc0Z1FVVnBtUjg5czRtd3VnTXcxZDZyLWVHTkZ5SDlrZnlwNHRES2loTmlmMTVkSHlUU2ZYX2RydjhxeEljRHN0U2J6NTFtb3Bpa3BjOXk4aFlaQ1JJZ3Z4MzZGREpvdkNDMVMtU1E5NFlwbVJGcVFJTXZMYl9na1BSNXpITThTdjNmV29acVY?oc=5" target="_blank" rel="noopener">The Verge</a></li></ul></div>
-<div class="sources-section"><h4><i data-lucide="shield"></i> Obronność</h4><ul><li><a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxNb1FxZmVxcjBReWxYbmRIU2p2VUM4QVFSem56blhJU05fV3lqSWNsNnJ2T3pnREVHSEdEVW05M1VoSWk5blFnMVRwRExfTDVpTnJqa1FTcTUwVFM2aV9XQ3lySzhtWWhibmIxQ25ubTJ2ZmR4N1VtY1lOaDF4R0FlXzE0NGc?oc=5" target="_blank" rel="noopener">The Japan Times</a></li>
-<li><a href="https://news.google.com/rss/articles/CBMi6gFBVV95cUxPbzc5SWhLU3JxQTA2ZXZCSXk3MVpMdFRHNnBVZzRkbk5haW13V0tYcFFwdGJ2aWNtMWMtVEFtTFpBV2w4ampORmtPTHoxUTdpQmJhbUNMMkFjcDNkQlRIN296VFN3RmhpQnBkODdvZEs5VmtMUTg5VEs5N3dLV1VMcFBaelNTaEF3NGVfZTREcUJmVnVOMGFsUmxfSWY5d21WeEdpeEliNVZwaFV4N0Q5ZFFrbzRqTTlINVdwcWY2YWRRYTB0WHdlOXM2VjZ5VmpjZ1Q4SGNsUWZqVjZqYW1qRkdxWUdwX2RLS2fSAe8BQVVfeXFMTVMxaWZ0Mkc5aEdtb1ZfNEhVd1FzcGJfTzZoVDRrSk1TWW5ucHBVYUVnVU1BLXZheTVfd0h6Tmk5Zk1xTzNNMVg5anZUdG5takF5aUo3MTduNEdQejVHZEpHOWtZT1dJcFpJeDNUc0Rpb0U2U0pDX3pqRFcwODR5SFE5eW1GNUdNMEl6MnR4cmtpMEtBNVZfcGRIeFQxUkxoWTE2MHNqYk9ueGdEeXBfTnktc0QwcjIyMm9JYnFIZVVnU052NGplNGNxa3ZmdEZiVFoyTkI0UnZJemQzbG5VUDc2VnlNLW5uczdkeVVQVWM?oc=5" target="_blank" rel="noopener">The Times of India</a></li>
-<li><a href="https://news.google.com/rss/articles/CBMi1AFBVV95cUxPOG9RR2ZjVHZtZW1rUlFoN1YzTDY4SzZRUGJRazBtWHBCNzR4N1EtMGFYWVJKb0NsMHRWVGZjdTdaLWdxX25jckoyaVFPSTFuRko4QVQ4MWU1YWtEckxkY203YTFVbzVQQkgwNWtJQWM1QTZMZ1RzY1FFQnQwSDhoQkhHM0dQZThQLW1CQm1rM0NCcURNVVNBWkxXdS16ajExdERLcnBBcjhlcWNfQzhQTzBwN3kza2tVV2lDQ2FRLVk0WkVUQU50NHB1ZmZqQ3ZWZ1ZzUw?oc=5" target="_blank" rel="noopener">Army Recognition</a></li></ul></div>
-<div class="sources-section"><h4><i data-lucide="rocket"></i> Kosmos</h4><ul><li><a href="https://www.nasa.gov/news-release/nasa-science-cargo-launch-on-34th-spacex-resupply-mission-to-station/" target="_blank" rel="noopener">NASA</a></li>
-<li><a href="https://www.nasa.gov/news-release/nasa-names-brian-hughes-to-launch-operations-role/" target="_blank" rel="noopener">NASA</a></li>
-<li><a href="https://www.nasa.gov/news-release/nasa-kennedy-center-director-announces-plans-to-retire/" target="_blank" rel="noopener">NASA</a></li></ul></div>
-<div class="sources-section"><h4><i data-lucide="banknote"></i> Startupy</h4><ul><li><a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxNVDh4dllxNlBxZHVoZ0sxdlpCZEZvWXhQOWRBTHEtWGFMR01EeUNxX3V5QjJ2NkU3M1JwRHJXaHJhMnJQclFuQk40UUdraVY2QjhrQ1YwQzRqc0VKT2swcWVnRlFFT3duaEJzTHNfb29GVEpZRW1YRmh6d2ZxdGNob1ZnUHNzT0Y4?oc=5" target="_blank" rel="noopener">The New York Times</a></li></ul></div></div>
+    <div class="sources-grid"><div class="sources-section"><h4><i data-lucide="rocket"></i> Kosmos</h4><ul><li><a href="https://spacenews.com/spacex-launches-crs-34-cargo-mission-to-iss/" target="_blank" rel="noopener">SpaceNews</a></li>
+<li><a href="https://www.space.com/space-exploration/asteroid-comet-missions/nasas-psyche-spacecraft-is-flying-to-a-metal-asteroid-so-why-did-it-just-visit-mars" target="_blank" rel="noopener">Space.com</a></li>
+<li><a href="https://www.space.com/astronomy/comets/astronomers-find-interstellar-comet-3i-atlas-hiding-in-images-taken-before-its-official-discovery" target="_blank" rel="noopener">Space.com</a></li>
+<li><a href="https://www.space.com/astronomy/mars/mars-orbiter-captures-striking-images-of-chaos-and-craters-carved-by-ancient-floods" target="_blank" rel="noopener">Space.com</a></li></ul></div></div>
     <div class="footer-meta">
-      <p><i data-lucide="cpu"></i> Wygenerowano: 2026-05-16 15:49 CEST przez renderer strukturalny AI Daily</p>
+      <p><i data-lucide="cpu"></i> Wygenerowano: 2026-05-16 16:15 CEST przez renderer strukturalny AI Daily</p>
       <p><i data-lucide="clock"></i> Okno czasowe: ostatnie 24 godziny</p>
-      <p><i data-lucide="bar-chart-2"></i> Przeanalizowane źródła: 13</p>
+      <p><i data-lucide="bar-chart-2"></i> Przeanalizowane źródła: 4</p>
       <p><i data-lucide="file-text"></i> Output: treść JSON wyrenderowana do HTML</p>
     </div>
   </footer>
