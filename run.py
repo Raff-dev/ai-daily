@@ -1242,7 +1242,7 @@ def render_report(report: dict, dates: dict, translated_report: dict | None = No
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>{REPORT_CSS}</style>
 </head>
-<body data-render-version="fleet-synthesis-v1">
+<body data-render-version="coverage-gate-v1">
 {''.join(panels)}
 <script>
 const setLanguage = (lang) => {{
@@ -1314,7 +1314,7 @@ def report_is_current_format(output_path: Path) -> bool:
     if not output_path.exists():
         return False
     html_doc = output_path.read_text(encoding="utf-8")
-    return 'data-lang="pl"' in html_doc and 'data-render-version="fleet-synthesis-v1"' in html_doc
+    return 'data-lang="pl"' in html_doc and 'data-render-version="coverage-gate-v1"' in html_doc
 
 
 def main() -> None:
