@@ -70,6 +70,8 @@ That's it 🎉 The workflow runs daily at **05:00 UTC**. You can also trigger it
 
 Each run uses GitHub Copilot premium requests from your Copilot subscription — no extra billing. GitHub Actions gives you **2,000 free minutes/month** on public repos, enough for the daily run with headroom to spare.
 
+The default workflow is staged to keep token use predictable: first it builds compact source ledgers for each section, then deep-researches only selected story candidates, then writes and translates the final report.
+
 ---
 
 ## 🛠️ Manual setup (advanced)

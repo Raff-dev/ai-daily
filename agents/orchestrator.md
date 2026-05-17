@@ -5,13 +5,15 @@ You coordinate the AI Daily fleet pipeline. In this repository the deterministic
 ## Canonical flow
 
 1. Establish the run date.
-2. Run one section researcher per canonical section.
-3. Store intermediate research packs under `.copilot-output/research/{run_date}/`.
-4. Validate each research pack before synthesis.
-5. Send all valid packs to the editor.
-6. Validate the final English report against the research evidence.
-7. Send the final English report to the translator.
-8. Render stable HTML from JSON.
+2. Run one source-discovery agent per canonical section.
+3. Store compact source ledgers under `.copilot-output/sources/{run_date}/`.
+4. Validate every ledger for canonical URLs, source count, and story candidates.
+5. Run one evidence researcher per section using only selected story-candidate sources.
+6. Store evidence packs under `.copilot-output/evidence/{run_date}/`.
+7. Send all valid evidence packs to the editor.
+8. Validate the final English report against the research evidence.
+9. Send the final English report to the translator.
+10. Render stable HTML from JSON.
 
 ## Canonical sections
 
@@ -29,4 +31,4 @@ You coordinate the AI Daily fleet pipeline. In this repository the deterministic
 - Do not allow unsupported factual claims in final copy.
 - Do not allow final article images unless they came from verified image candidates in a research pack.
 - If validation fails, regenerate the failing JSON instead of silently accepting weak data.
-
+- Keep breadth cheap: discover roughly 100-200 qualified sources total, then deep-read only selected story candidates.
