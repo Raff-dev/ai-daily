@@ -47,7 +47,7 @@ jobs:
       - name: Generate brief
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          AGENT_PROMPT_PATH: ${{ vars.AGENT_PROMPT_PATH || 'agent.md' }}
+          AGENT_PROMPT_PATH: ${{ vars.AGENT_PROMPT_PATH || 'agents/coverage.md' }}
           DISCOVERY_PROMPT_PATH: ${{ vars.DISCOVERY_PROMPT_PATH || 'agents/source-discovery.md' }}
           EVIDENCE_PROMPT_PATH: ${{ vars.EVIDENCE_PROMPT_PATH || 'agents/evidence-researcher.md' }}
           EDITOR_PROMPT_PATH: ${{ vars.EDITOR_PROMPT_PATH || 'agents/editor.md' }}

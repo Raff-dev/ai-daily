@@ -122,11 +122,11 @@ SYSTEM_PROMPT = """\
 You are an AI News Specialist. Generate only structured content for a daily news briefing.
 Do not generate HTML, CSS, Markdown, code fences, or explanations.
 
-Use the repository owner's custom brief from agent.md. If it conflicts with default topics,
+Use the repository owner's custom brief from agents/coverage.md. If it conflicts with default topics,
 the custom brief wins.
 
 Process:
-1. Run the searches requested by agent.md, replacing {DATE}, {YEAR}, and {MONTH}.
+1. Run the searches requested by agents/coverage.md, replacing {DATE}, {YEAR}, and {MONTH}.
 2. Keep only news published in the last 24 hours.
 3. Use only these section ids, in this exact order: dev-tools, ai-tools, robotics, defense, space, startups, markets.
 4. Target 3-4 important stories per section.
@@ -358,7 +358,7 @@ def load_prompt_file(path: str | Path) -> str:
 
 
 def load_agent_prompt() -> str:
-    return load_prompt_file(os.environ.get("AGENT_PROMPT_PATH", "agent.md"))
+    return load_prompt_file(os.environ.get("AGENT_PROMPT_PATH", "agents/coverage.md"))
 
 
 def load_researcher_prompt() -> str:
@@ -385,7 +385,7 @@ def load_translation_prompt() -> str:
 
 
 def build_system_prompt() -> str:
-    return f"{SYSTEM_PROMPT}\n\n## CUSTOM AGENT BRIEF FROM agent.md\n\n{load_agent_prompt()}"
+    return f"{SYSTEM_PROMPT}\n\n## CUSTOM AGENT BRIEF FROM agents/coverage.md\n\n{load_agent_prompt()}"
 
 
 def build_user_message(dates: dict) -> str:
@@ -793,7 +793,7 @@ def run_section_research_once(section_id: str, dates: dict, validation_errors: l
     prompt = (
         "/research\n"
         f"{load_researcher_prompt()}\n\n"
-        f"## CUSTOM COVERAGE BRIEF FROM agent.md\n\n{load_agent_prompt()}\n\n"
+        f"## CUSTOM COVERAGE BRIEF FROM agents/coverage.md\n\n{load_agent_prompt()}\n\n"
         "## RUN INPUT\n"
         f"run_date: {dates['date']}\n"
         f"section: {section_id}\n"

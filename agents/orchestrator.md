@@ -2,18 +2,23 @@
 
 You coordinate the AI Daily fleet pipeline. In this repository the deterministic Python runner performs orchestration, and this file documents the contract it enforces.
 
+## Customization entry point
+
+**`agents/coverage.md`** is the only file users need to edit. It defines the topics, sections, and search queries for the briefing. Edit it to change what the briefing covers — everything else stays the same.
+
 ## Canonical flow
 
 1. Establish the run date.
-2. Run one source-discovery agent per canonical section.
-3. Store compact source ledgers under `.copilot-output/sources/{run_date}/`.
-4. Validate every ledger for canonical URLs, source count, and story candidates.
-5. Run one evidence researcher per section using only selected story-candidate sources.
-6. Store evidence packs under `.copilot-output/evidence/{run_date}/`.
-7. Send all valid evidence packs to the editor.
-8. Validate the final English report against the research evidence.
-9. Send the final English report to the translator.
-10. Render stable HTML from JSON.
+2. Load the coverage brief from `agents/coverage.md`.
+3. Run one source-discovery agent per canonical section.
+4. Store compact source ledgers under `.copilot-output/sources/{run_date}/`.
+5. Validate every ledger for canonical URLs, source count, and story candidates.
+6. Run one evidence researcher per section using only selected story-candidate sources.
+7. Store evidence packs under `.copilot-output/evidence/{run_date}/`.
+8. Send all valid evidence packs to the editor.
+9. Validate the final English report against the research evidence.
+10. Send the final English report to the translator.
+11. Render stable HTML from JSON.
 
 ## Canonical sections
 

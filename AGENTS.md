@@ -1,41 +1,42 @@
 # AI Daily — Agent Instructions
 
-This repository generates a daily AI news briefing automatically via GitHub Actions and publishes it to GitHub Pages.
+This repository generates a daily news briefing automatically via GitHub Actions and publishes it to GitHub Pages. An AI agent fleet searches the web, verifies sources, and renders a polished HTML report every morning.
 
-## Project overview
+## What to do when a user asks you to set this up
 
-- `agent.md` — the coverage brief: topics, sections, and search queries the report covers
-- `agents/section-researcher.md` — per-section researcher agent prompt
-- `agents/editor.md` — evidence-backed synthesis editor prompt
-- `agents/translate-agent.md` — Polish translation agent prompt
-- `run.py` — the Python runner that calls the AI provider, validates output, and renders HTML
-- `outputs/` — generated HTML reports (one file per day)
-- `index.html` — auto-rebuilt archive page
+1. **Fork** `https://github.com/Raff-dev/ai-daily` into the user's GitHub account.
+2. **Customize** `agents/coverage.md` — this is the only file the user needs to change. Update the topics, section names, and search queries to match what the user wants.
+3. **Tell the user to do 2 things manually** (you cannot do these for them):
+   - Add a `PERSONAL_ACCESS_TOKEN` secret in **Settings → Secrets and variables → Actions** (GitHub PAT with `Copilot requests: write` permission)
+   - Enable GitHub Pages in **Settings → Pages**, source: **GitHub Actions**
+
+Once those two steps are done, the workflow runs automatically every day at 05:00 UTC.
+
+## Repository structure
+
+```
+agents/coverage.md          ← the ONLY file to edit when customizing
+agents/section-researcher.md  agent prompt: per-section web research
+agents/editor.md              agent prompt: evidence-backed synthesis
+agents/translate-agent.md     agent prompt: Polish translation
+agents/orchestrator.md        documents the pipeline contract
+run.py                        Python runner — do not edit for customization
+.github/workflows/daily.yml   CI schedule and deployment
+outputs/                      generated HTML reports (one per day)
+index.html                    auto-rebuilt archive page
+```
 
 ## How to customize
 
-**To change the news topics**, edit `agent.md`. This is the only file you normally need to change. Examples of what to modify:
+Edit `agents/coverage.md`. This file defines:
+- The **coverage list** — what topics the briefing covers
+- The **search queries** — what the agents actually search for
+- The **section IDs and names** — what categories appear in the report
 
-- The **coverage list** at the top (e.g. replace "AI Developer Tools" with "Travel Industry News")
-- The **search queries** in each section block
-- The **section IDs** and titles if you want different categories
+Everything else (HTML layout, validation logic, rendering) is in `run.py` — leave it unchanged.
 
-Everything else (HTML layout, CSS, validation logic, rendering) lives in `run.py` and the other agent files — leave those unchanged unless you want to redesign the output.
+Example: to change from AI news to travel industry news, update the coverage list and queries in `agents/coverage.md` to focus on flights, hotels, airline stocks, and tourism startups.
 
-## Running locally
+## What not to change
 
-```bash
-git clone https://github.com/<you>/ai-daily
-cd ai-daily
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-export PERSONAL_ACCESS_TOKEN=github_pat_...  # GitHub PAT with Copilot requests: write
-python run.py
-```
-
-The report is saved to `outputs/AI_Daily_YYYY-MM-DD.html`.
-
-## Key constraint
-
-Do not write files outside `outputs/`, `index.html`, and `.copilot-output/` (which is gitignored). The CI workflow will reject commits that touch anything else.
+Do not edit `run.py` unless redesigning the output format. Do not write files outside `outputs/`, `index.html`, and `.copilot-output/` (gitignored). The CI workflow will reject commits touching anything else.

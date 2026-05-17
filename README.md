@@ -14,27 +14,25 @@ An AI agent wakes up every day, searches the web for the latest news, verifies s
 
 ## 🚀 Get your own in one prompt
 
-Open your AI coding assistant — Claude, Copilot, or Codex — paste the prompt below, and replace the topic with whatever you want. That's it.
+Open your AI coding assistant — Claude, Copilot, or Codex — and say:
 
 ```
-Fork https://github.com/Raff-dev/ai-daily and customize it so it covers
-[YOUR TOPIC] news instead of AI news. Update agent.md with relevant
-search queries and section names. Then tell me exactly what I need to
-do manually to make it run automatically every morning.
+Go to https://github.com/Raff-dev/ai-daily and set it up for me,
+but make it cover [YOUR TOPIC] news instead of AI news.
 ```
 
-**Example topics people use this for:**
+That's it. Your assistant will read the repo, fork it, customize it for your topic, and tell you the 2 things it can't do for you.
+
+**Example topics:**
 - ✈️ Travel industry — flights, hotels, airline stocks, tourism startups
 - 🏋️ Sports — football transfers, Formula 1, NBA
 - 💊 Biotech & pharma — FDA approvals, clinical trials, funding rounds
 - 🌿 Climate & energy — renewables, carbon markets, nuclear
 - 🎮 Gaming — launches, studios, esports
 
-Your AI assistant will fork the repo, edit the right files, and walk you through the 2 remaining steps it can't do for you (adding a secret token and enabling GitHub Pages).
-
 > **Works with:** Claude Code · GitHub Copilot · OpenAI Codex
 > The repo includes `CLAUDE.md`, `AGENTS.md`, and `.github/copilot-instructions.md`
-> so your assistant knows exactly what to change regardless of which tool you use.
+> so your assistant knows exactly what to do regardless of which tool you use.
 
 ---
 
@@ -88,7 +86,7 @@ export PERSONAL_ACCESS_TOKEN=github_pat_...
 python run.py
 ```
 
-To change topics, edit `agent.md` — update the coverage list and search queries, keep everything else unchanged.
+To change topics, edit `agents/coverage.md` — update the coverage list and search queries, keep everything else unchanged.
 
 ---
 
