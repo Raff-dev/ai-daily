@@ -32,6 +32,8 @@ SECTION_ORDER = tuple(SECTION_CONFIG)
 COPILOT_MODEL = "gpt-5.4"
 IMAGE_CACHE: dict[str, str] = {}
 DEFAULT_RESEARCHER_PROMPT_PATH = "agents/section-researcher.md"
+DEFAULT_DISCOVERY_PROMPT_PATH = "agents/source-discovery.md"
+DEFAULT_EVIDENCE_PROMPT_PATH = "agents/evidence-researcher.md"
 DEFAULT_EDITOR_PROMPT_PATH = "agents/editor.md"
 MIN_SOURCES_PER_SECTION = int(os.environ.get("MIN_SOURCES_PER_SECTION", "15"))
 TARGET_SOURCES_PER_SECTION = int(os.environ.get("TARGET_SOURCES_PER_SECTION", "18"))
@@ -40,7 +42,7 @@ MIN_TOTAL_RESEARCH_SOURCES = int(
 )
 MAX_TOTAL_RESEARCH_SOURCES = int(os.environ.get("MAX_TOTAL_RESEARCH_SOURCES", "200"))
 MIN_ARTICLES_PER_SECTION = int(os.environ.get("MIN_ARTICLES_PER_SECTION", "3"))
-RESEARCH_MAX_ATTEMPTS = int(os.environ.get("RESEARCH_MAX_ATTEMPTS", "3"))
+RESEARCH_MAX_ATTEMPTS = int(os.environ.get("RESEARCH_MAX_ATTEMPTS", "1"))
 AGGREGATOR_DOMAINS = (
     "news.google.",
     "google.com",
@@ -363,6 +365,14 @@ def load_researcher_prompt() -> str:
     return load_prompt_file(os.environ.get("RESEARCHER_PROMPT_PATH", DEFAULT_RESEARCHER_PROMPT_PATH))
 
 
+def load_discovery_prompt() -> str:
+    return load_prompt_file(os.environ.get("DISCOVERY_PROMPT_PATH", DEFAULT_DISCOVERY_PROMPT_PATH))
+
+
+def load_evidence_prompt() -> str:
+    return load_prompt_file(os.environ.get("EVIDENCE_PROMPT_PATH", DEFAULT_EVIDENCE_PROMPT_PATH))
+
+
 def load_editor_prompt() -> str:
     return load_prompt_file(os.environ.get("EDITOR_PROMPT_PATH", DEFAULT_EDITOR_PROMPT_PATH))
 
@@ -612,13 +622,149 @@ def invoke_copilot(prompt: str, output_path: Path, allow_urls: bool) -> subproce
     if allow_urls:
         command.append("--allow-all-urls")
 
-    return subprocess.run(
+    print(f"copilot start: output={output_path} urls={'yes' if allow_urls else 'no'}", flush=True)
+    result = subprocess.run(
         command,
         text=True,
         capture_output=True,
         timeout=int(os.environ.get("AGENT_TIMEOUT_SECONDS", "1800")),
         check=False,
     )
+    if result.stdout:
+        print(result.stdout, end="", flush=True)
+    if result.stderr:
+        print(result.stderr, end="", flush=True)
+    print(f"copilot done: output={output_path} exit={result.returncode}", flush=True)
+    return result
+
+
+def discovery_output_path(dates: dict, section_id: str) -> Path:
+    return Path(".copilot-output") / "sources" / dates["date"] / f"{section_id}.sources.json"
+
+
+def evidence_output_path(dates: dict, section_id: str) -> Path:
+    return Path(".copilot-output") / "evidence" / dates["date"] / f"{section_id}.evidence.json"
+
+
+def validate_discovery_pack(pack: dict, section_id: str) -> list[str]:
+    errors: list[str] = []
+    if pack.get("schema_version") != "discovery-pack.v1":
+        errors.append("schema_version must be discovery-pack.v1")
+    if pack.get("section") != section_id:
+        errors.append(f"section must be {section_id}")
+
+    sources = pack.get("sources") or []
+    if len(sources) < MIN_SOURCES_PER_SECTION:
+        errors.append(f"{section_id}: expected at least {MIN_SOURCES_PER_SECTION} qualified sources, got {len(sources)}")
+    source_ids: set[str] = set()
+    for source in sources:
+        source_id = source.get("source_id")
+        url = source.get("canonical_url") or source.get("url")
+        if not source_id:
+            errors.append(f"{section_id}: source missing source_id")
+        elif source_id in source_ids:
+            errors.append(f"{section_id}: duplicate source_id {source_id}")
+        else:
+            source_ids.add(source_id)
+        if not url:
+            errors.append(f"{section_id}: source {source_id or '?'} missing canonical_url")
+        elif is_aggregator_url(str(url)):
+            errors.append(f"{section_id}: source {source_id or '?'} uses aggregator URL {url}")
+
+    candidates = pack.get("story_candidates") or []
+    if len(candidates) < MIN_ARTICLES_PER_SECTION:
+        errors.append(f"{section_id}: expected at least {MIN_ARTICLES_PER_SECTION} story candidates, got {len(candidates)}")
+    for candidate in candidates:
+        for source_id in candidate.get("source_ids") or []:
+            if source_id not in source_ids:
+                errors.append(f"{section_id}: story candidate references missing source {source_id}")
+    return errors
+
+
+def run_source_discovery(section_id: str, dates: dict) -> dict:
+    output_path = discovery_output_path(dates, section_id)
+    prompt = (
+        "/research\n"
+        f"{load_discovery_prompt()}\n\n"
+        f"## CUSTOM COVERAGE BRIEF FROM agent.md\n\n{load_agent_prompt()}\n\n"
+        "## RUN INPUT\n"
+        f"run_date: {dates['date']}\n"
+        f"section: {section_id}\n"
+        f"section_title: {SECTION_CONFIG[section_id]['title']}\n"
+        f"research_window: last 24 hours ending {dates['date']} Europe/Warsaw\n"
+        f"minimum_qualified_sources: {MIN_SOURCES_PER_SECTION}\n"
+        f"target_qualified_sources: {TARGET_SOURCES_PER_SECTION}\n"
+        f"minimum_story_candidates: {MIN_ARTICLES_PER_SECTION}\n"
+        f"output_path: {output_path}\n\n"
+        f"Write discovery-pack.v1 JSON to {output_path}. Do not edit any other files."
+    )
+    pack = run_copilot_json(prompt, output_path, allow_urls=True)
+    errors = validate_discovery_pack(pack, section_id)
+    if errors:
+        raise RuntimeError("Discovery pack failed validation:\n" + "\n".join(errors))
+    return pack
+
+
+def run_source_discovery_fleet(dates: dict) -> list[dict]:
+    max_workers = int(os.environ.get("DISCOVERY_MAX_WORKERS", os.environ.get("FLEET_MAX_WORKERS", "3")))
+    packs_by_section: dict[str, dict] = {}
+    errors: list[str] = []
+    print(f"running source discovery fleet: workers={max_workers}", flush=True)
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {executor.submit(run_source_discovery, section_id, dates): section_id for section_id in SECTION_ORDER}
+        for future in as_completed(futures):
+            section_id = futures[future]
+            try:
+                packs_by_section[section_id] = future.result()
+                print(f"source discovery complete: {section_id}", flush=True)
+            except Exception as error:
+                errors.append(f"{section_id}: {error}")
+                print(f"source discovery failed: {section_id}: {error}", flush=True)
+    if errors:
+        raise RuntimeError("Source discovery fleet failed:\n" + "\n".join(errors))
+    return [packs_by_section[section_id] for section_id in SECTION_ORDER]
+
+
+def run_evidence_research(discovery_pack: dict, dates: dict) -> dict:
+    section_id = discovery_pack["section"]
+    output_path = evidence_output_path(dates, section_id)
+    prompt = (
+        "/research\n"
+        f"{load_evidence_prompt()}\n\n"
+        "## RUN INPUT\n"
+        f"run_date: {dates['date']}\n"
+        f"section: {section_id}\n"
+        f"section_title: {SECTION_CONFIG[section_id]['title']}\n"
+        f"output_path: {output_path}\n\n"
+        "## DISCOVERY PACK\n"
+        f"{json.dumps(discovery_pack, ensure_ascii=False)}\n\n"
+        f"Write research-pack.v1 JSON to {output_path}. Do not edit any other files."
+    )
+    pack = run_copilot_json(prompt, output_path, allow_urls=True)
+    errors = validate_research_pack(pack, section_id)
+    if errors:
+        raise RuntimeError("Evidence pack failed validation:\n" + "\n".join(errors))
+    return pack
+
+
+def run_evidence_research_fleet(discovery_packs: list[dict], dates: dict) -> list[dict]:
+    max_workers = int(os.environ.get("EVIDENCE_MAX_WORKERS", "2"))
+    packs_by_section: dict[str, dict] = {}
+    errors: list[str] = []
+    print(f"running evidence research fleet: workers={max_workers}", flush=True)
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {executor.submit(run_evidence_research, pack, dates): pack["section"] for pack in discovery_packs}
+        for future in as_completed(futures):
+            section_id = futures[future]
+            try:
+                packs_by_section[section_id] = future.result()
+                print(f"evidence research complete: {section_id}", flush=True)
+            except Exception as error:
+                errors.append(f"{section_id}: {error}")
+                print(f"evidence research failed: {section_id}: {error}", flush=True)
+    if errors:
+        raise RuntimeError("Evidence research fleet failed:\n" + "\n".join(errors))
+    return [packs_by_section[section_id] for section_id in SECTION_ORDER]
 
 
 def run_copilot_json(prompt: str, output_path: Path, allow_urls: bool, require_sections: bool = False) -> dict:
@@ -776,8 +922,11 @@ def translate_report(report: dict, dates: dict) -> dict:
 
 
 def run_agent(dates: dict) -> dict:
-    print("running section research fleet...")
-    research_packs = run_section_research_fleet(dates)
+    print("running staged research pipeline...", flush=True)
+    discovery_packs = run_source_discovery_fleet(dates)
+    discovery_sources = sum(len(pack.get("sources") or []) for pack in discovery_packs)
+    print(f"source discovery yielded {discovery_sources} sources", flush=True)
+    research_packs = run_evidence_research_fleet(discovery_packs, dates)
     print("running editor synthesis...")
     report = run_editor_report(research_packs, dates)
     errors = validate_final_report(report, research_packs)
@@ -1242,7 +1391,7 @@ def render_report(report: dict, dates: dict, translated_report: dict | None = No
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>{REPORT_CSS}</style>
 </head>
-<body data-render-version="coverage-gate-v1">
+<body data-render-version="staged-research-v1">
 {''.join(panels)}
 <script>
 const setLanguage = (lang) => {{
@@ -1314,7 +1463,7 @@ def report_is_current_format(output_path: Path) -> bool:
     if not output_path.exists():
         return False
     html_doc = output_path.read_text(encoding="utf-8")
-    return 'data-lang="pl"' in html_doc and 'data-render-version="coverage-gate-v1"' in html_doc
+    return 'data-lang="pl"' in html_doc and 'data-render-version="staged-research-v1"' in html_doc
 
 
 def main() -> None:

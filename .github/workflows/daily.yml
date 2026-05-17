@@ -48,17 +48,19 @@ jobs:
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           AGENT_PROMPT_PATH: ${{ vars.AGENT_PROMPT_PATH || 'agent.md' }}
-          RESEARCHER_PROMPT_PATH: ${{ vars.RESEARCHER_PROMPT_PATH || 'agents/section-researcher.md' }}
+          DISCOVERY_PROMPT_PATH: ${{ vars.DISCOVERY_PROMPT_PATH || 'agents/source-discovery.md' }}
+          EVIDENCE_PROMPT_PATH: ${{ vars.EVIDENCE_PROMPT_PATH || 'agents/evidence-researcher.md' }}
           EDITOR_PROMPT_PATH: ${{ vars.EDITOR_PROMPT_PATH || 'agents/editor.md' }}
           TRANSLATION_PROMPT_PATH: ${{ vars.TRANSLATION_PROMPT_PATH || 'agents/translate-agent.md' }}
           AGENT_TIMEOUT_SECONDS: ${{ vars.AGENT_TIMEOUT_SECONDS || '1800' }}
           FLEET_MAX_WORKERS: ${{ vars.FLEET_MAX_WORKERS || '3' }}
+          EVIDENCE_MAX_WORKERS: ${{ vars.EVIDENCE_MAX_WORKERS || '2' }}
           MIN_SOURCES_PER_SECTION: ${{ vars.MIN_SOURCES_PER_SECTION || '15' }}
           TARGET_SOURCES_PER_SECTION: ${{ vars.TARGET_SOURCES_PER_SECTION || '18' }}
           MIN_TOTAL_RESEARCH_SOURCES: ${{ vars.MIN_TOTAL_RESEARCH_SOURCES || '105' }}
           MAX_TOTAL_RESEARCH_SOURCES: ${{ vars.MAX_TOTAL_RESEARCH_SOURCES || '200' }}
           MIN_ARTICLES_PER_SECTION: ${{ vars.MIN_ARTICLES_PER_SECTION || '3' }}
-          RESEARCH_MAX_ATTEMPTS: ${{ vars.RESEARCH_MAX_ATTEMPTS || '3' }}
+          RESEARCH_MAX_ATTEMPTS: ${{ vars.RESEARCH_MAX_ATTEMPTS || '1' }}
         run: |
           if [ -z "${COPILOT_GITHUB_TOKEN}" ]; then
             echo "::error::Missing PERSONAL_ACCESS_TOKEN secret. Create a fine-grained PAT with Copilot requests: write and save it as PERSONAL_ACCESS_TOKEN."
