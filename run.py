@@ -33,6 +33,14 @@ COPILOT_MODEL = "gpt-5.4"
 IMAGE_CACHE: dict[str, str] = {}
 DEFAULT_RESEARCHER_PROMPT_PATH = "agents/section-researcher.md"
 DEFAULT_EDITOR_PROMPT_PATH = "agents/editor.md"
+MIN_SOURCES_PER_SECTION = int(os.environ.get("MIN_SOURCES_PER_SECTION", "15"))
+TARGET_SOURCES_PER_SECTION = int(os.environ.get("TARGET_SOURCES_PER_SECTION", "25"))
+MIN_TOTAL_RESEARCH_SOURCES = int(
+    os.environ.get("MIN_TOTAL_RESEARCH_SOURCES", str(max(100, MIN_SOURCES_PER_SECTION * len(SECTION_ORDER))))
+)
+MAX_TOTAL_RESEARCH_SOURCES = int(os.environ.get("MAX_TOTAL_RESEARCH_SOURCES", "200"))
+MIN_ARTICLES_PER_SECTION = int(os.environ.get("MIN_ARTICLES_PER_SECTION", "3"))
+RESEARCH_MAX_ATTEMPTS = int(os.environ.get("RESEARCH_MAX_ATTEMPTS", "3"))
 AGGREGATOR_DOMAINS = (
     "news.google.",
     "google.com",
@@ -416,6 +424,7 @@ def validate_research_pack(pack: dict, expected_section: str) -> list[str]:
         errors.append(f"{expected_section}: section mismatch")
 
     source_ids = set()
+    canonical_urls = set()
     evidence_ids = set()
     image_ids = set()
     for source in pack.get("sources") or []:
@@ -427,6 +436,8 @@ def validate_research_pack(pack: dict, expected_section: str) -> list[str]:
             errors.append(f"{expected_section}: source {source_id} missing canonical_url")
         elif is_aggregator_url(canonical_url):
             errors.append(f"{expected_section}: source {source_id} uses aggregator canonical_url {canonical_url}")
+        else:
+            canonical_urls.add(canonical_url)
         if source.get("is_aggregator") is True:
             errors.append(f"{expected_section}: source {source_id} is marked as aggregator")
         for image in source.get("image_candidates") or []:
@@ -462,6 +473,19 @@ def validate_research_pack(pack: dict, expected_section: str) -> list[str]:
         for image_id in story.get("image_candidate_ids") or []:
             if image_id not in image_ids:
                 errors.append(f"{expected_section}: story {story.get('story_id')} references missing image {image_id}")
+
+    if len(pack.get("topic_clusters") or []) < 5:
+        errors.append(f"{expected_section}: only {len(pack.get('topic_clusters') or [])} topic clusters; need at least 5")
+    if len(source_ids) < MIN_SOURCES_PER_SECTION or len(canonical_urls) < MIN_SOURCES_PER_SECTION:
+        errors.append(
+            f"{expected_section}: only {len(canonical_urls)} unique canonical URLs and {len(source_ids)} source IDs; "
+            f"need at least {MIN_SOURCES_PER_SECTION} and should target {TARGET_SOURCES_PER_SECTION}"
+        )
+    if len(pack.get("story_candidates") or []) < MIN_ARTICLES_PER_SECTION:
+        errors.append(
+            f"{expected_section}: only {len(pack.get('story_candidates') or [])} story candidates; "
+            f"need at least {MIN_ARTICLES_PER_SECTION}"
+        )
     return errors
 
 
@@ -488,12 +512,44 @@ def validate_final_report(report: dict, research_packs: list[dict]) -> list[str]
     errors: list[str] = []
     source_ids, evidence_ids, verified_images, _verified_image_urls = research_indexes(research_packs)
     sections = {section.get("id"): section for section in report.get("sections") or []}
+    total_research_sources = len(
+        {
+            source.get("canonical_url")
+            for pack in research_packs
+            for source in pack.get("sources") or []
+            if is_http_url(str(source.get("canonical_url") or "")) and not is_aggregator_url(str(source.get("canonical_url") or ""))
+        }
+    )
+    if total_research_sources < MIN_TOTAL_RESEARCH_SOURCES:
+        errors.append(f"final report has only {total_research_sources} research sources; need at least {MIN_TOTAL_RESEARCH_SOURCES}")
+    if total_research_sources > MAX_TOTAL_RESEARCH_SOURCES:
+        errors.append(f"final report has {total_research_sources} research sources; cap at {MAX_TOTAL_RESEARCH_SOURCES}")
+    source_index_urls = {
+        source.get("canonical_url") or source.get("url")
+        for source in report.get("source_index") or []
+        if is_http_url(str(source.get("canonical_url") or source.get("url") or ""))
+    }
+    if len(source_index_urls) < MIN_TOTAL_RESEARCH_SOURCES:
+        errors.append(
+            f"source_index has only {len(source_index_urls)} unique sources; "
+            f"include all qualified research sources"
+        )
+    for source in report.get("source_index") or []:
+        source_url = source.get("canonical_url") or source.get("url") or ""
+        if is_aggregator_url(str(source_url)):
+            errors.append(f"source_index contains aggregator URL {source_url}")
+        if source.get("source_id") and source["source_id"] not in source_ids:
+            errors.append(f"source_index references missing source_id {source['source_id']}")
     for section_id in SECTION_ORDER:
         if section_id not in sections:
             errors.append(f"final report missing section {section_id}")
 
     for section in report.get("sections") or []:
-        for article in section.get("articles") or []:
+        section_id = section.get("id") or "unknown"
+        articles = section.get("articles") or []
+        if len(articles) < MIN_ARTICLES_PER_SECTION:
+            errors.append(f"{section_id}: only {len(articles)} final articles; need at least {MIN_ARTICLES_PER_SECTION}")
+        for article in articles:
             title = article.get("title") or "untitled"
             if is_aggregator_url(str(article.get("source_url") or "")):
                 errors.append(f"{title}: source_url is an aggregator URL")
@@ -578,8 +634,16 @@ def run_copilot_json(prompt: str, output_path: Path, allow_urls: bool, require_s
     return extract_json(output_path.read_text(encoding="utf-8"), require_sections=require_sections)
 
 
-def run_section_research(section_id: str, dates: dict) -> dict:
+def run_section_research_once(section_id: str, dates: dict, validation_errors: list[str] | None = None) -> dict:
     output_path = research_output_path(dates, section_id)
+    retry_note = ""
+    if validation_errors:
+        retry_note = (
+            "\n## PREVIOUS OUTPUT FAILED VALIDATION\n"
+            + "\n".join(f"- {error}" for error in validation_errors)
+            + "\nBroaden the search. Generate additional topic clusters and source queries. "
+            "Return a corrected research-pack.v1 JSON with enough qualified sources and story candidates.\n"
+        )
     prompt = (
         "/research\n"
         f"{load_researcher_prompt()}\n\n"
@@ -589,15 +653,29 @@ def run_section_research(section_id: str, dates: dict) -> dict:
         f"section: {section_id}\n"
         f"section_title: {SECTION_CONFIG[section_id]['title']}\n"
         f"research_window: last 24 hours ending {dates['date']} Europe/Warsaw\n"
+        f"minimum_qualified_sources: {MIN_SOURCES_PER_SECTION}\n"
+        f"target_qualified_sources: {TARGET_SOURCES_PER_SECTION}\n"
+        f"minimum_story_candidates: {MIN_ARTICLES_PER_SECTION}\n"
         f"output_path: {output_path}\n\n"
+        f"{retry_note}\n"
         f"Write the research-pack.v1 JSON object to {output_path}. "
         "Do not edit any other files. Do not write Markdown. Do not ask follow-up questions."
     )
-    pack = run_copilot_json(prompt, output_path, allow_urls=True)
-    errors = validate_research_pack(pack, section_id)
-    if errors:
-        raise RuntimeError("Research pack failed validation:\n" + "\n".join(errors))
-    return pack
+    return run_copilot_json(prompt, output_path, allow_urls=True)
+
+
+def run_section_research(section_id: str, dates: dict) -> dict:
+    errors: list[str] | None = None
+    pack: dict | None = None
+    for attempt in range(1, RESEARCH_MAX_ATTEMPTS + 1):
+        print(f"research attempt {attempt}/{RESEARCH_MAX_ATTEMPTS}: {section_id}")
+        pack = run_section_research_once(section_id, dates, errors)
+        errors = validate_research_pack(pack, section_id)
+        if not errors:
+            return pack
+        print(f"research validation failed: {section_id}: {'; '.join(errors)}")
+    assert pack is not None
+    raise RuntimeError("Research pack failed validation after retries:\n" + "\n".join(errors or []))
 
 
 def run_section_research_fleet(dates: dict) -> list[dict]:
@@ -632,6 +710,9 @@ def run_editor_report(research_packs: list[dict], dates: dict, validation_errors
         f"{load_editor_prompt()}\n\n"
         f"Date: {dates['date']}\n"
         f"Canonical section order: {', '.join(SECTION_ORDER)}\n"
+        f"Minimum final articles per section: {MIN_ARTICLES_PER_SECTION}\n"
+        f"Minimum total source_index size: {MIN_TOTAL_RESEARCH_SOURCES}\n"
+        f"Maximum total source_index size: {MAX_TOTAL_RESEARCH_SOURCES}\n"
         f"Write the final renderer-compatible final-report.v1 JSON to {output_path}.\n"
         "Do not use web search. Do not edit any other files. Do not write Markdown.\n"
         f"{retry_note}\n"
@@ -1005,6 +1086,32 @@ def render_section(section: dict, lang: str) -> str:
 
 
 def collect_sources(report: dict, lang: str = "en") -> list[dict]:
+    indexed_sources = report.get("source_index") if isinstance(report.get("source_index"), list) else []
+    if indexed_sources:
+        grouped: dict[str, list[dict]] = {}
+        for source in indexed_sources:
+            source_url = source.get("canonical_url") or source.get("url")
+            if not source_url:
+                continue
+            section_id = source.get("section") if source.get("section") in SECTION_CONFIG else "source-index"
+            grouped.setdefault(section_id, []).append(
+                {
+                    "name": source.get("publisher") or source.get("name") or source.get("title") or domain_from_url(source_url),
+                    "url": source_url,
+                }
+            )
+        sources = []
+        for section_id in SECTION_ORDER:
+            items = grouped.pop(section_id, [])
+            if items:
+                meta = section_meta({"id": section_id}, lang)
+                sources.append({"title": meta["title"], "icon": meta["icon"], "items": items})
+        for section_id, items in grouped.items():
+            if items:
+                sources.append({"title": "Source Index", "icon": "paperclip", "items": items})
+        if sources:
+            return sources
+
     sources = []
     for section in ordered_sections(report):
         meta = section_meta(section, lang)

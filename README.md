@@ -75,6 +75,12 @@ Optional variables in **Settings -> Secrets and variables -> Actions -> Variable
 | `TRANSLATION_PROMPT_PATH` | `translate-agent.md` | Polish translation prompt file |
 | `AGENT_TIMEOUT_SECONDS` | `1800` | Timeout for Copilot CLI generation |
 | `FLEET_MAX_WORKERS` | `3` | Number of section researchers to run concurrently |
+| `MIN_SOURCES_PER_SECTION` | `15` | Minimum qualified canonical sources required per section |
+| `TARGET_SOURCES_PER_SECTION` | `25` | Target qualified canonical sources per section |
+| `MIN_TOTAL_RESEARCH_SOURCES` | `105` | Minimum total qualified research sources before rendering |
+| `MAX_TOTAL_RESEARCH_SOURCES` | `200` | Maximum total qualified research sources passed to the report |
+| `MIN_ARTICLES_PER_SECTION` | `3` | Minimum synthesized articles required in every final section |
+| `RESEARCH_MAX_ATTEMPTS` | `3` | Retry count for a section researcher that returns sparse output |
 
 ### 3. Enable GitHub Pages
 
@@ -113,7 +119,9 @@ The workflow runs:
 python run.py
 ```
 
-`run.py` calls Copilot CLI in programmatic mode with `gpt-5.4`. It starts one researcher per section using `agents/section-researcher.md` plus your coverage brief from `agent.md`, writes intermediate research packs to `.copilot-output/research/YYYY-MM-DD/<section>.research.json`, validates sources/evidence/images, asks `agents/editor.md` to synthesize the final English JSON at `.copilot-output/report.json`, then starts a separate translation pass using `translate-agent.md` and `.copilot-output/report.pl.json`. The app renders both language versions into one HTML report with an EN/PL toggle. Keep credentials in GitHub Secrets, not in the repository.
+`run.py` calls Copilot CLI in programmatic mode with `gpt-5.4`. It starts one researcher per section using `agents/section-researcher.md` plus your coverage brief from `agent.md`, writes intermediate research packs to `.copilot-output/research/YYYY-MM-DD/<section>.research.json`, validates sources/evidence/images/coverage, asks `agents/editor.md` to synthesize the final English JSON at `.copilot-output/report.json`, then starts a separate translation pass using `translate-agent.md` and `.copilot-output/report.pl.json`. The app renders both language versions into one HTML report with an EN/PL toggle. Keep credentials in GitHub Secrets, not in the repository.
+
+Coverage gates are strict by default: every section needs at least 15 qualified canonical sources and 3 story candidates; the final report needs 100-200 sources in `source_index` and at least 3 synthesized articles per section. Sparse sections trigger researcher retries instead of being silently rendered as empty.
 
 The intermediate research files are intentionally written under `.copilot-output/`, which is ignored by Git and never published. The workflow only commits `index.html` and dated HTML files in `outputs/`.
 
@@ -133,6 +141,13 @@ The researcher output contract is evidence-first:
   "schema_version": "research-pack.v1",
   "run_date": "2026-05-16",
   "section": "dev-tools",
+  "topic_clusters": [
+    {
+      "cluster_id": "cluster_dev_tools_001",
+      "label": "Coding agents and IDE assistants",
+      "queries": ["query angle 1", "query angle 2"]
+    }
+  ],
   "sources": [
     {
       "source_id": "src_dev_tools_001",
@@ -140,6 +155,7 @@ The researcher output contract is evidence-first:
       "original_url": "URL initially found",
       "canonical_url": "Canonical publisher URL",
       "is_aggregator": false,
+      "cluster_ids": ["cluster_dev_tools_001"],
       "image_candidates": [
         {
           "image_id": "img_dev_tools_001",
@@ -163,7 +179,15 @@ The researcher output contract is evidence-first:
       "evidence_ids": ["ev_dev_tools_001"]
     }
   ],
-  "story_candidates": []
+  "story_candidates": [
+    {
+      "story_id": "story_dev_tools_001",
+      "claim_ids": ["cl_dev_tools_001"],
+      "source_ids": ["src_dev_tools_001"],
+      "evidence_ids": ["ev_dev_tools_001"],
+      "image_candidate_ids": ["img_dev_tools_001"]
+    }
+  ]
 }
 ```
 
@@ -205,6 +229,14 @@ The editor output contract stays renderer-compatible but adds provenance:
           "published_at": "2026-05-16"
         }
       ]
+    }
+  ],
+  "source_index": [
+    {
+      "source_id": "src_dev_tools_001",
+      "section": "dev-tools",
+      "publisher": "Publisher",
+      "canonical_url": "https://example.com"
     }
   ]
 }

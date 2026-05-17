@@ -62,8 +62,9 @@ Useful source map by section:
 ## Filtering rules
 
 - Keep only articles published in the last 24 hours.
-- Target 3-4 strong stories per section.
-- If a section has fewer than 3 strong stories, broaden searches across the source map and keep searching.
+- Target 20-30 qualified canonical sources and 3-5 story candidates per section.
+- Generate at least 5 topic clusters per section, then search around each cluster with several query angles.
+- If a section has fewer than 15 qualified sources or fewer than 3 strong stories, broaden searches across the source map and keep searching.
 - Do not fabricate filler: if a section still has fewer than 3 genuinely relevant last-24h stories after broadening, include only credible stories and mark uncertain ones with `verified=false`.
 - The orchestrator runs one researcher for every canonical section: `dev-tools`, `ai-tools`, `robotics`, `defense`, `space`, `startups`, `markets`.
 - Prefer primary sources and reputable reporting.

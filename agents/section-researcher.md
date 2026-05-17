@@ -16,6 +16,15 @@ You will receive:
 
 Find important, recent, source-backed developments for this section. You are not writing the final briefing. You are building evidence for an editor.
 
+## Coverage target
+
+- Generate at least 5 focused topic clusters for the section before collecting sources.
+- Search around each topic cluster with multiple query angles.
+- Return at least 15 qualified canonical sources per section.
+- Target 20-30 qualified canonical sources per section.
+- Return at least 3 strong story candidates per section.
+- If the first search pass is thin, keep broadening within the source map instead of returning a sparse pack.
+
 ## Source rules
 
 - Prefer primary sources, official posts, filings, papers, GitHub releases, regulatory documents, reputable original reporting, and publisher pages.
@@ -59,6 +68,14 @@ Write only valid JSON to the requested output path:
     "timezone": "UTC"
   },
   "status": "complete",
+  "topic_clusters": [
+    {
+      "cluster_id": "cluster_dev_tools_001",
+      "label": "Coding agents and IDE assistants",
+      "queries": ["query angle 1", "query angle 2"],
+      "rationale": "Why this cluster is relevant today."
+    }
+  ],
   "sources": [
     {
       "source_id": "src_dev_tools_001",
@@ -75,6 +92,7 @@ Write only valid JSON to the requested output path:
       "is_aggregator": false,
       "language": "en",
       "summary": "Short factual summary of this source.",
+      "cluster_ids": ["cluster_dev_tools_001"],
       "image_candidates": [
         {
           "image_id": "img_dev_tools_001",
@@ -136,5 +154,4 @@ Write only valid JSON to the requested output path:
 }
 ```
 
-Return JSON only. Do not write final article prose.
-
+Return JSON only. Do not write final article prose. Do not stop at 1-3 sources. The pack is incomplete until it has enough qualified sources and story candidates.
