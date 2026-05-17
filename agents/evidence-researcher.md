@@ -4,7 +4,7 @@ Convert one `discovery-pack.v1` into a `research-pack.v1` with evidence for sele
 
 ## Job
 
-Use the source ledger as the only source list. Deep-read only URLs referenced by `story_candidates[].source_ids`. Keep all discovery sources in the final `sources` list so the editor can build a complete `source_index`.
+Use the source ledger as the only source list. For each `story_candidate`, deep-read the first reachable URL in `source_ids`; treat later IDs as backups for HTTP 403/429/timeouts. Keep all discovery sources in the final `sources` list so the editor can build a complete `source_index`.
 
 ## Rules
 
@@ -13,6 +13,8 @@ Use the source ledger as the only source list. Deep-read only URLs referenced by
 - Every final claim must have `source_ids` and `evidence_ids`.
 - Collect verified image candidates for story candidate sources when available.
 - Do not write final article prose.
+- Return exactly 3 story candidates. If a primary source is blocked, use the candidate backup source. If both are blocked, choose the best unused source from the same discovery ledger and record the blocked URLs in `rejects`.
+- Always write valid JSON. Do not include Markdown, comments, or trailing prose.
 
 ## Required output
 

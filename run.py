@@ -45,7 +45,6 @@ MIN_ARTICLES_PER_SECTION = int(os.environ.get("MIN_ARTICLES_PER_SECTION", "3"))
 RESEARCH_MAX_ATTEMPTS = int(os.environ.get("RESEARCH_MAX_ATTEMPTS", "1"))
 AGGREGATOR_DOMAINS = (
     "news.google.",
-    "google.com",
     "bing.com",
     "news.yahoo.",
     "msn.com",
@@ -746,6 +745,21 @@ def run_evidence_research(discovery_pack: dict, dates: dict) -> dict:
     pack = run_copilot_json(prompt, output_path, allow_urls=True)
     errors = validate_research_pack(pack, section_id)
     if errors:
+        repair_prompt = (
+            f"{load_evidence_prompt()}\n\n"
+            "## VALIDATION ERRORS TO FIX\n"
+            + "\n".join(f"- {error}" for error in errors)
+            + "\n\nUse only the discovery pack and the draft evidence pack below. "
+            "If a primary source was blocked, use a backup source from the same discovery ledger. "
+            f"Write corrected research-pack.v1 JSON to {output_path}. Do not edit any other files.\n\n"
+            "## DISCOVERY PACK\n"
+            f"{json.dumps(discovery_pack, ensure_ascii=False)}\n\n"
+            "## DRAFT EVIDENCE PACK\n"
+            f"{json.dumps(pack, ensure_ascii=False)}"
+        )
+        pack = run_copilot_json(repair_prompt, output_path, allow_urls=False)
+        errors = validate_research_pack(pack, section_id)
+    if errors:
         raise RuntimeError("Evidence pack failed validation:\n" + "\n".join(errors))
     return pack
 
@@ -780,7 +794,31 @@ def run_copilot_json(prompt: str, output_path: Path, allow_urls: bool, require_s
         raise RuntimeError(f"Copilot CLI failed with exit code {result.returncode}:\n{result.stderr}\n{result.stdout}")
     if not output_path.exists():
         raise RuntimeError(f"Copilot CLI did not create expected JSON file: {output_path}\n{result.stdout}")
-    return extract_json(output_path.read_text(encoding="utf-8"), require_sections=require_sections)
+    raw_json = output_path.read_text(encoding="utf-8")
+    try:
+        return extract_json(raw_json, require_sections=require_sections)
+    except (json.JSONDecodeError, RuntimeError) as error:
+        print(f"warning: agent wrote invalid JSON to {output_path}: {error}; running JSON repair agent", flush=True)
+        return repair_agent_json(raw_json, output_path, require_sections=require_sections)
+
+
+def repair_agent_json(raw_json: str, output_path: Path, require_sections: bool = False) -> dict:
+    repair_path = output_path.with_suffix(".repaired.json")
+    prompt = (
+        "You are a JSON repair agent. Fix the malformed JSON below without adding new facts. "
+        "Preserve all object keys and source/evidence mappings. Return JSON only. "
+        f"Write the corrected JSON object to {repair_path}. Do not edit any other files.\n\n"
+        "## MALFORMED JSON\n"
+        f"{raw_json[-60_000:]}"
+    )
+    result = invoke_copilot(prompt, repair_path, allow_urls=False)
+    if result.returncode != 0:
+        raise RuntimeError(f"JSON repair agent failed with exit code {result.returncode}:\n{result.stderr}\n{result.stdout}")
+    if not repair_path.exists():
+        raise RuntimeError(f"JSON repair agent did not create expected file: {repair_path}")
+    repaired = repair_path.read_text(encoding="utf-8")
+    output_path.write_text(repaired, encoding="utf-8")
+    return extract_json(repaired, require_sections=require_sections)
 
 
 def run_section_research_once(section_id: str, dates: dict, validation_errors: list[str] | None = None) -> dict:
