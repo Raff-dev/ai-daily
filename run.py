@@ -6,6 +6,7 @@ import json
 import os
 import re
 import subprocess
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
@@ -30,6 +31,16 @@ SECTION_CONFIG = {
 SECTION_ORDER = tuple(SECTION_CONFIG)
 COPILOT_MODEL = "gpt-5.4"
 IMAGE_CACHE: dict[str, str] = {}
+DEFAULT_RESEARCHER_PROMPT_PATH = "agents/section-researcher.md"
+DEFAULT_EDITOR_PROMPT_PATH = "agents/editor.md"
+AGGREGATOR_DOMAINS = (
+    "news.google.",
+    "google.com",
+    "bing.com",
+    "news.yahoo.",
+    "msn.com",
+    "aol.com",
+)
 
 SECTION_TITLES = {
     "en": {
@@ -329,11 +340,23 @@ def get_date_info() -> dict:
     }
 
 
-def load_agent_prompt() -> str:
-    prompt_path = Path(os.environ.get("AGENT_PROMPT_PATH", "agent.md"))
+def load_prompt_file(path: str | Path) -> str:
+    prompt_path = Path(path)
     if not prompt_path.exists():
         raise FileNotFoundError(f"Agent prompt file not found: {prompt_path}")
     return prompt_path.read_text(encoding="utf-8").strip()
+
+
+def load_agent_prompt() -> str:
+    return load_prompt_file(os.environ.get("AGENT_PROMPT_PATH", "agent.md"))
+
+
+def load_researcher_prompt() -> str:
+    return load_prompt_file(os.environ.get("RESEARCHER_PROMPT_PATH", DEFAULT_RESEARCHER_PROMPT_PATH))
+
+
+def load_editor_prompt() -> str:
+    return load_prompt_file(os.environ.get("EDITOR_PROMPT_PATH", DEFAULT_EDITOR_PROMPT_PATH))
 
 
 def load_translation_prompt() -> str:
@@ -358,7 +381,7 @@ def build_user_message(dates: dict) -> str:
     )
 
 
-def extract_json(text: str) -> dict:
+def extract_json(text: str, require_sections: bool = False) -> dict:
     stripped = text.strip()
     if stripped.startswith("```"):
         stripped = stripped.strip("`")
@@ -371,9 +394,147 @@ def extract_json(text: str) -> dict:
         raise RuntimeError("The agent did not return a JSON object.")
 
     data = json.loads(stripped[start : end + 1])
-    if not isinstance(data.get("sections"), list):
+    if require_sections and not isinstance(data.get("sections"), list):
         raise RuntimeError("Agent JSON must contain a 'sections' array.")
     return data
+
+
+def is_aggregator_url(url: str) -> bool:
+    netloc = urlparse(url).netloc.lower()
+    return any(domain in netloc for domain in AGGREGATOR_DOMAINS)
+
+
+def research_output_path(dates: dict, section_id: str) -> Path:
+    return Path(".copilot-output") / "research" / dates["date"] / f"{section_id}.research.json"
+
+
+def validate_research_pack(pack: dict, expected_section: str) -> list[str]:
+    errors: list[str] = []
+    if pack.get("schema_version") != "research-pack.v1":
+        errors.append(f"{expected_section}: schema_version must be research-pack.v1")
+    if pack.get("section") != expected_section:
+        errors.append(f"{expected_section}: section mismatch")
+
+    source_ids = set()
+    evidence_ids = set()
+    image_ids = set()
+    for source in pack.get("sources") or []:
+        source_id = source.get("source_id")
+        canonical_url = source.get("canonical_url") or ""
+        if source_id:
+            source_ids.add(source_id)
+        if not is_http_url(canonical_url):
+            errors.append(f"{expected_section}: source {source_id} missing canonical_url")
+        elif is_aggregator_url(canonical_url):
+            errors.append(f"{expected_section}: source {source_id} uses aggregator canonical_url {canonical_url}")
+        if source.get("is_aggregator") is True:
+            errors.append(f"{expected_section}: source {source_id} is marked as aggregator")
+        for image in source.get("image_candidates") or []:
+            image_id = image.get("image_id")
+            if image_id:
+                image_ids.add(image_id)
+            if image.get("verified") is True and not is_http_url(str(image.get("url") or "")):
+                errors.append(f"{expected_section}: image {image_id} is verified without an HTTP URL")
+
+    for evidence in pack.get("evidence") or []:
+        evidence_id = evidence.get("evidence_id")
+        if evidence_id:
+            evidence_ids.add(evidence_id)
+        if evidence.get("source_id") not in source_ids:
+            errors.append(f"{expected_section}: evidence {evidence_id} references missing source")
+        if not evidence.get("quote"):
+            errors.append(f"{expected_section}: evidence {evidence_id} has no quote/paraphrase")
+
+    for claim in pack.get("claims") or []:
+        claim_id = claim.get("claim_id")
+        claim_source_ids = claim.get("source_ids") or []
+        claim_evidence_ids = claim.get("evidence_ids") or []
+        missing_sources = [source_id for source_id in claim_source_ids if source_id not in source_ids]
+        missing_evidence = [evidence_id for evidence_id in claim_evidence_ids if evidence_id not in evidence_ids]
+        if not claim_source_ids or not claim_evidence_ids:
+            errors.append(f"{expected_section}: claim {claim_id} has no source/evidence mapping")
+        if missing_sources:
+            errors.append(f"{expected_section}: claim {claim_id} references missing sources {missing_sources}")
+        if missing_evidence:
+            errors.append(f"{expected_section}: claim {claim_id} references missing evidence {missing_evidence}")
+
+    for story in pack.get("story_candidates") or []:
+        for image_id in story.get("image_candidate_ids") or []:
+            if image_id not in image_ids:
+                errors.append(f"{expected_section}: story {story.get('story_id')} references missing image {image_id}")
+    return errors
+
+
+def research_indexes(research_packs: list[dict]) -> tuple[set[str], set[str], dict[str, str], set[str]]:
+    source_ids: set[str] = set()
+    evidence_ids: set[str] = set()
+    verified_images: dict[str, str] = {}
+    verified_image_urls: set[str] = set()
+    for pack in research_packs:
+        for source in pack.get("sources") or []:
+            if source.get("source_id"):
+                source_ids.add(source["source_id"])
+            for image in source.get("image_candidates") or []:
+                if image.get("verified") is True and is_http_url(str(image.get("url") or "")):
+                    verified_images[image.get("image_id")] = image["url"]
+                    verified_image_urls.add(image["url"])
+        for evidence in pack.get("evidence") or []:
+            if evidence.get("evidence_id"):
+                evidence_ids.add(evidence["evidence_id"])
+    return source_ids, evidence_ids, verified_images, verified_image_urls
+
+
+def validate_final_report(report: dict, research_packs: list[dict]) -> list[str]:
+    errors: list[str] = []
+    source_ids, evidence_ids, verified_images, _verified_image_urls = research_indexes(research_packs)
+    sections = {section.get("id"): section for section in report.get("sections") or []}
+    for section_id in SECTION_ORDER:
+        if section_id not in sections:
+            errors.append(f"final report missing section {section_id}")
+
+    for section in report.get("sections") or []:
+        for article in section.get("articles") or []:
+            title = article.get("title") or "untitled"
+            if is_aggregator_url(str(article.get("source_url") or "")):
+                errors.append(f"{title}: source_url is an aggregator URL")
+            source_items = article.get("sources") if isinstance(article.get("sources"), list) else []
+            for source in source_items:
+                source_url = source.get("url") or source.get("canonical_url") or ""
+                if is_aggregator_url(str(source_url)):
+                    errors.append(f"{title}: sources[] contains aggregator URL {source_url}")
+            article_source_ids = article.get("source_ids") or []
+            article_evidence_ids = article.get("evidence_ids") or []
+            if not article_source_ids or not article_evidence_ids:
+                errors.append(f"{title}: article missing source_ids/evidence_ids")
+            for source_id in article_source_ids:
+                if source_id not in source_ids:
+                    errors.append(f"{title}: missing source_id {source_id}")
+            for evidence_id in article_evidence_ids:
+                if evidence_id not in evidence_ids:
+                    errors.append(f"{title}: missing evidence_id {evidence_id}")
+
+            claims = article.get("claims") or []
+            if not claims:
+                errors.append(f"{title}: article has no mapped claims")
+            for claim in claims:
+                claim_source_ids = claim.get("source_ids") or []
+                claim_evidence_ids = claim.get("evidence_ids") or []
+                if not claim_source_ids or not claim_evidence_ids:
+                    errors.append(f"{title}: claim has no source/evidence mapping")
+                for source_id in claim_source_ids:
+                    if source_id not in source_ids:
+                        errors.append(f"{title}: claim references missing source {source_id}")
+                for evidence_id in claim_evidence_ids:
+                    if evidence_id not in evidence_ids:
+                        errors.append(f"{title}: claim references missing evidence {evidence_id}")
+
+            image_id = article.get("image_candidate_id")
+            image_url = article.get("image_url")
+            if not image_id or image_id not in verified_images:
+                errors.append(f"{title}: image_candidate_id is not a verified research image")
+            elif image_url != verified_images[image_id]:
+                errors.append(f"{title}: image_url does not match verified image_candidate_id")
+    return errors
 
 
 def invoke_copilot(prompt: str, output_path: Path, allow_urls: bool) -> subprocess.CompletedProcess:
@@ -404,7 +565,7 @@ def invoke_copilot(prompt: str, output_path: Path, allow_urls: bool) -> subproce
     )
 
 
-def run_copilot_json(prompt: str, output_path: Path, allow_urls: bool) -> dict:
+def run_copilot_json(prompt: str, output_path: Path, allow_urls: bool, require_sections: bool = False) -> dict:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     if output_path.exists():
         output_path.unlink()
@@ -414,7 +575,70 @@ def run_copilot_json(prompt: str, output_path: Path, allow_urls: bool) -> dict:
         raise RuntimeError(f"Copilot CLI failed with exit code {result.returncode}:\n{result.stderr}\n{result.stdout}")
     if not output_path.exists():
         raise RuntimeError(f"Copilot CLI did not create expected JSON file: {output_path}\n{result.stdout}")
-    return extract_json(output_path.read_text(encoding="utf-8"))
+    return extract_json(output_path.read_text(encoding="utf-8"), require_sections=require_sections)
+
+
+def run_section_research(section_id: str, dates: dict) -> dict:
+    output_path = research_output_path(dates, section_id)
+    prompt = (
+        "/research\n"
+        f"{load_researcher_prompt()}\n\n"
+        f"## CUSTOM COVERAGE BRIEF FROM agent.md\n\n{load_agent_prompt()}\n\n"
+        "## RUN INPUT\n"
+        f"run_date: {dates['date']}\n"
+        f"section: {section_id}\n"
+        f"section_title: {SECTION_CONFIG[section_id]['title']}\n"
+        f"research_window: last 24 hours ending {dates['date']} Europe/Warsaw\n"
+        f"output_path: {output_path}\n\n"
+        f"Write the research-pack.v1 JSON object to {output_path}. "
+        "Do not edit any other files. Do not write Markdown. Do not ask follow-up questions."
+    )
+    pack = run_copilot_json(prompt, output_path, allow_urls=True)
+    errors = validate_research_pack(pack, section_id)
+    if errors:
+        raise RuntimeError("Research pack failed validation:\n" + "\n".join(errors))
+    return pack
+
+
+def run_section_research_fleet(dates: dict) -> list[dict]:
+    max_workers = int(os.environ.get("FLEET_MAX_WORKERS", "3"))
+    packs_by_section: dict[str, dict] = {}
+    errors: list[str] = []
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {executor.submit(run_section_research, section_id, dates): section_id for section_id in SECTION_ORDER}
+        for future in as_completed(futures):
+            section_id = futures[future]
+            try:
+                packs_by_section[section_id] = future.result()
+                print(f"research complete: {section_id}")
+            except Exception as error:
+                errors.append(f"{section_id}: {error}")
+                print(f"research failed: {section_id}: {error}")
+    if errors:
+        raise RuntimeError("Section research fleet failed:\n" + "\n".join(errors))
+    return [packs_by_section[section_id] for section_id in SECTION_ORDER]
+
+
+def run_editor_report(research_packs: list[dict], dates: dict, validation_errors: list[str] | None = None) -> dict:
+    output_path = Path(os.environ.get("COPILOT_OUTPUT_PATH", ".copilot-output/report.json"))
+    retry_note = ""
+    if validation_errors:
+        retry_note = (
+            "\n## VALIDATION ERRORS TO FIX\n"
+            + "\n".join(f"- {error}" for error in validation_errors)
+            + "\nReturn corrected JSON only. Do not add facts not present in the research packs.\n"
+        )
+    prompt = (
+        f"{load_editor_prompt()}\n\n"
+        f"Date: {dates['date']}\n"
+        f"Canonical section order: {', '.join(SECTION_ORDER)}\n"
+        f"Write the final renderer-compatible final-report.v1 JSON to {output_path}.\n"
+        "Do not use web search. Do not edit any other files. Do not write Markdown.\n"
+        f"{retry_note}\n"
+        "## RESEARCH PACKS\n"
+        f"{json.dumps(research_packs, ensure_ascii=False)}"
+    )
+    return run_copilot_json(prompt, output_path, allow_urls=False, require_sections=True)
 
 
 def recover_report_json(research_notes: str, output_path: Path, dates: dict) -> dict:
@@ -429,7 +653,7 @@ def recover_report_json(research_notes: str, output_path: Path, dates: dict) -> 
         f"Write the final JSON object to {output_path} and do not edit any other files.\n\n"
         f"## RESEARCH NOTES\n\n{notes}"
     )
-    return run_copilot_json(prompt, output_path, allow_urls=False)
+    return run_copilot_json(prompt, output_path, allow_urls=False, require_sections=True)
 
 
 def run_copilot_agent(dates: dict, system_prompt: str) -> dict:
@@ -449,7 +673,7 @@ def run_copilot_agent(dates: dict, system_prompt: str) -> dict:
     if result.returncode != 0:
         raise RuntimeError(f"Copilot CLI failed with exit code {result.returncode}:\n{result.stderr}\n{result.stdout}")
     if output_path.exists():
-        return extract_json(output_path.read_text(encoding="utf-8"))
+        return extract_json(output_path.read_text(encoding="utf-8"), require_sections=True)
     if result.stdout.strip():
         print("warning: research pass did not write JSON; running synthesis recovery pass")
         return recover_report_json(result.stdout, output_path, dates)
@@ -466,12 +690,23 @@ def translate_report(report: dict, dates: dict) -> dict:
         "Do not edit any other files. Do not use web search. Do not write Markdown.\n\n"
         f"{json.dumps(report, ensure_ascii=False)}"
     )
-    translated = run_copilot_json(prompt, output_path, allow_urls=False)
+    translated = run_copilot_json(prompt, output_path, allow_urls=False, require_sections=True)
     return merge_translation(report, translated)
 
 
 def run_agent(dates: dict) -> dict:
-    return run_copilot_agent(dates, build_system_prompt())
+    print("running section research fleet...")
+    research_packs = run_section_research_fleet(dates)
+    print("running editor synthesis...")
+    report = run_editor_report(research_packs, dates)
+    errors = validate_final_report(report, research_packs)
+    if errors:
+        print("warning: editor output failed validation; running one correction pass")
+        report = run_editor_report(research_packs, dates, errors)
+        errors = validate_final_report(report, research_packs)
+    if errors:
+        raise RuntimeError("Final report failed validation:\n" + "\n".join(errors))
+    return report
 
 
 def merge_translation(report: dict, translated: dict) -> dict:
@@ -485,6 +720,9 @@ def merge_translation(report: dict, translated: dict) -> dict:
         if section_index >= len(translated_sections):
             break
         translated_section = translated_sections[section_index]
+        if isinstance(section.get("summary"), dict) and isinstance(translated_section.get("summary"), dict):
+            if translated_section["summary"].get("text"):
+                section["summary"]["text"] = translated_section["summary"]["text"]
         translated_articles = translated_section.get("articles", [])
         for article_index, article in enumerate(section.get("articles", [])):
             if article_index >= len(translated_articles):
@@ -500,6 +738,10 @@ def merge_translation(report: dict, translated: dict) -> dict:
             if isinstance(article.get("quote"), dict) and isinstance(translated_article.get("quote"), dict):
                 if translated_article["quote"].get("text"):
                     article["quote"]["text"] = translated_article["quote"]["text"]
+            if isinstance(article.get("claims"), list) and isinstance(translated_article.get("claims"), list):
+                for claim_index, claim in enumerate(article["claims"]):
+                    if claim_index < len(translated_article["claims"]) and translated_article["claims"][claim_index].get("text"):
+                        claim["text"] = translated_article["claims"][claim_index]["text"]
     return merged
 
 
@@ -686,14 +928,28 @@ def render_article(article: dict, meta: dict, index: int, total: int, lang: str)
             f'<strong>{e(copy["implications"])}:</strong> {e(article.get("implications"))}</p>'
         )
 
-    source_url = article.get("source_url") or "#"
-    source_name = article.get("source_name") or domain_from_url(source_url) or "Source"
-    domain = domain_from_url(source_url)
-    source_html = (
-        f'<a href="{e(source_url)}" class="source-link" target="_blank" rel="noopener">'
-        f'<img src="https://www.google.com/s2/favicons?domain={e(domain)}&sz=16" alt="">'
-        f'{e(source_name)}</a>'
-    )
+    article_sources = article.get("sources") if isinstance(article.get("sources"), list) else []
+    if article_sources:
+        source_links = []
+        for source in article_sources[:3]:
+            source_url = source.get("url") or source.get("canonical_url") or "#"
+            source_name = source.get("name") or source.get("publisher") or source.get("title") or domain_from_url(source_url) or "Source"
+            domain = domain_from_url(source_url)
+            source_links.append(
+                f'<a href="{e(source_url)}" class="source-link" target="_blank" rel="noopener">'
+                f'<img src="https://www.google.com/s2/favicons?domain={e(domain)}&sz=16" alt="">'
+                f'{e(source_name)}</a>'
+            )
+        source_html = "".join(source_links)
+    else:
+        source_url = article.get("source_url") or "#"
+        source_name = article.get("source_name") or domain_from_url(source_url) or "Source"
+        domain = domain_from_url(source_url)
+        source_html = (
+            f'<a href="{e(source_url)}" class="source-link" target="_blank" rel="noopener">'
+            f'<img src="https://www.google.com/s2/favicons?domain={e(domain)}&sz=16" alt="">'
+            f'{e(source_name)}</a>'
+        )
 
     return f"""
 <details class="news-card {article_class(index, total)}">
@@ -754,7 +1010,12 @@ def collect_sources(report: dict, lang: str = "en") -> list[dict]:
         meta = section_meta(section, lang)
         items = []
         for article in section.get("articles", []):
-            if article.get("source_url"):
+            if isinstance(article.get("sources"), list):
+                for source in article["sources"]:
+                    source_url = source.get("url") or source.get("canonical_url")
+                    if source_url:
+                        items.append({"name": source.get("name") or source.get("publisher") or source.get("title") or domain_from_url(source_url), "url": source_url})
+            elif article.get("source_url"):
                 items.append({"name": article.get("source_name") or domain_from_url(article["source_url"]), "url": article["source_url"]})
         if items:
             sources.append({"title": meta["title"], "icon": meta["icon"], "items": items})
@@ -874,7 +1135,7 @@ def render_report(report: dict, dates: dict, translated_report: dict | None = No
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>{REPORT_CSS}</style>
 </head>
-<body data-render-version="source-images-v4">
+<body data-render-version="fleet-synthesis-v1">
 {''.join(panels)}
 <script>
 const setLanguage = (lang) => {{
@@ -946,7 +1207,7 @@ def report_is_current_format(output_path: Path) -> bool:
     if not output_path.exists():
         return False
     html_doc = output_path.read_text(encoding="utf-8")
-    return 'data-lang="pl"' in html_doc and 'data-render-version="source-images-v4"' in html_doc
+    return 'data-lang="pl"' in html_doc and 'data-render-version="fleet-synthesis-v1"' in html_doc
 
 
 def main() -> None:
