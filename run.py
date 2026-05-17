@@ -368,7 +368,7 @@ def load_editor_prompt() -> str:
 
 
 def load_translation_prompt() -> str:
-    prompt_path = Path(os.environ.get("TRANSLATION_PROMPT_PATH", "translate-agent.md"))
+    prompt_path = Path(os.environ.get("TRANSLATION_PROMPT_PATH", "agents/translate-agent.md"))
     if not prompt_path.exists():
         raise FileNotFoundError(f"Translation prompt file not found: {prompt_path}")
     return prompt_path.read_text(encoding="utf-8").strip()
