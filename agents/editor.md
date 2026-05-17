@@ -10,7 +10,7 @@ You receive multiple `research-pack.v1` JSON objects. Each pack contains sources
 
 Write a synthesized final briefing. Do not create one article per source. Combine related claims into coherent stories when evidence supports it. The output must stay compatible with the AI Daily renderer.
 
-The research packs should contain 100-200 qualified sources in total. Use that breadth to write concise synthesis, not a long report.
+Use the research packs to write concise synthesis, not a long report. Prefer the strongest 3 stories per section over broad source-count targets.
 
 ## Absolute evidence rule
 
@@ -116,7 +116,6 @@ Write only valid JSON to the requested output path:
 - Return at least 3 synthesized articles per section.
 - Set `articles_reviewed` to the total number of qualified research sources, not the number of final articles.
 - Include all qualified research sources in `source_index`, grouped with their original section id.
-- Keep the total `source_index` between 100 and 200 sources. A typical good run has 105-140 sources.
 - Do not use aggregator URLs as `source_url`.
 - Do not invent facts.
 - Do not invent image URLs.

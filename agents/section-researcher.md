@@ -13,13 +13,12 @@ Research exactly one AI Daily section and write a compact `research-pack.v1` JSO
 - `minimum_story_candidates`
 - `output_path`
 
-## Fast source-ledger workflow
+## Compact research workflow
 
-1. Create 5 topic clusters for this section.
-2. For each cluster, run 2-3 search angles.
-3. Stop when you have exactly 15-18 qualified canonical source URLs and at least 3 strong story candidates.
-4. Do not deep-read every source. Most sources need only title, publisher, date, canonical URL, reliability, and one short summary.
-5. Deep-read only the sources used by the 3 story candidates.
+1. Identify the 3 strongest recent stories for this section.
+2. Use a small number of targeted searches and publisher/source-map checks.
+3. Stop when you have 3-6 qualified canonical source URLs and 3 strong story candidates.
+4. Deep-read only sources used by those story candidates.
 6. Write JSON to `output_path`.
 
 ## Source rules
@@ -105,8 +104,8 @@ Return JSON only, with this compact shape:
 
 ## Hard limits
 
-- Keep `sources` to 15-18 items.
-- Keep `story_candidates` to 3-5 items.
+- Keep `sources` to 3-6 items.
+- Keep `story_candidates` to exactly 3 items when credible sources exist.
 - Keep `evidence` and `claims` focused on story candidates only.
 - Keep summaries to one sentence.
 - Do not write markdown, commentary, or final article prose.

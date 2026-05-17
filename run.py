@@ -21,7 +21,6 @@ except ImportError:
 
 SECTION_CONFIG = {
     "dev-tools": {"title": "Developer Tools", "icon": "monitor", "color": "#2563EB", "badge": "dev", "visual": "DEV"},
-    "ai-tools": {"title": "AI Tools", "icon": "sparkles", "color": "#DB2777", "badge": "ai-tool", "visual": "AI"},
     "robotics": {"title": "Robotics", "icon": "bot", "color": "#16A34A", "badge": "robot", "visual": "BOT"},
     "defense": {"title": "Defense", "icon": "shield", "color": "#DC2626", "badge": "defense", "visual": "DEF"},
     "space": {"title": "Space", "icon": "rocket", "color": "#7C3AED", "badge": "space", "visual": "ORB"},
@@ -32,15 +31,9 @@ SECTION_ORDER = tuple(SECTION_CONFIG)
 COPILOT_MODEL = "gpt-5.4"
 IMAGE_CACHE: dict[str, str] = {}
 DEFAULT_RESEARCHER_PROMPT_PATH = "agents/section-researcher.md"
-DEFAULT_DISCOVERY_PROMPT_PATH = "agents/source-discovery.md"
-DEFAULT_EVIDENCE_PROMPT_PATH = "agents/evidence-researcher.md"
 DEFAULT_EDITOR_PROMPT_PATH = "agents/editor.md"
-MIN_SOURCES_PER_SECTION = int(os.environ.get("MIN_SOURCES_PER_SECTION", "15"))
-TARGET_SOURCES_PER_SECTION = int(os.environ.get("TARGET_SOURCES_PER_SECTION", "18"))
-MIN_TOTAL_RESEARCH_SOURCES = int(
-    os.environ.get("MIN_TOTAL_RESEARCH_SOURCES", str(max(100, MIN_SOURCES_PER_SECTION * len(SECTION_ORDER))))
-)
-MAX_TOTAL_RESEARCH_SOURCES = int(os.environ.get("MAX_TOTAL_RESEARCH_SOURCES", "200"))
+MIN_SOURCES_PER_SECTION = int(os.environ.get("MIN_SOURCES_PER_SECTION", "3"))
+TARGET_SOURCES_PER_SECTION = int(os.environ.get("TARGET_SOURCES_PER_SECTION", "6"))
 MIN_ARTICLES_PER_SECTION = int(os.environ.get("MIN_ARTICLES_PER_SECTION", "3"))
 RESEARCH_MAX_ATTEMPTS = int(os.environ.get("RESEARCH_MAX_ATTEMPTS", "1"))
 AGGREGATOR_DOMAINS = (
@@ -54,7 +47,6 @@ AGGREGATOR_DOMAINS = (
 SECTION_TITLES = {
     "en": {
         "dev-tools": "Developer Tools",
-        "ai-tools": "AI Tools",
         "robotics": "Robotics",
         "defense": "Defense",
         "space": "Space",
@@ -63,7 +55,6 @@ SECTION_TITLES = {
     },
     "pl": {
         "dev-tools": "Narzędzia developerskie",
-        "ai-tools": "Narzędzia AI",
         "robotics": "Robotyka",
         "defense": "Obronność",
         "space": "Kosmos",
@@ -127,7 +118,7 @@ the custom brief wins.
 Process:
 1. Run the searches requested by agents/coverage.md, replacing {DATE}, {YEAR}, and {MONTH}.
 2. Keep only news published in the last 24 hours.
-3. Use only these section ids, in this exact order: dev-tools, ai-tools, robotics, defense, space, startups, markets.
+3. Use only these section ids, in this exact order: dev-tools, robotics, defense, space, startups, markets.
 4. Target 3-4 important stories per section.
 5. If a section has fewer than 3 strong stories, broaden source discovery and continue searching the source map.
 6. Never fabricate filler: if a section still has fewer than 3 strong stories, include only credible stories and mark uncertain ones with verified=false.
@@ -168,8 +159,7 @@ JSON shape:
   ]
 }
 
-Allowed default section ids: dev-tools, ai-tools, robotics, defense, space, startups, markets.
-AI Tools is for non-coding AI products and apps; do not put developer harnesses, coding agents, IDEs, or SDKs there.
+Allowed default section ids: dev-tools, robotics, defense, space, startups, markets.
 If you can identify a source-provided article preview image, include it as image_url. Use only http/https URLs from the source page metadata or official source assets.
 For custom topics, use lowercase kebab-case ids and include title, icon, and color.
 """
@@ -367,14 +357,6 @@ def load_researcher_prompt() -> str:
     return load_prompt_file(os.environ.get("RESEARCHER_PROMPT_PATH", DEFAULT_RESEARCHER_PROMPT_PATH))
 
 
-def load_discovery_prompt() -> str:
-    return load_prompt_file(os.environ.get("DISCOVERY_PROMPT_PATH", DEFAULT_DISCOVERY_PROMPT_PATH))
-
-
-def load_evidence_prompt() -> str:
-    return load_prompt_file(os.environ.get("EVIDENCE_PROMPT_PATH", DEFAULT_EVIDENCE_PROMPT_PATH))
-
-
 def load_editor_prompt() -> str:
     return load_prompt_file(os.environ.get("EDITOR_PROMPT_PATH", DEFAULT_EDITOR_PROMPT_PATH))
 
@@ -486,8 +468,8 @@ def validate_research_pack(pack: dict, expected_section: str) -> list[str]:
             if image_id not in image_ids:
                 errors.append(f"{expected_section}: story {story.get('story_id')} references missing image {image_id}")
 
-    if len(pack.get("topic_clusters") or []) < 5:
-        errors.append(f"{expected_section}: only {len(pack.get('topic_clusters') or [])} topic clusters; need at least 5")
+    if len(pack.get("topic_clusters") or []) < 1:
+        errors.append(f"{expected_section}: missing topic clusters")
     if len(source_ids) < MIN_SOURCES_PER_SECTION or len(canonical_urls) < MIN_SOURCES_PER_SECTION:
         errors.append(
             f"{expected_section}: only {len(canonical_urls)} unique canonical URLs and {len(source_ids)} source IDs; "
@@ -524,28 +506,6 @@ def validate_final_report(report: dict, research_packs: list[dict]) -> list[str]
     errors: list[str] = []
     source_ids, evidence_ids, verified_images, _verified_image_urls = research_indexes(research_packs)
     sections = {section.get("id"): section for section in report.get("sections") or []}
-    total_research_sources = len(
-        {
-            source.get("canonical_url")
-            for pack in research_packs
-            for source in pack.get("sources") or []
-            if is_http_url(str(source.get("canonical_url") or "")) and not is_aggregator_url(str(source.get("canonical_url") or ""))
-        }
-    )
-    if total_research_sources < MIN_TOTAL_RESEARCH_SOURCES:
-        errors.append(f"final report has only {total_research_sources} research sources; need at least {MIN_TOTAL_RESEARCH_SOURCES}")
-    if total_research_sources > MAX_TOTAL_RESEARCH_SOURCES:
-        errors.append(f"final report has {total_research_sources} research sources; cap at {MAX_TOTAL_RESEARCH_SOURCES}")
-    source_index_urls = {
-        source.get("canonical_url") or source.get("url")
-        for source in report.get("source_index") or []
-        if is_http_url(str(source.get("canonical_url") or source.get("url") or ""))
-    }
-    if len(source_index_urls) < MIN_TOTAL_RESEARCH_SOURCES:
-        errors.append(
-            f"source_index has only {len(source_index_urls)} unique sources; "
-            f"include all qualified research sources"
-        )
     for source in report.get("source_index") or []:
         source_url = source.get("canonical_url") or source.get("url") or ""
         if is_aggregator_url(str(source_url)):
@@ -898,8 +858,6 @@ def run_editor_report(research_packs: list[dict], dates: dict, validation_errors
         f"Date: {dates['date']}\n"
         f"Canonical section order: {', '.join(SECTION_ORDER)}\n"
         f"Minimum final articles per section: {MIN_ARTICLES_PER_SECTION}\n"
-        f"Minimum total source_index size: {MIN_TOTAL_RESEARCH_SOURCES}\n"
-        f"Maximum total source_index size: {MAX_TOTAL_RESEARCH_SOURCES}\n"
         f"Write the final renderer-compatible final-report.v1 JSON to {output_path}.\n"
         "Do not use web search. Do not edit any other files. Do not write Markdown.\n"
         f"{retry_note}\n"
@@ -917,7 +875,7 @@ def recover_report_json(research_notes: str, output_path: Path, dates: dict) -> 
         f"Date: {dates['date']}\n\n"
         "Convert the research notes below into the required final JSON object.\n"
         "Use only facts present in the notes. Do not use web search. Do not add Markdown or explanations.\n"
-        "Return every canonical section id: dev-tools, ai-tools, robotics, defense, space, startups, markets. Prefer 3-4 articles per section, but do not drop a section solely because it has fewer candidates.\n"
+        "Return every canonical section id: dev-tools, robotics, defense, space, startups, markets. Prefer 3-4 articles per section, but do not drop a section solely because it has fewer candidates.\n"
         f"Write the final JSON object to {output_path} and do not edit any other files.\n\n"
         f"## RESEARCH NOTES\n\n{notes}"
     )
@@ -963,11 +921,8 @@ def translate_report(report: dict, dates: dict) -> dict:
 
 
 def run_agent(dates: dict) -> dict:
-    print("running staged research pipeline...", flush=True)
-    discovery_packs = run_source_discovery_fleet(dates)
-    discovery_sources = sum(len(pack.get("sources") or []) for pack in discovery_packs)
-    print(f"source discovery yielded {discovery_sources} sources", flush=True)
-    research_packs = run_evidence_research_fleet(discovery_packs, dates)
+    print("running compact section research fleet...", flush=True)
+    research_packs = run_section_research_fleet(dates)
     print("running editor synthesis...")
     report = run_editor_report(research_packs, dates)
     errors = validate_final_report(report, research_packs)
@@ -1451,7 +1406,7 @@ def render_report(report: dict, dates: dict, translated_report: dict | None = No
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>{REPORT_CSS}</style>
 </head>
-<body data-render-version="staged-research-v1">
+<body data-render-version="compact-research-v1">
 {''.join(panels)}
 <script>
 const setLanguage = (lang) => {{
@@ -1523,7 +1478,7 @@ def report_is_current_format(output_path: Path) -> bool:
     if not output_path.exists():
         return False
     html_doc = output_path.read_text(encoding="utf-8")
-    return 'data-lang="pl"' in html_doc and 'data-render-version="staged-research-v1"' in html_doc
+    return 'data-lang="pl"' in html_doc and 'data-render-version="compact-research-v1"' in html_doc
 
 
 def main() -> None:
