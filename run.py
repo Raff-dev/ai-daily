@@ -207,6 +207,9 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .masthead-nav a { display: flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 500; color: var(--text-secondary); text-decoration: none; white-space: nowrap; transition: background 0.15s; }
 .masthead-nav a:hover { background: var(--bg-page); }
 .masthead-version { flex-shrink: 0; padding: 4px 12px; background: #111827; color: #fff; border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; }
+.masthead-github { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: var(--text-muted); transition: background 0.15s, color 0.15s; text-decoration: none; }
+.masthead-github:hover { background: var(--bg-page); color: #111827; }
+.masthead-github svg { width: 18px; height: 18px; }
 .language-toggle { flex-shrink: 0; display: inline-flex; gap: 3px; padding: 3px; background: #F3F4F6; border: 1px solid var(--border); border-radius: var(--radius-pill); }
 .language-toggle button { border: 0; background: transparent; color: var(--text-muted); border-radius: var(--radius-pill); padding: 4px 9px; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; }
 .language-toggle button.active { background: #111827; color: #fff; }
@@ -1302,6 +1305,24 @@ def render_nav(report: dict, lang: str) -> str:
     return "\n".join(links)
 
 
+def get_repo_url() -> str:
+    gh_repo = os.environ.get("GITHUB_REPOSITORY", "")
+    if gh_repo:
+        return f"https://github.com/{gh_repo}"
+    try:
+        remote = subprocess.check_output(
+            ["git", "remote", "get-url", "origin"], stderr=subprocess.DEVNULL, text=True
+        ).strip()
+        if remote.startswith("https://github.com/"):
+            return remote.rstrip(".git")
+        if remote.startswith("git@github.com:"):
+            path = remote.replace("git@github.com:", "").rstrip(".git")
+            return f"https://github.com/{path}"
+    except Exception:
+        pass
+    return "https://github.com/Raff-dev/ai-daily"
+
+
 def render_language_toggle(active_lang: str, has_translation: bool) -> str:
     buttons = []
     languages = (("en", "EN"), ("pl", "PL")) if has_translation else (("en", "EN"),)
@@ -1342,6 +1363,7 @@ def render_report_panel(report: dict, dates: dict, lang: str, active: bool, has_
     </div>
     <nav class="masthead-nav">{render_nav(report, lang)}</nav>
     {render_language_toggle(lang, has_translation)}
+    <a href="{e(get_repo_url())}" class="masthead-github" target="_blank" rel="noopener" title="Source on GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.185 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.891 1.529 2.341 1.088 2.91.832.091-.647.349-1.088.635-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.026 2.747-1.026.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.203 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"/></svg></a>
     <span class="masthead-version">{e(copy["structured"])}</span>
   </div>
 </header>
