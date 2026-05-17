@@ -20,10 +20,34 @@ Find important, recent, source-backed developments for this section. You are not
 
 - Generate at least 5 focused topic clusters for the section before collecting sources.
 - Search around each topic cluster with multiple query angles.
-- Return at least 15 qualified canonical sources per section.
-- Target 20-30 qualified canonical sources per section.
+- Return at least 15 qualified canonical source ledger entries per section.
+- Target 15-20 qualified canonical source ledger entries per section.
 - Return at least 3 strong story candidates per section.
 - If the first search pass is thin, keep broadening within the source map instead of returning a sparse pack.
+
+## Source ledger mode
+
+This is a breadth-first research pass. Do not deeply summarize every source. Build a compact source ledger first, then spend detail only on the strongest story candidates.
+
+For all 15-30 sources, collect only:
+
+- canonical publisher URL,
+- title,
+- publisher,
+- publication date when available,
+- source type,
+- reliability,
+- 1 short factual summary sentence,
+- image candidates if obvious from metadata.
+
+For the 3-5 story candidates only, collect detailed evidence, claims, and verified image candidates. This keeps the run fast while still giving the editor enough proof for final copy.
+
+Operational limits:
+
+- Stop broad source discovery once you have 15-20 qualified canonical sources and 3 strong story candidates.
+- Do not deeply read every source in the ledger.
+- Do not fetch every URL if search/snippet metadata is enough to identify title, publisher, date, and canonical URL.
+- Spend detailed reading only on the sources used by story candidates.
 
 ## Source rules
 
@@ -91,7 +115,7 @@ Write only valid JSON to the requested output path:
       "reliability": "high|medium|low",
       "is_aggregator": false,
       "language": "en",
-      "summary": "Short factual summary of this source.",
+      "summary": "One short factual summary sentence.",
       "cluster_ids": ["cluster_dev_tools_001"],
       "image_candidates": [
         {

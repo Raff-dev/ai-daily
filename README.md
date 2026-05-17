@@ -76,7 +76,7 @@ Optional variables in **Settings -> Secrets and variables -> Actions -> Variable
 | `AGENT_TIMEOUT_SECONDS` | `1800` | Timeout for Copilot CLI generation |
 | `FLEET_MAX_WORKERS` | `3` | Number of section researchers to run concurrently |
 | `MIN_SOURCES_PER_SECTION` | `15` | Minimum qualified canonical sources required per section |
-| `TARGET_SOURCES_PER_SECTION` | `25` | Target qualified canonical sources per section |
+| `TARGET_SOURCES_PER_SECTION` | `18` | Target qualified canonical sources per section |
 | `MIN_TOTAL_RESEARCH_SOURCES` | `105` | Minimum total qualified research sources before rendering |
 | `MAX_TOTAL_RESEARCH_SOURCES` | `200` | Maximum total qualified research sources passed to the report |
 | `MIN_ARTICLES_PER_SECTION` | `3` | Minimum synthesized articles required in every final section |
@@ -121,7 +121,7 @@ python run.py
 
 `run.py` calls Copilot CLI in programmatic mode with `gpt-5.4`. It starts one researcher per section using `agents/section-researcher.md` plus your coverage brief from `agent.md`, writes intermediate research packs to `.copilot-output/research/YYYY-MM-DD/<section>.research.json`, validates sources/evidence/images/coverage, asks `agents/editor.md` to synthesize the final English JSON at `.copilot-output/report.json`, then starts a separate translation pass using `translate-agent.md` and `.copilot-output/report.pl.json`. The app renders both language versions into one HTML report with an EN/PL toggle. Keep credentials in GitHub Secrets, not in the repository.
 
-Coverage gates are strict by default: every section needs at least 15 qualified canonical sources and 3 story candidates; the final report needs 100-200 sources in `source_index` and at least 3 synthesized articles per section. Sparse sections trigger researcher retries instead of being silently rendered as empty.
+Coverage gates are strict by default: every section needs at least 15 qualified canonical sources and 3 story candidates; the final report needs 100-200 sources in `source_index` and at least 3 synthesized articles per section. A typical successful run should land around 105-140 sources. Sparse sections trigger researcher retries instead of being silently rendered as empty.
 
 The intermediate research files are intentionally written under `.copilot-output/`, which is ignored by Git and never published. The workflow only commits `index.html` and dated HTML files in `outputs/`.
 
