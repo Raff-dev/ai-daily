@@ -6,11 +6,9 @@ import json
 import os
 import re
 import subprocess
-import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from copy import deepcopy
 from datetime import datetime
-from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
@@ -52,79 +50,6 @@ AGGREGATOR_DOMAINS = (
     "msn.com",
     "aol.com",
 )
-
-SOURCE_DISCOVERY_FEEDS = {
-    "dev-tools": [
-        "https://github.blog/changelog/feed/",
-        "https://github.blog/engineering/feed/",
-        "https://openai.com/news/rss.xml",
-        "https://www.anthropic.com/news/rss.xml",
-        "https://huggingface.co/blog/feed.xml",
-        "https://www.infoq.com/feed/ai-ml-data-eng/",
-        "https://simonwillison.net/atom/everything/",
-        "https://techcrunch.com/category/artificial-intelligence/feed/",
-    ],
-    "ai-tools": [
-        "https://techcrunch.com/category/artificial-intelligence/feed/",
-        "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
-        "https://venturebeat.com/category/ai/feed/",
-        "https://www.artificialintelligence-news.com/feed/",
-        "https://www.anthropic.com/news/rss.xml",
-        "https://openai.com/news/rss.xml",
-        "https://blog.google/technology/ai/rss/",
-        "https://www.technologyreview.com/topic/artificial-intelligence/feed/",
-    ],
-    "robotics": [
-        "https://www.therobotreport.com/feed/",
-        "https://roboticsandautomationnews.com/feed/",
-        "https://spectrum.ieee.org/rss/robotics/fulltext",
-        "https://techcrunch.com/category/robotics/feed/",
-        "https://www.roboticsbusinessreview.com/feed/",
-        "https://newatlas.com/robotics/index.rss",
-    ],
-    "defense": [
-        "https://breakingdefense.com/feed/",
-        "https://defensescoop.com/feed/",
-        "https://www.defensenews.com/arc/outboundfeeds/rss/category/artificial-intelligence/",
-        "https://www.c4isrnet.com/arc/outboundfeeds/rss/",
-        "https://www.naval-technology.com/feed/",
-        "https://www.airforce-technology.com/feed/",
-    ],
-    "space": [
-        "https://spacenews.com/feed/",
-        "https://www.nasa.gov/news-release/feed/",
-        "https://www.esa.int/rssfeed/Our_Activities/Space_Engineering_Technology",
-        "https://www.universetoday.com/feed/",
-        "https://arstechnica.com/space/feed/",
-        "https://www.space.com/feeds/all",
-    ],
-    "startups": [
-        "https://techcrunch.com/category/startups/feed/",
-        "https://techcrunch.com/category/artificial-intelligence/feed/",
-        "https://venturebeat.com/category/ai/feed/",
-        "https://www.eu-startups.com/feed/",
-        "https://www.geekwire.com/startups/feed/",
-        "https://sifted.eu/feed",
-    ],
-    "markets": [
-        "https://techcrunch.com/category/artificial-intelligence/feed/",
-        "https://venturebeat.com/category/ai/feed/",
-        "https://www.marketwatch.com/rss/topstories",
-        "https://www.cnbc.com/id/19854910/device/rss/rss.html",
-        "https://www.artificialintelligence-news.com/feed/",
-        "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
-    ],
-}
-
-SECTION_KEYWORDS = {
-    "dev-tools": ("developer", "coding", "code", "github", "copilot", "codex", "agent", "ide", "api", "sdk", "open source", "model"),
-    "ai-tools": ("ai", "chatgpt", "claude", "gemini", "assistant", "image", "video", "voice", "product", "app", "tool"),
-    "robotics": ("robot", "robotics", "humanoid", "drone", "automation", "warehouse", "manipulation", "autonomous"),
-    "defense": ("defense", "defence", "military", "pentagon", "army", "navy", "air force", "drone", "missile", "warfare", "security"),
-    "space": ("space", "nasa", "esa", "satellite", "launch", "rocket", "orbit", "spacex", "moon", "mars", "starship"),
-    "startups": ("startup", "funding", "venture", "raises", "seed", "series", "founder", "yc", "capital", "valuation"),
-    "markets": ("market", "stock", "shares", "earnings", "revenue", "investment", "investor", "valuation", "ai boom", "chip", "nvidia"),
-}
 
 SECTION_TITLES = {
     "en": {
@@ -496,239 +421,7 @@ def extract_json(text: str, require_sections: bool = False) -> dict:
 
 def is_aggregator_url(url: str) -> bool:
     netloc = urlparse(url).netloc.lower()
-    if netloc.startswith("www."):
-        netloc = netloc[4:]
-    return any(netloc == domain or netloc.endswith(f".{domain}") for domain in AGGREGATOR_DOMAINS)
-
-
-def text_content(element: ET.Element | None, tag: str) -> str:
-    if element is None:
-        return ""
-    found = element.find(tag)
-    return html.unescape("".join(found.itertext()).strip()) if found is not None else ""
-
-
-def namespaced_text(element: ET.Element | None, local_name: str) -> str:
-    if element is None:
-        return ""
-    for child in element:
-        if child.tag.endswith(f"}}{local_name}") or child.tag == local_name:
-            return html.unescape("".join(child.itertext()).strip())
-    return ""
-
-
-def normalize_source_url(url: str, feed_url: str) -> str:
-    resolved = urljoin(feed_url, html.unescape(url or "").strip())
-    parsed = urlparse(resolved)
-    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
-        return ""
-    return parsed._replace(fragment="").geturl()
-
-
-def parse_feed_datetime(value: str) -> str | None:
-    if not value:
-        return None
-    try:
-        return parsedate_to_datetime(value).isoformat()
-    except (TypeError, ValueError, IndexError, OverflowError):
-        return value[:40]
-
-
-def infer_publisher(url: str) -> str:
-    domain = urlparse(url).netloc.lower()
-    if domain.startswith("www."):
-        domain = domain[4:]
-    known = {
-        "github.blog": "GitHub Blog",
-        "openai.com": "OpenAI",
-        "anthropic.com": "Anthropic",
-        "huggingface.co": "Hugging Face",
-        "techcrunch.com": "TechCrunch",
-        "theverge.com": "The Verge",
-        "venturebeat.com": "VentureBeat",
-        "therobotreport.com": "The Robot Report",
-        "breakingdefense.com": "Breaking Defense",
-        "defensescoop.com": "DefenseScoop",
-        "spacenews.com": "SpaceNews",
-        "nasa.gov": "NASA",
-        "marketwatch.com": "MarketWatch",
-        "cnbc.com": "CNBC",
-    }
-    for suffix, name in known.items():
-        if domain == suffix or domain.endswith(f".{suffix}"):
-            return name
-    return domain.split(".")[0].replace("-", " ").title() if domain else "Unknown"
-
-
-def source_matches_section(section_id: str, title: str, summary: str, url: str) -> bool:
-    haystack = f"{title} {summary} {url}".lower()
-    keywords = SECTION_KEYWORDS.get(section_id, ())
-    if not keywords:
-        return True
-    return any(keyword in haystack for keyword in keywords)
-
-
-def xml_attr(element: ET.Element, local_name: str) -> str:
-    for key, value in element.attrib.items():
-        if key.endswith(f"}}{local_name}") or key == local_name:
-            return value
-    return ""
-
-
-def feed_entry_image(entry: ET.Element, feed_url: str) -> str | None:
-    for child in entry.iter():
-        tag = child.tag.lower()
-        if tag.endswith("}thumbnail") or tag.endswith("}content") or tag in {"thumbnail", "content"}:
-            candidate = child.attrib.get("url") or xml_attr(child, "url")
-            if candidate:
-                image_url = normalize_source_url(candidate, feed_url)
-                if image_url:
-                    return image_url
-        if tag.endswith("}enclosure") or tag == "enclosure":
-            media_type = (child.attrib.get("type") or "").lower()
-            if media_type.startswith("image/"):
-                image_url = normalize_source_url(child.attrib.get("url") or "", feed_url)
-                if image_url:
-                    return image_url
-    return None
-
-
-def fetch_feed_entries(feed_url: str) -> list[dict]:
-    request = Request(
-        feed_url,
-        headers={
-            "User-Agent": "AI-Daily/1.0 (+https://github.com/Raff-dev/ai-daily)",
-            "Accept": "application/rss+xml,application/atom+xml,application/xml,text/xml",
-        },
-    )
-    try:
-        with urlopen(request, timeout=15) as response:
-            feed_xml = response.read(1_500_000)
-    except OSError as error:
-        print(f"warning: could not fetch feed {feed_url}: {error}", flush=True)
-        return []
-    try:
-        root = ET.fromstring(feed_xml)
-    except ET.ParseError as error:
-        print(f"warning: could not parse feed {feed_url}: {error}", flush=True)
-        return []
-
-    entries = root.findall(".//item") or root.findall(".//{http://www.w3.org/2005/Atom}entry")
-    parsed_entries: list[dict] = []
-    for entry in entries[:40]:
-        title = text_content(entry, "title") or namespaced_text(entry, "title")
-        link = text_content(entry, "link")
-        if not link:
-            link_element = entry.find("{http://www.w3.org/2005/Atom}link")
-            if link_element is not None:
-                link = link_element.attrib.get("href", "")
-        canonical_url = normalize_source_url(link, feed_url)
-        if not title or not canonical_url or is_aggregator_url(canonical_url):
-            continue
-        summary = (
-            text_content(entry, "description")
-            or text_content(entry, "summary")
-            or namespaced_text(entry, "summary")
-            or namespaced_text(entry, "content")
-        )
-        published = (
-            text_content(entry, "pubDate")
-            or text_content(entry, "published")
-            or text_content(entry, "updated")
-            or namespaced_text(entry, "published")
-            or namespaced_text(entry, "updated")
-        )
-        parsed_entries.append(
-            {
-                "title": re.sub(r"\s+", " ", title).strip(),
-                "summary": re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", summary)).strip()[:260],
-                "published_at": parse_feed_datetime(published),
-                "canonical_url": canonical_url,
-                "publisher": infer_publisher(canonical_url),
-                "image_url": feed_entry_image(entry, feed_url),
-            }
-        )
-    return parsed_entries
-
-
-def build_topic_clusters(section_id: str) -> list[dict]:
-    keywords = SECTION_KEYWORDS.get(section_id, ())
-    clusters = []
-    for index in range(5):
-        keyword = keywords[index % len(keywords)] if keywords else SECTION_CONFIG[section_id]["title"].lower()
-        clusters.append(
-            {
-                "cluster_id": f"cluster_{section_id.replace('-', '_')}_{index + 1:03d}",
-                "label": f"{SECTION_CONFIG[section_id]['title']} / {keyword}",
-                "queries": [keyword, f"{keyword} news", f"{SECTION_CONFIG[section_id]['title']} {keyword}"],
-            }
-        )
-    return clusters
-
-
-def build_deterministic_discovery_pack(section_id: str, dates: dict) -> dict:
-    seen_urls: set[str] = set()
-    sources: list[dict] = []
-    clusters = build_topic_clusters(section_id)
-    feeds = SOURCE_DISCOVERY_FEEDS.get(section_id, [])
-    for feed_url in feeds:
-        for entry in fetch_feed_entries(feed_url):
-            canonical_url = entry["canonical_url"]
-            if canonical_url in seen_urls:
-                continue
-            if not source_matches_section(section_id, entry["title"], entry.get("summary") or "", canonical_url):
-                continue
-            seen_urls.add(canonical_url)
-            index = len(sources) + 1
-            cluster = clusters[(index - 1) % len(clusters)]
-            sources.append(
-                {
-                    "source_id": f"src_{section_id.replace('-', '_')}_{index:03d}",
-                    "title": entry["title"],
-                    "publisher": entry["publisher"],
-                    "published_at": entry.get("published_at"),
-                    "canonical_url": canonical_url,
-                    "source_type": "news",
-                    "reliability": "medium",
-                    "is_aggregator": False,
-                    "summary": entry.get("summary") or entry["title"],
-                    "cluster_ids": [cluster["cluster_id"]],
-                    "image_url": entry.get("image_url"),
-                }
-            )
-            if len(sources) >= TARGET_SOURCES_PER_SECTION:
-                break
-        if len(sources) >= TARGET_SOURCES_PER_SECTION:
-            break
-
-    story_candidates = []
-    candidate_count = min(MIN_ARTICLES_PER_SECTION, len(sources))
-    for index in range(candidate_count):
-        source_slice = sources[index * 2 : index * 2 + 2] or sources[index : index + 1]
-        if not source_slice:
-            continue
-        story_candidates.append(
-            {
-                "story_id": f"story_{section_id.replace('-', '_')}_{index + 1:03d}",
-                "proposed_title": source_slice[0]["title"],
-                "angle": f"Deeper research candidate selected from {SECTION_CONFIG[section_id]['title']} source ledger.",
-                "source_ids": [source["source_id"] for source in source_slice],
-                "priority": index + 1,
-                "confidence": "medium",
-            }
-        )
-
-    return {
-        "schema_version": "discovery-pack.v1",
-        "run_date": dates["date"],
-        "section": section_id,
-        "section_display_name": SECTION_CONFIG[section_id]["title"],
-        "generated_at": datetime.now(ZoneInfo("Europe/Warsaw")).isoformat(),
-        "topic_clusters": clusters,
-        "sources": sources,
-        "story_candidates": story_candidates,
-        "rejects": [],
-    }
+    return any(domain in netloc for domain in AGGREGATOR_DOMAINS)
 
 
 def research_output_path(dates: dict, section_id: str) -> Path:
@@ -992,16 +685,6 @@ def validate_discovery_pack(pack: dict, section_id: str) -> list[str]:
 
 def run_source_discovery(section_id: str, dates: dict) -> dict:
     output_path = discovery_output_path(dates, section_id)
-    if os.environ.get("AGENT_SOURCE_DISCOVERY", "").lower() not in {"1", "true", "yes"}:
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        pack = build_deterministic_discovery_pack(section_id, dates)
-        output_path.write_text(json.dumps(pack, ensure_ascii=False, indent=2), encoding="utf-8")
-        errors = validate_discovery_pack(pack, section_id)
-        if errors:
-            raise RuntimeError("Deterministic discovery pack failed validation:\n" + "\n".join(errors))
-        print(f"source collector complete: {section_id}: {len(pack.get('sources') or [])} sources", flush=True)
-        return pack
-
     prompt = (
         "/research\n"
         f"{load_discovery_prompt()}\n\n"
@@ -1062,6 +745,21 @@ def run_evidence_research(discovery_pack: dict, dates: dict) -> dict:
     pack = run_copilot_json(prompt, output_path, allow_urls=True)
     errors = validate_research_pack(pack, section_id)
     if errors:
+        repair_prompt = (
+            f"{load_evidence_prompt()}\n\n"
+            "## VALIDATION ERRORS TO FIX\n"
+            + "\n".join(f"- {error}" for error in errors)
+            + "\n\nUse only the discovery pack and the draft evidence pack below. "
+            "If a primary source was blocked, use a backup source from the same discovery ledger. "
+            f"Write corrected research-pack.v1 JSON to {output_path}. Do not edit any other files.\n\n"
+            "## DISCOVERY PACK\n"
+            f"{json.dumps(discovery_pack, ensure_ascii=False)}\n\n"
+            "## DRAFT EVIDENCE PACK\n"
+            f"{json.dumps(pack, ensure_ascii=False)}"
+        )
+        pack = run_copilot_json(repair_prompt, output_path, allow_urls=False)
+        errors = validate_research_pack(pack, section_id)
+    if errors:
         raise RuntimeError("Evidence pack failed validation:\n" + "\n".join(errors))
     return pack
 
@@ -1096,7 +794,31 @@ def run_copilot_json(prompt: str, output_path: Path, allow_urls: bool, require_s
         raise RuntimeError(f"Copilot CLI failed with exit code {result.returncode}:\n{result.stderr}\n{result.stdout}")
     if not output_path.exists():
         raise RuntimeError(f"Copilot CLI did not create expected JSON file: {output_path}\n{result.stdout}")
-    return extract_json(output_path.read_text(encoding="utf-8"), require_sections=require_sections)
+    raw_json = output_path.read_text(encoding="utf-8")
+    try:
+        return extract_json(raw_json, require_sections=require_sections)
+    except (json.JSONDecodeError, RuntimeError) as error:
+        print(f"warning: agent wrote invalid JSON to {output_path}: {error}; running JSON repair agent", flush=True)
+        return repair_agent_json(raw_json, output_path, require_sections=require_sections)
+
+
+def repair_agent_json(raw_json: str, output_path: Path, require_sections: bool = False) -> dict:
+    repair_path = output_path.with_suffix(".repaired.json")
+    prompt = (
+        "You are a JSON repair agent. Fix the malformed JSON below without adding new facts. "
+        "Preserve all object keys and source/evidence mappings. Return JSON only. "
+        f"Write the corrected JSON object to {repair_path}. Do not edit any other files.\n\n"
+        "## MALFORMED JSON\n"
+        f"{raw_json[-60_000:]}"
+    )
+    result = invoke_copilot(prompt, repair_path, allow_urls=False)
+    if result.returncode != 0:
+        raise RuntimeError(f"JSON repair agent failed with exit code {result.returncode}:\n{result.stderr}\n{result.stdout}")
+    if not repair_path.exists():
+        raise RuntimeError(f"JSON repair agent did not create expected file: {repair_path}")
+    repaired = repair_path.read_text(encoding="utf-8")
+    output_path.write_text(repaired, encoding="utf-8")
+    return extract_json(repaired, require_sections=require_sections)
 
 
 def run_section_research_once(section_id: str, dates: dict, validation_errors: list[str] | None = None) -> dict:

@@ -19,16 +19,17 @@ This is a breadth-first source ledger pass. Do not deep-read every source and do
 
 1. Create 5 topic clusters for the section.
 2. Search 2-3 query angles per cluster.
-3. Return 15-18 qualified canonical source URLs.
-4. Select 3-5 story candidates worth deeper evidence research.
+3. Return exactly 15 qualified canonical source URLs.
+4. Select exactly 3 story candidates worth deeper evidence research.
 5. Write JSON to `output_path`.
 
 ## Rules
 
 - Use canonical publisher URLs only.
-- Reject Google News, Bing News, Yahoo News, MSN, AOL, and other aggregators as canonical URLs.
+- Reject Google News, Bing News, Yahoo News, MSN, AOL, and other aggregators as canonical URLs. Do not reject official Google, YouTube, DeepMind, or Android pages solely because they are on a Google-owned domain.
 - Most sources need only: title, publisher, date if available, canonical URL, reliability, source type, and one short summary.
 - Do not collect detailed evidence here. Evidence is a separate pass.
+- For each story candidate, include 1 primary `source_id` and at most 1 backup `source_id`. Evidence research will deep-read only the first reachable source per story.
 
 ## Required JSON shape
 
@@ -72,4 +73,3 @@ This is a breadth-first source ledger pass. Do not deep-read every source and do
 ```
 
 Return JSON only.
-
