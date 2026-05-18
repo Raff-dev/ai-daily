@@ -10,7 +10,7 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height: 1.65; color: #111827; background: #F3F4F6; -webkit-font-smoothing: antialiased; }
+body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height: 1.65; color: #111827; background: #FAFAFA; -webkit-font-smoothing: antialiased; }
 :root {
   --bg-page: #F3F4F6; --bg-card: #FFFFFF; --text-primary: #111827; --text-secondary: #374151; --text-muted: #6B7280;
   --border: #E5E7EB; --border-strong: #D1D5DB;
@@ -29,25 +29,15 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .badge [data-lucide] { width: 11px; height: 11px; stroke-width: 2.5; vertical-align: -1px; }
 .card-image-placeholder [data-lucide] { width: 48px; height: 48px; stroke-width: 1.25; color: #C4C9D4; }
 .page-wrapper { max-width: 1180px; margin: 0 auto; padding: 0 16px 60px; }
-.masthead { background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
-.masthead-inner { max-width: 1180px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; gap: 24px; height: 56px; }
-.masthead-brand { display: flex; align-items: baseline; gap: 10px; flex-shrink: 0; }
-.masthead-title { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; color: #111827; }
-.masthead-edition { font-size: 11px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
-.masthead-nav { display: flex; gap: 4px; flex: 1; overflow-x: auto; scrollbar-width: none; }
-.masthead-nav::-webkit-scrollbar { display: none; }
-.masthead-nav a { display: flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 500; color: var(--text-secondary); text-decoration: none; white-space: nowrap; transition: background 0.15s; }
-.masthead-nav a:hover { background: var(--bg-page); }
-.masthead-version { flex-shrink: 0; padding: 4px 12px; background: #111827; color: #fff; border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; }
-.masthead-github { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: var(--text-muted); transition: background 0.15s, color 0.15s; text-decoration: none; }
-.masthead-github:hover { background: var(--bg-page); color: #111827; }
-.masthead-github svg { width: 18px; height: 18px; }
-.masthead-back { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: var(--text-muted); transition: background 0.15s, color 0.15s; text-decoration: none; }
-.masthead-back:hover { background: var(--bg-page); color: #111827; }
-.masthead-back [data-lucide] { width: 18px; height: 18px; stroke-width: 2.25; }
-.language-toggle { flex-shrink: 0; display: inline-flex; gap: 3px; padding: 3px; background: #F3F4F6; border: 1px solid var(--border); border-radius: var(--radius-pill); }
-.language-toggle button { border: 0; background: transparent; color: var(--text-muted); border-radius: var(--radius-pill); padding: 4px 9px; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; }
-.language-toggle button.active { background: #111827; color: #fff; }
+.floating-nav { position: fixed; top: 16px; right: 16px; z-index: 100; display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 4px; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+.floating-nav a, .floating-nav button { display: inline-flex; align-items: center; justify-content: center; height: 32px; padding: 0 14px; border-radius: var(--radius-pill); font: inherit; font-size: 13px; font-weight: 600; color: var(--text-secondary); transition: background .15s, color .15s; text-decoration: none; border: 0; background: transparent; cursor: pointer; }
+.floating-nav a:hover, .floating-nav button:hover { background: #F3F4F6; color: #111827; text-decoration: none; }
+.floating-nav a.icon-only { width: 32px; padding: 0; }
+.floating-nav a.icon-only svg { width: 16px; height: 16px; display: block; }
+.floating-nav .lang-toggle { display: inline-flex; gap: 2px; padding: 0; }
+.floating-nav .lang-toggle button { padding: 0 10px; font-size: 11px; font-weight: 700; height: 28px; margin: 2px; }
+.floating-nav .lang-toggle button.active { background: #111827; color: #fff; }
+.floating-nav .arrow { font-size: 15px; line-height: 1; margin-right: 2px; }
 .language-panel { display: none; }
 .language-panel.active { display: block; }
 .hero-header { background: linear-gradient(135deg, #111827 0%, #1e3a5f 100%); color: white; padding: 48px 16px 40px; margin-bottom: 28px; }
@@ -139,31 +129,23 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 @media (max-width: 900px) {
   .news-card.featured, .news-card.secondary, .news-card.standard { grid-column: span 12; }
   .hero-title { font-size: 30px; }
-  .masthead-nav { display: none; }
 }
 </style>
 </head>
 <body data-render-version="compact-research-v1">
 
-<div class="language-panel active" data-lang="en">
-<header class="masthead">
-  <div class="masthead-inner">
-    <a class="masthead-back" href="../" title="Back to AI Daily" aria-label="Back to AI Daily"><i data-lucide="arrow-left"></i></a>
-    <div class="masthead-brand">
-      <span class="masthead-title">AI Daily</span>
-      <span class="masthead-edition">May 18</span>
-    </div>
-    <nav class="masthead-nav"><a href="#en-dev-tools"><i data-lucide="monitor"></i> Developer Tools</a>
-<a href="#en-robotics"><i data-lucide="bot"></i> Robotics</a>
-<a href="#en-defense"><i data-lucide="shield"></i> Defense</a>
-<a href="#en-space"><i data-lucide="rocket"></i> Space</a>
-<a href="#en-startups"><i data-lucide="banknote"></i> Startups</a>
-<a href="#en-sources"><i data-lucide="paperclip"></i> All report sources</a></nav>
-    <div class="language-toggle" aria-label="Language"><button type="button" class="active" data-set-lang="en">EN</button><button type="button" class="" data-set-lang="pl">PL</button></div>
-    <a href="https://github.com/Raff-dev/ai-daily" class="masthead-github" target="_blank" rel="noopener" title="Source on GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.185 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.891 1.529 2.341 1.088 2.91.832.091-.647.349-1.088.635-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.026 2.747-1.026.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.203 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"/></svg></a>
-    <span class="masthead-version">Structured</span>
+<nav class="floating-nav" aria-label="Primary">
+  <a href="../" title="Back to landing"><span class="arrow">←</span>&nbsp;Home</a>
+  <div class="lang-toggle" aria-label="Language">
+    <button type="button" class="active" data-set-lang="en">EN</button>
+    <button type="button" data-set-lang="pl">PL</button>
   </div>
-</header>
+  <a href="https://github.com/Raff-dev/ai-daily" target="_blank" rel="noopener" aria-label="Source on GitHub" title="Source on GitHub" class="icon-only">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.185 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.891 1.529 2.341 1.088 2.91.832.091-.647.349-1.088.635-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.026 2.747-1.026.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.203 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"/></svg>
+  </a>
+</nav>
+
+<div class="language-panel active" data-lang="en">
 <div class="hero-header">
   <div class="hero-inner">
     <div class="hero-date">Monday, May 18, 2026 · Morning Edition</div>
@@ -797,24 +779,6 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 </div>
 </div>
 <div class="language-panel" data-lang="pl">
-<header class="masthead">
-  <div class="masthead-inner">
-    <a class="masthead-back" href="../" title="Powrót do AI Daily" aria-label="Powrót do AI Daily"><i data-lucide="arrow-left"></i></a>
-    <div class="masthead-brand">
-      <span class="masthead-title">AI Daily</span>
-      <span class="masthead-edition">18.05</span>
-    </div>
-    <nav class="masthead-nav"><a href="#pl-dev-tools"><i data-lucide="monitor"></i> Narzędzia developerskie</a>
-<a href="#pl-robotics"><i data-lucide="bot"></i> Robotyka</a>
-<a href="#pl-defense"><i data-lucide="shield"></i> Obronność</a>
-<a href="#pl-space"><i data-lucide="rocket"></i> Kosmos</a>
-<a href="#pl-startups"><i data-lucide="banknote"></i> Startupy</a>
-<a href="#pl-sources"><i data-lucide="paperclip"></i> Wszystkie źródła raportu</a></nav>
-    <div class="language-toggle" aria-label="Language"><button type="button" class="" data-set-lang="en">EN</button><button type="button" class="active" data-set-lang="pl">PL</button></div>
-    <a href="https://github.com/Raff-dev/ai-daily" class="masthead-github" target="_blank" rel="noopener" title="Source on GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.185 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.891 1.529 2.341 1.088 2.91.832.091-.647.349-1.088.635-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.026 2.747-1.026.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.203 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"/></svg></a>
-    <span class="masthead-version">Strukturalny</span>
-  </div>
-</header>
 <div class="hero-header">
   <div class="hero-inner">
     <div class="hero-date">Poniedziałek, 18 maja 2026 · Wydanie poranne</div>
