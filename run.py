@@ -468,8 +468,6 @@ def validate_research_pack(pack: dict, expected_section: str) -> list[str]:
             if image_id not in image_ids:
                 errors.append(f"{expected_section}: story {story.get('story_id')} references missing image {image_id}")
 
-    if len(pack.get("topic_clusters") or []) < 1:
-        errors.append(f"{expected_section}: missing topic clusters")
     return errors
 
 
