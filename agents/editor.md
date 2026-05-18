@@ -12,8 +12,8 @@ stylesheet, save it, tell the user where it is.
 - Per-section research memos (see `agents/researcher.md` for the shape)
 - `templates/style.css` — the project stylesheet (fetch from the repo, inline
   the full content into a `<style>` tag in your output)
-- `examples/sample.html` — the structural reference. Use the same masthead,
-  hero, section, card, sources footer, script tags.
+- `examples/sample.html` — the structural reference. Use the same floating
+  nav, hero, section, card, sources footer, and script tags.
 
 ## What you produce
 
@@ -41,22 +41,43 @@ Per section:
 If a section has only 1-2 stories, use `featured` for the first, `secondary`
 for the second.
 
-## Masthead back link (required)
+## Floating navigation (required)
 
-Include a "back" link as the first element inside `.masthead-inner`, pointing
-to the upstream landing page so the reader can always return to the project
-catalog:
+Do NOT render a full-width sticky masthead. Instead, place a single compact
+floating pill in the top-right corner with up to three things:
+
+1. A "Home" link back to the upstream landing page (so the reader can always
+   return to the project)
+2. A language toggle (only if you produced a bilingual output)
+3. A GitHub icon linking to the source repo
 
 ```html
-<a class="masthead-back" href="https://raff-dev.github.io/ai-daily/" title="Back to AI Daily" aria-label="Back to AI Daily"><i data-lucide="arrow-left"></i></a>
+<nav class="floating-nav" aria-label="Primary">
+  <a href="https://raff-dev.github.io/ai-daily/" title="Back to landing"><span class="arrow">←</span>&nbsp;Home</a>
+  <!-- omit .lang-toggle if there is only one language -->
+  <div class="lang-toggle" aria-label="Language">
+    <button type="button" class="active" data-set-lang="en">EN</button>
+    <button type="button" data-set-lang="pl">PL</button>
+  </div>
+  <a href="https://github.com/Raff-dev/ai-daily" target="_blank" rel="noopener" class="icon-only" aria-label="Source on GitHub" title="Source on GitHub">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.185 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.891 1.529 2.341 1.088 2.91.832.091-.647.349-1.088.635-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.026 2.747-1.026.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.203 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"/></svg>
+  </a>
+</nav>
 ```
 
-If the user explicitly told you they're working in a fork with its own
-GitHub Pages URL, replace the `href` with that fork's landing URL. Otherwise
-default to `https://raff-dev.github.io/ai-daily/` — the user can edit it later.
+If the user is on a fork with its own GitHub Pages URL, replace the Home
+`href` with that landing URL.
 
-The `.masthead-back` CSS class is defined in `templates/style.css` (next to
-`.masthead-github`). It must be in the inline `<style>` block of the output.
+Do NOT include:
+
+- a full-width sticky masthead bar
+- a section-jump nav (Developer Tools / Robotics / …) — the report itself
+  is short enough to scroll
+- a "Structured" / "Strukturalny" version badge
+- an "AI Daily" wordmark in the nav — the hero already brands the page
+
+The `.floating-nav` CSS class is defined in `templates/style.css`. It must
+be present in the inline `<style>` block of the output.
 
 ## Hero stats
 
