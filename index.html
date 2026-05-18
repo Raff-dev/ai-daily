@@ -277,70 +277,64 @@ footer.site-footer { padding: 56px 24px 72px; border-top: 1px solid var(--border
     <h2 class="section-title-center">Not just AI news.</h2>
 
     <svg class="network" viewBox="0 0 900 480" role="img" aria-label="Topic network — examples of briefings you can generate" xmlns="http://www.w3.org/2000/svg">
-      <!-- 3x3 symmetric grid. Node centers:
-           col centers: x = 150, 450, 750 (rect width 160 -> x offsets 70, 370, 670)
-           row centers: y = 80, 240, 400  (rect height 44 -> y offsets 58, 218, 378) -->
+      <!-- Organic scatter: nodes offset both horizontally and vertically,
+           but every pair has at least 80px clearance between rectangles. -->
 
-      <!-- Horizontal connectors -->
-      <line class="net-line" x1="150" y1="80"  x2="450" y2="80"/>
-      <line class="net-line" x1="450" y1="80"  x2="750" y2="80"/>
-      <line class="net-line" x1="150" y1="240" x2="450" y2="240"/>
-      <line class="net-line" x1="450" y1="240" x2="750" y2="240"/>
-      <line class="net-line" x1="150" y1="400" x2="450" y2="400"/>
-      <line class="net-line" x1="450" y1="400" x2="750" y2="400"/>
-      <!-- Vertical connectors -->
-      <line class="net-line" x1="150" y1="80"  x2="150" y2="240"/>
-      <line class="net-line" x1="450" y1="80"  x2="450" y2="240"/>
-      <line class="net-line" x1="750" y1="80"  x2="750" y2="240"/>
-      <line class="net-line" x1="150" y1="240" x2="150" y2="400"/>
-      <line class="net-line" x1="450" y1="240" x2="450" y2="400"/>
-      <line class="net-line" x1="750" y1="240" x2="750" y2="400"/>
-      <!-- Diagonals through the center hub -->
-      <line class="net-line" x1="150" y1="80"  x2="450" y2="240"/>
-      <line class="net-line" x1="750" y1="80"  x2="450" y2="240"/>
-      <line class="net-line" x1="450" y1="240" x2="150" y2="400"/>
-      <line class="net-line" x1="450" y1="240" x2="750" y2="400"/>
+      <!-- Connectors between neighbors -->
+      <line class="net-line" x1="150" y1="72"  x2="450" y2="42"/>
+      <line class="net-line" x1="450" y1="42"  x2="750" y2="92"/>
+      <line class="net-line" x1="150" y1="72"  x2="110" y2="212"/>
+      <line class="net-line" x1="450" y1="42"  x2="450" y2="242"/>
+      <line class="net-line" x1="750" y1="92"  x2="780" y2="222"/>
+      <line class="net-line" x1="110" y1="212" x2="450" y2="242"/>
+      <line class="net-line" x1="450" y1="242" x2="780" y2="222"/>
+      <line class="net-line" x1="110" y1="212" x2="230" y2="342"/>
+      <line class="net-line" x1="450" y1="242" x2="630" y2="362"/>
+      <line class="net-line" x1="450" y1="242" x2="450" y2="422"/>
+      <line class="net-line" x1="780" y1="222" x2="630" y2="362"/>
+      <line class="net-line" x1="230" y1="342" x2="450" y2="422"/>
+      <line class="net-line" x1="630" y1="362" x2="450" y2="422"/>
 
-      <!-- Row 1 -->
+      <!-- Tier 1 — upper -->
       <g class="net-node">
-        <rect class="net-node-bg" x="70"  y="58" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="150" y="80">Travel</text>
+        <rect class="net-node-bg" x="70"  y="50"  width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="150" y="72">Travel</text>
       </g>
       <g class="net-node">
-        <rect class="net-node-bg" x="370" y="58" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="450" y="80">Sports</text>
+        <rect class="net-node-bg" x="370" y="20"  width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="450" y="42">Sports</text>
       </g>
       <g class="net-node">
-        <rect class="net-node-bg" x="670" y="58" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="750" y="80">Biotech</text>
+        <rect class="net-node-bg" x="670" y="70"  width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="750" y="92">Biotech</text>
       </g>
 
-      <!-- Row 2 -->
+      <!-- Tier 2 — middle (offset, no overlap) -->
       <g class="net-node">
-        <rect class="net-node-bg" x="70"  y="218" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="150" y="240">Climate</text>
+        <rect class="net-node-bg" x="30"  y="190" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="110" y="212">Climate</text>
       </g>
       <g class="net-node">
-        <rect class="net-node-bg" x="370" y="218" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="450" y="240">Gaming</text>
+        <rect class="net-node-bg" x="370" y="220" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="450" y="242">Gaming</text>
       </g>
       <g class="net-node">
-        <rect class="net-node-bg" x="670" y="218" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="750" y="240">Polish news</text>
+        <rect class="net-node-bg" x="700" y="200" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="780" y="222">Polish news</text>
       </g>
 
-      <!-- Row 3 -->
+      <!-- Tier 3 — lower (staggered) -->
       <g class="net-node">
-        <rect class="net-node-bg" x="70"  y="378" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="150" y="400">Crypto</text>
+        <rect class="net-node-bg" x="150" y="320" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="230" y="342">Crypto</text>
       </g>
       <g class="net-node">
-        <rect class="net-node-bg" x="370" y="378" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="450" y="400">Football</text>
+        <rect class="net-node-bg" x="550" y="340" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="630" y="362">Football</text>
       </g>
       <g class="net-node">
-        <rect class="net-node-bg" x="670" y="378" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="750" y="400">Cybersec</text>
+        <rect class="net-node-bg" x="370" y="400" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="450" y="422">Cybersec</text>
       </g>
     </svg>
   </div>
