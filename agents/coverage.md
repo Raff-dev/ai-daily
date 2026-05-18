@@ -1,32 +1,39 @@
-# AI Daily Brief — Custom Agent Brief
+# Default coverage
 
-You are an AI News Specialist coverage brief used by the AI Daily researcher fleet.
+> **Used when the user didn't name their own topics.** If they did, ignore
+> this file and follow what they asked for.
 
-## Coverage
+This file defines the **default briefing** — what topics to cover, what to
+search for, what makes a good source. The maintainer of this fork can edit
+it freely. Beginners: this is the file to change when you want a different
+default.
 
-Search for important news from the last 24 hours about:
+## Default topics
 
-1. AI developer tools: Claude, Anthropic, Copilot, Cursor, Codex, Windsurf, coding agents.
-2. Robotics, humanoid robots, drones, and embodied AI.
-3. Defense, military AI, autonomous weapons, and security policy.
-4. Space, NASA, SpaceX, satellites, astronautics, and AI in space operations.
-5. AI startup funding, acquisitions, launches, and major product announcements.
-6. AI-related market moves only when there is a major event: >5% price move, earnings, major partnership, product launch, or regulatory impact.
+Search for important news from the **last 24 hours** about:
 
-Use these sections only, in this exact order:
+1. AI developer tools — Claude, Anthropic, Copilot, Cursor, Codex, Windsurf, coding agents
+2. Robotics, humanoid robots, drones, embodied AI
+3. Defense, military AI, autonomous weapons, security policy
+4. Space — NASA, SpaceX, satellites, astronautics, AI in space operations
+5. AI startup funding, acquisitions, launches, product announcements
+6. AI-related market moves — only on a major event (>5% price swing, earnings,
+   major partnership, product launch, regulatory action)
 
-| Topic | `id` | Divider color | Icon |
-|-------|------|---------------|------|
-| Developer Tools | `dev-tools` | `#2563EB` | `monitor` |
-| Robotics | `robotics` | `#16A34A` | `bot` |
-| Defense | `defense` | `#DC2626` | `shield` |
-| Space | `space` | `#7C3AED` | `rocket` |
-| Startups | `startups` | `#EA580C` | `banknote` |
-| Markets | `markets` | `#0F766E` | `bar-chart-2` |
+## Default sections
 
-## Search queries
+| Section | `id` | Color | Icon | Badge |
+|---|---|---|---|---|
+| Developer Tools | `dev-tools` | `#2563EB` | `monitor` | `DEV` |
+| Robotics | `robotics` | `#16A34A` | `bot` | `BOT` |
+| Defense | `defense` | `#DC2626` | `shield` | `DEF` |
+| Space | `space` | `#7C3AED` | `rocket` | `ORB` |
+| Startups | `startups` | `#EA580C` | `banknote` | `CAP` |
+| Markets *(only on major events)* | `markets` | `#0F766E` | `bar-chart-2` | `MKT` |
 
-Use these as defaults. Replace `{DATE}`, `{YEAR}`, and `{MONTH}` with today's values.
+## Default search queries
+
+Use these as starting points. Replace `{DATE}`, `{YEAR}`, `{MONTH}` with today's values.
 
 1. `"Claude OR Anthropic OR Copilot OR Cursor OR Codex OR Windsurf AI coding news {DATE} {YEAR}"`
 2. `"humanoid robot drone AI news {DATE} {YEAR}"`
@@ -34,43 +41,26 @@ Use these as defaults. Replace `{DATE}`, `{YEAR}`, and `{MONTH}` with today's va
 4. `"AI space NASA SpaceX astronautics news {DATE} {YEAR}"`
 5. `"AI startup funding investment Series {DATE} {YEAR}"`
 6. `"Nvidia Meta Tesla Microsoft Google Apple stock AI news today {DATE}"`
-7. `"AI stock emerging company IPO {MONTH} {YEAR}"`
 
-## Research process
+## Default source preferences
 
-Use a source-ladder instead of relying on one search result page:
+Per section, prefer these primary sources before falling back to general outlets:
 
-1. Trend scan: identify fast-moving topics from Google News, Google Trends-style interest, YouTube launch/keynote activity, Hacker News, Product Hunt, GitHub Trending, Reddit, and X/public posts.
-2. Primary-source check: confirm with official blog posts, changelogs, filings, press releases, papers, launch videos, GitHub repos, or government releases.
-3. Reputable-reporting check: corroborate with outlets such as The Verge, TechCrunch, WIRED, Ars Technica, IEEE Spectrum, The Robot Report, SpaceNews, DefenseScoop, Breaking Defense, Reuters, Bloomberg, CNBC, WSJ, FT, or CNBC.
-4. Persona watch: for market-moving or policy-moving statements, check public posts/interviews from people such as Elon Musk, Donald Trump, Sam Altman, Greg Brockman, Dario Amodei, Demis Hassabis, Jensen Huang, Palmer Luckey, Alexandr Wang, and major agency/company leaders. Treat social posts as signals, not final proof.
-5. Evidence gate: include a story only when the date, source, and category fit the last-24h window. Mark `verified=false` if the story is plausible but not fully confirmed.
+- `dev-tools`: GitHub Blog/Changelog, OpenAI, Anthropic, Microsoft/Copilot, Cursor, Windsurf, Sourcegraph, JetBrains, Hacker News, GitHub Trending, Product Hunt
+- `robotics`: IEEE Spectrum, The Robot Report, Boston Dynamics, Figure, Tesla Optimus, NVIDIA Robotics, Agility, Unitree
+- `defense`: DefenseScoop, Breaking Defense, Defense One, DoD/DARPA/DIU releases, Anduril, Palantir, Shield AI, Helsing, NATO/EU releases
+- `space`: SpaceNews, NASA, ESA, SpaceX, Rocket Lab, Planet, Maxar, Blue Origin, launch livestreams
+- `startups`: TechCrunch, The Information, Crunchbase, YC, a16z, Sequoia, Index, company launch posts, Product Hunt
+- `markets`: Reuters, Bloomberg, CNBC, WSJ, FT, SEC filings, earnings releases, investor relations pages
 
-Useful source map by section:
+## How to use this file when topics ARE user-provided
 
-- `dev-tools`: GitHub Blog/Changelog, OpenAI, Anthropic, Microsoft/Copilot, Cursor, Windsurf, Sourcegraph, JetBrains, Hacker News, GitHub Trending, Product Hunt.
-- `robotics`: IEEE Spectrum, The Robot Report, Robotics Business Review, Boston Dynamics, Figure, Tesla Optimus, NVIDIA robotics, Agility, Unitree, drone regulatory/news sources.
-- `defense`: DefenseScoop, Breaking Defense, Defense One, War on the Rocks, DoD/DARPA/DIU releases, Anduril, Palantir, Shield AI, Helsing, NATO/EU defense releases.
-- `space`: SpaceNews, NASA, ESA, SpaceX, Rocket Lab, Planet, Maxar, Blue Origin, satellite/operator blogs, launch livestreams.
-- `startups`: TechCrunch, The Information, Crunchbase-style funding news, PitchBook-style reporting, YC, a16z, Sequoia, Index, company launch posts, Product Hunt.
-- `markets`: Reuters, Bloomberg, CNBC, WSJ, FT, SEC filings, earnings releases, investor relations pages, analyst notes when tied to a concrete AI event.
+If the user named their own topics (e.g. "Polish news, football, motorization,
+climbing"), do **not** use these defaults. Instead:
 
-## Filtering rules
+1. Map each topic to one section (3-6 sections total)
+2. Use the same shape — `id`, `color`, `icon`, `badge`, search queries, source map
+3. Pick sensible colors and Lucide icons that fit the topic
+4. Pick primary sources you would trust for each topic (official sites, established outlets)
 
-- Keep only articles published in the last 24 hours.
-- Target 3-6 qualified canonical sources and 3 story candidates per section.
-- Generate a few topic clusters per section, then search around the strongest clusters.
-- If a section has fewer than 3 strong stories, broaden searches across the source map, but do not chase a fixed large source count.
-- Do not fabricate filler: if a section still has fewer than 3 genuinely relevant last-24h stories after broadening, include only credible stories and mark uncertain ones with `verified=false`.
-- The orchestrator runs one researcher for every canonical section: `dev-tools`, `robotics`, `defense`, `space`, `startups`, `markets`.
-- Prefer primary sources and reputable reporting.
-- Mark uncertain stories with `[UNVERIFIED]`.
-- Follow the active agent output schema. Do not write HTML, CSS, Markdown, or layout instructions.
-
-## Easy customization example
-
-If you want this briefing to focus on motorization, edit this file with a prompt like:
-
-> Edit this agent so it looks for motorization news, especially motorcycles, and does not look for stocks or robotics.
-
-Then update the coverage list and search queries accordingly. Keep the HTML/output rules in `run.py` unchanged.
+The structure stays the same; only the content changes.

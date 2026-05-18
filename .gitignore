@@ -1,9 +1,1 @@
-__pycache__/
-*.pyc
-.env
-.venv/
-venv/
-*.egg-info/
-dist/
-_site/
-.copilot-output/
+.DS_Store
