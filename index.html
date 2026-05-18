@@ -132,39 +132,12 @@ section.block { padding: 72px 24px; }
   margin-bottom: 48px;
 }
 
-/* MIND MAP — how it works */
-.mindmap {
-  display: block;
-  width: 100%;
-  max-width: 880px;
-  height: auto;
-  margin: 0 auto;
-  overflow: visible;
-}
-.mm-line {
-  stroke: var(--node-soft);
-  stroke-width: 1.5;
-  fill: none;
-}
-.mm-node-bg {
-  fill: #fff;
-  stroke: var(--border);
-  stroke-width: 1;
-}
-.mm-node-bg.center { fill: #111827; stroke: #111827; }
-.mm-node-label {
-  font: 600 13px/1 Inter, system-ui, sans-serif;
-  fill: var(--text-primary);
-  text-anchor: middle;
-  dominant-baseline: central;
-}
-.mm-node-label.center { fill: #fff; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 11px; }
-.mm-node-num {
-  font: 700 11px/1 Inter, system-ui, sans-serif;
-  fill: var(--text-muted);
-  text-anchor: middle;
-  dominant-baseline: central;
-}
+/* STEPS — how it works */
+.steps { list-style: none; padding: 0; max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px; }
+.step { padding: 0; opacity: 0.28; transition: opacity .2s; }
+.step.active { opacity: 1; }
+.step-rule { display: block; width: 56px; height: 2px; background: var(--text-primary); margin-bottom: 16px; }
+.step-label { font-size: clamp(20px, 2.6vw, 26px); font-weight: 800; letter-spacing: -0.025em; color: var(--text-primary); line-height: 1.2; }
 
 /* NETWORK — try it on anything */
 .network {
@@ -236,38 +209,24 @@ footer.site-footer { padding: 56px 24px 72px; border-top: 1px solid var(--border
     <span class="section-eyebrow">How it works</span>
     <h2 class="section-title-center">Four things happen. None are your job.</h2>
 
-    <svg class="mindmap" viewBox="0 0 800 360" role="img" aria-label="How it works mind map" xmlns="http://www.w3.org/2000/svg">
-      <line class="mm-line" x1="400" y1="180" x2="160" y2="80"/>
-      <line class="mm-line" x1="400" y1="180" x2="640" y2="80"/>
-      <line class="mm-line" x1="400" y1="180" x2="160" y2="280"/>
-      <line class="mm-line" x1="400" y1="180" x2="640" y2="280"/>
-
-      <g>
-        <rect class="mm-node-bg center" x="320" y="148" width="160" height="64" rx="32"/>
-        <text class="mm-node-label center" x="400" y="180">Your prompt</text>
-      </g>
-
-      <g class="mm-node">
-        <rect class="mm-node-bg" x="40" y="46" width="240" height="68" rx="14"/>
-        <text class="mm-node-num" x="64" y="80">01</text>
-        <text class="mm-node-label" x="170" y="80">Pick your topics</text>
-      </g>
-      <g class="mm-node">
-        <rect class="mm-node-bg" x="520" y="46" width="240" height="68" rx="14"/>
-        <text class="mm-node-num" x="544" y="80">02</text>
-        <text class="mm-node-label" x="650" y="80">AI reads the playbook</text>
-      </g>
-      <g class="mm-node">
-        <rect class="mm-node-bg" x="40" y="246" width="240" height="68" rx="14"/>
-        <text class="mm-node-num" x="64" y="280">03</text>
-        <text class="mm-node-label" x="170" y="280">AI researches the web</text>
-      </g>
-      <g class="mm-node">
-        <rect class="mm-node-bg" x="520" y="246" width="240" height="68" rx="14"/>
-        <text class="mm-node-num" x="544" y="280">04</text>
-        <text class="mm-node-label" x="650" y="280">You get an HTML file</text>
-      </g>
-    </svg>
+    <ol class="steps">
+      <li class="step active">
+        <span class="step-rule"></span>
+        <h3 class="step-label">Pick your topics</h3>
+      </li>
+      <li class="step">
+        <span class="step-rule"></span>
+        <h3 class="step-label">AI reads the playbook</h3>
+      </li>
+      <li class="step">
+        <span class="step-rule"></span>
+        <h3 class="step-label">AI researches the web</h3>
+      </li>
+      <li class="step">
+        <span class="step-rule"></span>
+        <h3 class="step-label">You get an HTML file</h3>
+      </li>
+    </ol>
   </div>
 </section>
 
