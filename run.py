@@ -28,7 +28,7 @@ SECTION_CONFIG = {
     "markets": {"title": "Markets", "icon": "bar-chart-2", "color": "#0F766E", "badge": "market", "visual": "MKT"},
 }
 SECTION_ORDER = tuple(SECTION_CONFIG)
-COPILOT_MODEL = "gpt-5.4"
+COPILOT_MODEL = os.environ.get("COPILOT_MODEL", "auto").strip()
 IMAGE_CACHE: dict[str, str] = {}
 DEFAULT_RESEARCHER_PROMPT_PATH = "agents/section-researcher.md"
 DEFAULT_EDITOR_PROMPT_PATH = "agents/editor.md"
@@ -577,10 +577,10 @@ def invoke_copilot(prompt: str, output_path: Path, allow_urls: bool) -> subproce
         "-s",
         f"--allow-tool={allow_tool}",
         "--deny-tool=shell",
-        "--model",
-        COPILOT_MODEL,
         "--no-ask-user",
     ]
+    if COPILOT_MODEL:
+        command.extend(["--model", COPILOT_MODEL])
     if allow_urls:
         command.append("--allow-all-urls")
 

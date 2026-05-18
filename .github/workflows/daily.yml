@@ -51,8 +51,9 @@ jobs:
           RESEARCHER_PROMPT_PATH: ${{ vars.RESEARCHER_PROMPT_PATH || 'agents/section-researcher.md' }}
           EDITOR_PROMPT_PATH: ${{ vars.EDITOR_PROMPT_PATH || 'agents/editor.md' }}
           TRANSLATION_PROMPT_PATH: ${{ vars.TRANSLATION_PROMPT_PATH || 'agents/translate-agent.md' }}
+          COPILOT_MODEL: ${{ vars.COPILOT_MODEL || 'auto' }}
           AGENT_TIMEOUT_SECONDS: ${{ vars.AGENT_TIMEOUT_SECONDS || '1800' }}
-          FLEET_MAX_WORKERS: ${{ vars.FLEET_MAX_WORKERS || '3' }}
+          FLEET_MAX_WORKERS: ${{ vars.FLEET_MAX_WORKERS || '2' }}
           MIN_SOURCES_PER_SECTION: ${{ vars.MIN_SOURCES_PER_SECTION || '3' }}
           TARGET_SOURCES_PER_SECTION: ${{ vars.TARGET_SOURCES_PER_SECTION || '6' }}
           MIN_ARTICLES_PER_SECTION: ${{ vars.MIN_ARTICLES_PER_SECTION || '3' }}
