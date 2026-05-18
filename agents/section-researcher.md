@@ -8,18 +8,18 @@ Research exactly one AI Daily section and write a compact `research-pack.v1` JSO
 - `section`
 - `section_title`
 - `research_window`
-- `minimum_qualified_sources`
+- `preferred_qualified_sources`
 - `target_qualified_sources`
-- `minimum_story_candidates`
+- `preferred_story_candidates`
 - `output_path`
 
 ## Compact research workflow
 
-1. Identify the 3 strongest recent stories for this section.
+1. Identify up to 3 strongest recent stories for this section.
 2. Use a small number of targeted searches and publisher/source-map checks.
-3. Stop when you have 3-6 qualified canonical source URLs and 3 strong story candidates.
+3. Stop when you have 3-6 qualified canonical source URLs and up to 3 strong story candidates.
 4. Deep-read only sources used by those story candidates.
-6. Write JSON to `output_path`.
+6. Always write JSON to `output_path`, even when no qualified stories were found.
 
 ## Source rules
 
@@ -40,7 +40,7 @@ Return JSON only, with this compact shape:
   "section_display_name": "Developer Tools",
   "generated_at": "ISO-8601",
   "research_window": {"from": "YYYY-MM-DD", "to": "YYYY-MM-DD", "timezone": "UTC"},
-  "status": "complete",
+  "status": "complete|no-qualified-stories",
   "topic_clusters": [
     {"cluster_id": "cluster_dev_tools_001", "label": "Topic label", "queries": ["query 1", "query 2"]}
   ],
@@ -106,6 +106,7 @@ Return JSON only, with this compact shape:
 
 - Keep `sources` to 3-6 items.
 - Keep `story_candidates` to exactly 3 items when credible sources exist.
+- If fewer than 3 credible stories exist, keep only credible candidates. If none exist, return empty `sources`, `evidence`, `claims`, and `story_candidates`, set `status` to `no-qualified-stories`, and explain the gap in `rejects`.
 - Keep `evidence` and `claims` focused on story candidates only.
 - Keep summaries to one sentence.
 - Do not write markdown, commentary, or final article prose.

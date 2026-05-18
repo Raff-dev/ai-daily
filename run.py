@@ -470,16 +470,6 @@ def validate_research_pack(pack: dict, expected_section: str) -> list[str]:
 
     if len(pack.get("topic_clusters") or []) < 1:
         errors.append(f"{expected_section}: missing topic clusters")
-    if len(source_ids) < MIN_SOURCES_PER_SECTION or len(canonical_urls) < MIN_SOURCES_PER_SECTION:
-        errors.append(
-            f"{expected_section}: only {len(canonical_urls)} unique canonical URLs and {len(source_ids)} source IDs; "
-            f"need at least {MIN_SOURCES_PER_SECTION} and should target {TARGET_SOURCES_PER_SECTION}"
-        )
-    if len(pack.get("story_candidates") or []) < MIN_ARTICLES_PER_SECTION:
-        errors.append(
-            f"{expected_section}: only {len(pack.get('story_candidates') or [])} story candidates; "
-            f"need at least {MIN_ARTICLES_PER_SECTION}"
-        )
     return errors
 
 
@@ -519,8 +509,6 @@ def validate_final_report(report: dict, research_packs: list[dict]) -> list[str]
     for section in report.get("sections") or []:
         section_id = section.get("id") or "unknown"
         articles = section.get("articles") or []
-        if len(articles) < MIN_ARTICLES_PER_SECTION:
-            errors.append(f"{section_id}: only {len(articles)} final articles; need at least {MIN_ARTICLES_PER_SECTION}")
         for article in articles:
             title = article.get("title") or "untitled"
             if is_aggregator_url(str(article.get("source_url") or "")):
@@ -762,6 +750,30 @@ def run_copilot_json(prompt: str, output_path: Path, allow_urls: bool, require_s
         return repair_agent_json(raw_json, output_path, require_sections=require_sections)
 
 
+def empty_research_pack(section_id: str, dates: dict, reason: str) -> dict:
+    return {
+        "schema_version": "research-pack.v1",
+        "run_date": dates["date"],
+        "section": section_id,
+        "section_display_name": SECTION_CONFIG[section_id]["title"],
+        "generated_at": datetime.now(ZoneInfo("UTC")).isoformat(),
+        "research_window": {"from": dates["date"], "to": dates["date"], "timezone": "Europe/Warsaw"},
+        "status": "no-qualified-stories",
+        "topic_clusters": [
+            {
+                "cluster_id": f"cluster_{section_id.replace('-', '_')}_none",
+                "label": "No qualified recent stories",
+                "queries": [],
+            }
+        ],
+        "sources": [],
+        "evidence": [],
+        "claims": [],
+        "story_candidates": [],
+        "rejects": [{"reason": reason[:500]}],
+    }
+
+
 def repair_agent_json(raw_json: str, output_path: Path, require_sections: bool = False) -> dict:
     repair_path = output_path.with_suffix(".repaired.json")
     prompt = (
@@ -788,8 +800,7 @@ def run_section_research_once(section_id: str, dates: dict, validation_errors: l
         retry_note = (
             "\n## PREVIOUS OUTPUT FAILED VALIDATION\n"
             + "\n".join(f"- {error}" for error in validation_errors)
-            + "\nBroaden the search. Generate additional topic clusters and source queries. "
-            "Return a corrected research-pack.v1 JSON with enough qualified sources and story candidates.\n"
+            + "\nFix schema/source/evidence issues only. If fewer than 3 qualified stories exist, keep the sparse pack instead of inventing filler.\n"
         )
     prompt = (
         "/research\n"
@@ -800,9 +811,9 @@ def run_section_research_once(section_id: str, dates: dict, validation_errors: l
         f"section: {section_id}\n"
         f"section_title: {SECTION_CONFIG[section_id]['title']}\n"
         f"research_window: last 24 hours ending {dates['date']} Europe/Warsaw\n"
-        f"minimum_qualified_sources: {MIN_SOURCES_PER_SECTION}\n"
+        f"preferred_qualified_sources: {MIN_SOURCES_PER_SECTION}\n"
         f"target_qualified_sources: {TARGET_SOURCES_PER_SECTION}\n"
-        f"minimum_story_candidates: {MIN_ARTICLES_PER_SECTION}\n"
+        f"preferred_story_candidates: {MIN_ARTICLES_PER_SECTION}\n"
         f"output_path: {output_path}\n\n"
         f"{retry_note}\n"
         f"Write the research-pack.v1 JSON object to {output_path}. "
@@ -816,7 +827,13 @@ def run_section_research(section_id: str, dates: dict) -> dict:
     pack: dict | None = None
     for attempt in range(1, RESEARCH_MAX_ATTEMPTS + 1):
         print(f"research attempt {attempt}/{RESEARCH_MAX_ATTEMPTS}: {section_id}")
-        pack = run_section_research_once(section_id, dates, errors)
+        try:
+            pack = run_section_research_once(section_id, dates, errors)
+        except RuntimeError as error:
+            if "did not create expected JSON file" in str(error):
+                print(f"research sparse: {section_id}: agent found no qualified stories and wrote no pack")
+                return empty_research_pack(section_id, dates, str(error))
+            raise
         errors = validate_research_pack(pack, section_id)
         if not errors:
             return pack
@@ -857,7 +874,7 @@ def run_editor_report(research_packs: list[dict], dates: dict, validation_errors
         f"{load_editor_prompt()}\n\n"
         f"Date: {dates['date']}\n"
         f"Canonical section order: {', '.join(SECTION_ORDER)}\n"
-        f"Minimum final articles per section: {MIN_ARTICLES_PER_SECTION}\n"
+        f"Preferred final articles per section: {MIN_ARTICLES_PER_SECTION}; sparse or empty sections are allowed when research packs lack qualified candidates.\n"
         f"Write the final renderer-compatible final-report.v1 JSON to {output_path}.\n"
         "Do not use web search. Do not edit any other files. Do not write Markdown.\n"
         f"{retry_note}\n"
