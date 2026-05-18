@@ -74,15 +74,18 @@ a:hover { text-decoration: underline; }
   margin: 0 auto 36px;
   line-height: 1.55;
 }
+.hero-cta-row { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 .hero-cta {
   display: inline-flex; align-items: center; gap: 8px;
   background: #fff; color: #111827;
   padding: 14px 24px; border-radius: var(--radius-pill);
   font-size: 15px; font-weight: 700;
   box-shadow: var(--shadow-lg);
-  transition: transform .15s;
+  transition: transform .15s, background .15s, color .15s;
 }
 .hero-cta:hover { transform: translateY(-1px); text-decoration: none; color: #111827; }
+.hero-cta-ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.4); box-shadow: none; }
+.hero-cta-ghost:hover { background: rgba(255,255,255,.08); color: #fff; }
 .hero-secondary {
   margin-top: 14px;
   font-size: 13px; color: #93C5FD;
@@ -266,9 +269,14 @@ footer.site-footer {
       Ask your AI assistant. Get a self-contained HTML file on your disk.
       No setup, no accounts, no keys, no deployment. Just open it.
     </p>
-    <a href="examples/sample.html" class="hero-cta">
-      <i data-lucide="eye"></i> See a real example
-    </a>
+    <div class="hero-cta-row">
+      <a href="examples/" class="hero-cta">
+        <i data-lucide="library"></i> Browse examples
+      </a>
+      <a href="examples/sample.html" class="hero-cta hero-cta-ghost">
+        <i data-lucide="eye"></i> Open latest sample
+      </a>
+    </div>
     <div class="hero-secondary">
       Or read the <a href="https://github.com/Raff-dev/ai-daily/blob/main/AGENTS.md">agent contract</a> · <a href="https://github.com/Raff-dev/ai-daily">View on GitHub</a>
     </div>
@@ -376,7 +384,7 @@ footer.site-footer {
     <span>
       <a href="https://github.com/Raff-dev/ai-daily">Source</a> ·
       <a href="https://github.com/Raff-dev/ai-daily/blob/main/AGENTS.md">AGENTS.md</a> ·
-      <a href="examples/sample.html">Example</a>
+      <a href="examples/">Examples</a>
     </span>
   </div>
 </footer>

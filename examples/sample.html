@@ -42,6 +42,9 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .masthead-github { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: var(--text-muted); transition: background 0.15s, color 0.15s; text-decoration: none; }
 .masthead-github:hover { background: var(--bg-page); color: #111827; }
 .masthead-github svg { width: 18px; height: 18px; }
+.masthead-back { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: var(--text-muted); transition: background 0.15s, color 0.15s; text-decoration: none; }
+.masthead-back:hover { background: var(--bg-page); color: #111827; }
+.masthead-back [data-lucide] { width: 18px; height: 18px; stroke-width: 2.25; }
 .language-toggle { flex-shrink: 0; display: inline-flex; gap: 3px; padding: 3px; background: #F3F4F6; border: 1px solid var(--border); border-radius: var(--radius-pill); }
 .language-toggle button { border: 0; background: transparent; color: var(--text-muted); border-radius: var(--radius-pill); padding: 4px 9px; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; }
 .language-toggle button.active { background: #111827; color: #fff; }
@@ -145,6 +148,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 <div class="language-panel active" data-lang="en">
 <header class="masthead">
   <div class="masthead-inner">
+    <a class="masthead-back" href="../" title="Back to AI Daily" aria-label="Back to AI Daily"><i data-lucide="arrow-left"></i></a>
     <div class="masthead-brand">
       <span class="masthead-title">AI Daily</span>
       <span class="masthead-edition">May 18</span>
@@ -795,6 +799,7 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 <div class="language-panel" data-lang="pl">
 <header class="masthead">
   <div class="masthead-inner">
+    <a class="masthead-back" href="../" title="Powrót do AI Daily" aria-label="Powrót do AI Daily"><i data-lucide="arrow-left"></i></a>
     <div class="masthead-brand">
       <span class="masthead-title">AI Daily</span>
       <span class="masthead-edition">18.05</span>
