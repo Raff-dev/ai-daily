@@ -113,11 +113,11 @@ Write only valid JSON to the requested output path:
 ## Hard rules
 
 - Return every canonical section ID.
-- Return at least 3 synthesized articles per section.
+- Prefer up to 3 synthesized articles per section, but sparse or empty sections are valid when the research pack has fewer qualified candidates.
 - Set `articles_reviewed` to the total number of qualified research sources, not the number of final articles.
 - Include all qualified research sources in `source_index`, grouped with their original section id.
 - Do not use aggregator URLs as `source_url`.
 - Do not invent facts.
 - Do not invent image URLs.
 - Keep copy concise, factual, and business/tech oriented.
-- If a section has fewer than 3 synthesized articles, the output is incomplete. Use the available story candidates and claims to produce 3 evidence-backed articles.
+- Do not backfill weak sections with filler. If a section has no qualified story candidates, return an empty `articles` array for that section.
