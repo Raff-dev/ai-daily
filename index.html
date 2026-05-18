@@ -32,15 +32,33 @@ body {
 a { color: #111827; text-decoration: none; }
 .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
 
-/* Masthead */
-.masthead { background: rgba(255,255,255,.85); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border-soft); position: sticky; top: 0; z-index: 100; }
-.masthead-inner { max-width: 1180px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 20px; height: 56px; }
-.masthead-title { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; color: #111827; flex: 1; }
-.masthead-link { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
-.masthead-link:hover { color: #111827; }
+/* Floating nav */
+.floating-nav {
+  position: fixed; top: 16px; right: 16px; z-index: 100;
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(255,255,255,.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+.floating-nav a {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  font-size: 13px; font-weight: 600;
+  color: var(--text-secondary);
+  transition: background .15s, color .15s;
+}
+.floating-nav a:hover { background: var(--border-soft); color: #111827; }
+.floating-nav a.icon-only { width: 32px; padding: 0; }
+.floating-nav a.icon-only svg { width: 16px; height: 16px; display: block; }
 
 /* Hero */
-.hero { padding: 104px 24px 56px; text-align: center; }
+.hero { padding: 88px 24px 56px; text-align: center; }
 .hero-eyebrow {
   display: inline-block;
   font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
@@ -231,13 +249,12 @@ footer.site-footer { padding: 56px 24px 72px; border-top: 1px solid var(--border
 </head>
 <body>
 
-<header class="masthead">
-  <div class="masthead-inner">
-    <span class="masthead-title">AI Daily</span>
-    <a href="examples/" class="masthead-link">Examples</a>
-    <a href="https://github.com/Raff-dev/ai-daily" class="masthead-link" target="_blank" rel="noopener">GitHub</a>
-  </div>
-</header>
+<nav class="floating-nav" aria-label="Primary">
+  <a href="examples/">Examples</a>
+  <a href="https://github.com/Raff-dev/ai-daily" target="_blank" rel="noopener" aria-label="Source on GitHub" title="Source on GitHub" class="icon-only">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.185 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.891 1.529 2.341 1.088 2.91.832.091-.647.349-1.088.635-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.026 2.747-1.026.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.203 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"/></svg>
+  </a>
+</nav>
 
 <section class="hero">
   <div class="wrap">
@@ -246,7 +263,6 @@ footer.site-footer { padding: 56px 24px 72px; border-top: 1px solid var(--border
     <p class="hero-tagline">Ask your AI. Get an HTML file. Open it.</p>
     <div class="hero-cta-row">
       <a href="examples/" class="hero-cta">Browse examples</a>
-      <a href="https://github.com/Raff-dev/ai-daily" class="hero-cta hero-cta-ghost" target="_blank" rel="noopener">View source</a>
     </div>
   </div>
 </section>
