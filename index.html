@@ -145,11 +145,6 @@ section.block { padding: 72px 24px; }
   stroke: var(--node-soft);
   stroke-width: 1.5;
   fill: none;
-  stroke-dasharray: 4 5;
-  animation: mm-flow 6s linear infinite;
-}
-@keyframes mm-flow {
-  to { stroke-dashoffset: -18; }
 }
 .mm-node-bg {
   fill: #fff;
@@ -170,15 +165,6 @@ section.block { padding: 72px 24px; }
   text-anchor: middle;
   dominant-baseline: central;
 }
-.mm-node { animation: mm-float 6s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
-.mm-node:nth-of-type(1) { animation-delay: 0s; }
-.mm-node:nth-of-type(2) { animation-delay: -1.5s; }
-.mm-node:nth-of-type(3) { animation-delay: -3s; }
-.mm-node:nth-of-type(4) { animation-delay: -4.5s; }
-@keyframes mm-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
 
 /* NETWORK — try it on anything */
 .network {
@@ -193,14 +179,6 @@ section.block { padding: 72px 24px; }
   stroke: var(--node-soft);
   stroke-width: 1;
   fill: none;
-  animation: net-pulse 4s ease-in-out infinite;
-}
-.net-line:nth-of-type(2n) { animation-delay: -1s; }
-.net-line:nth-of-type(3n) { animation-delay: -2s; }
-.net-line:nth-of-type(5n) { animation-delay: -3s; }
-@keyframes net-pulse {
-  0%, 100% { opacity: 0.35; }
-  50% { opacity: 0.85; }
 }
 .net-node-bg {
   fill: #fff;
@@ -213,23 +191,6 @@ section.block { padding: 72px 24px; }
   text-anchor: middle;
   dominant-baseline: central;
 }
-.net-node { animation: net-float 7s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
-.net-node:nth-of-type(odd) { animation-duration: 6s; }
-.net-node:nth-of-type(1) { animation-delay: 0s; }
-.net-node:nth-of-type(2) { animation-delay: -0.7s; }
-.net-node:nth-of-type(3) { animation-delay: -1.4s; }
-.net-node:nth-of-type(4) { animation-delay: -2.1s; }
-.net-node:nth-of-type(5) { animation-delay: -2.8s; }
-.net-node:nth-of-type(6) { animation-delay: -3.5s; }
-.net-node:nth-of-type(7) { animation-delay: -4.2s; }
-.net-node:nth-of-type(8) { animation-delay: -4.9s; }
-.net-node:nth-of-type(9) { animation-delay: -5.6s; }
-@keyframes net-float {
-  0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(3px, -5px); }
-  50% { transform: translate(-2px, -9px); }
-  75% { transform: translate(-4px, -3px); }
-}
 
 /* Footer */
 footer.site-footer { padding: 56px 24px 72px; border-top: 1px solid var(--border-soft); }
@@ -237,9 +198,6 @@ footer.site-footer { padding: 56px 24px 72px; border-top: 1px solid var(--border
 .footer-inner a { color: var(--text-secondary); font-weight: 500; }
 .footer-inner a:hover { color: #111827; }
 
-@media (prefers-reduced-motion: reduce) {
-  .mm-line, .mm-node, .net-line, .net-node { animation: none; }
-}
 @media (max-width: 640px) {
   .hero { padding: 72px 20px 48px; }
   section.block { padding: 56px 20px; }
@@ -318,55 +276,71 @@ footer.site-footer { padding: 56px 24px 72px; border-top: 1px solid var(--border
     <span class="section-eyebrow">Try it on anything</span>
     <h2 class="section-title-center">Not just AI news.</h2>
 
-    <svg class="network" viewBox="0 0 900 460" role="img" aria-label="Topic network — examples of briefings you can generate" xmlns="http://www.w3.org/2000/svg">
-      <line class="net-line" x1="180" y1="100" x2="430" y2="60"/>
-      <line class="net-line" x1="430" y1="60" x2="700" y2="120"/>
-      <line class="net-line" x1="180" y1="100" x2="320" y2="230"/>
-      <line class="net-line" x1="430" y1="60" x2="450" y2="230"/>
-      <line class="net-line" x1="700" y1="120" x2="630" y2="240"/>
-      <line class="net-line" x1="320" y1="230" x2="450" y2="230"/>
-      <line class="net-line" x1="450" y1="230" x2="630" y2="240"/>
-      <line class="net-line" x1="320" y1="230" x2="220" y2="360"/>
-      <line class="net-line" x1="450" y1="230" x2="450" y2="380"/>
-      <line class="net-line" x1="630" y1="240" x2="720" y2="370"/>
-      <line class="net-line" x1="220" y1="360" x2="450" y2="380"/>
-      <line class="net-line" x1="450" y1="380" x2="720" y2="370"/>
+    <svg class="network" viewBox="0 0 900 480" role="img" aria-label="Topic network — examples of briefings you can generate" xmlns="http://www.w3.org/2000/svg">
+      <!-- 3x3 symmetric grid. Node centers:
+           col centers: x = 150, 450, 750 (rect width 160 -> x offsets 70, 370, 670)
+           row centers: y = 80, 240, 400  (rect height 44 -> y offsets 58, 218, 378) -->
 
+      <!-- Horizontal connectors -->
+      <line class="net-line" x1="150" y1="80"  x2="450" y2="80"/>
+      <line class="net-line" x1="450" y1="80"  x2="750" y2="80"/>
+      <line class="net-line" x1="150" y1="240" x2="450" y2="240"/>
+      <line class="net-line" x1="450" y1="240" x2="750" y2="240"/>
+      <line class="net-line" x1="150" y1="400" x2="450" y2="400"/>
+      <line class="net-line" x1="450" y1="400" x2="750" y2="400"/>
+      <!-- Vertical connectors -->
+      <line class="net-line" x1="150" y1="80"  x2="150" y2="240"/>
+      <line class="net-line" x1="450" y1="80"  x2="450" y2="240"/>
+      <line class="net-line" x1="750" y1="80"  x2="750" y2="240"/>
+      <line class="net-line" x1="150" y1="240" x2="150" y2="400"/>
+      <line class="net-line" x1="450" y1="240" x2="450" y2="400"/>
+      <line class="net-line" x1="750" y1="240" x2="750" y2="400"/>
+      <!-- Diagonals through the center hub -->
+      <line class="net-line" x1="150" y1="80"  x2="450" y2="240"/>
+      <line class="net-line" x1="750" y1="80"  x2="450" y2="240"/>
+      <line class="net-line" x1="450" y1="240" x2="150" y2="400"/>
+      <line class="net-line" x1="450" y1="240" x2="750" y2="400"/>
+
+      <!-- Row 1 -->
       <g class="net-node">
-        <rect class="net-node-bg" x="100" y="78" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="180" y="100">Travel</text>
+        <rect class="net-node-bg" x="70"  y="58" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="150" y="80">Travel</text>
       </g>
       <g class="net-node">
-        <rect class="net-node-bg" x="350" y="38" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="430" y="60">Sports</text>
+        <rect class="net-node-bg" x="370" y="58" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="450" y="80">Sports</text>
       </g>
       <g class="net-node">
-        <rect class="net-node-bg" x="620" y="98" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="700" y="120">Biotech</text>
+        <rect class="net-node-bg" x="670" y="58" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="750" y="80">Biotech</text>
+      </g>
+
+      <!-- Row 2 -->
+      <g class="net-node">
+        <rect class="net-node-bg" x="70"  y="218" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="150" y="240">Climate</text>
       </g>
       <g class="net-node">
-        <rect class="net-node-bg" x="240" y="208" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="320" y="230">Climate</text>
+        <rect class="net-node-bg" x="370" y="218" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="450" y="240">Gaming</text>
       </g>
       <g class="net-node">
-        <rect class="net-node-bg" x="370" y="208" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="450" y="230">Gaming</text>
+        <rect class="net-node-bg" x="670" y="218" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="750" y="240">Polish news</text>
+      </g>
+
+      <!-- Row 3 -->
+      <g class="net-node">
+        <rect class="net-node-bg" x="70"  y="378" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="150" y="400">Crypto</text>
       </g>
       <g class="net-node">
-        <rect class="net-node-bg" x="550" y="218" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="630" y="240">Polish news</text>
+        <rect class="net-node-bg" x="370" y="378" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="450" y="400">Football</text>
       </g>
       <g class="net-node">
-        <rect class="net-node-bg" x="140" y="338" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="220" y="360">Crypto</text>
-      </g>
-      <g class="net-node">
-        <rect class="net-node-bg" x="370" y="358" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="450" y="380">Football</text>
-      </g>
-      <g class="net-node">
-        <rect class="net-node-bg" x="640" y="348" width="160" height="44" rx="22"/>
-        <text class="net-node-label" x="720" y="370">Cybersec</text>
+        <rect class="net-node-bg" x="670" y="378" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="750" y="400">Cybersec</text>
       </g>
     </svg>
   </div>

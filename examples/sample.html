@@ -40,15 +40,15 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .floating-nav .arrow { font-size: 15px; line-height: 1; margin-right: 2px; }
 .language-panel { display: none; }
 .language-panel.active { display: block; }
-.hero-header { background: linear-gradient(135deg, #111827 0%, #1e3a5f 100%); color: white; padding: 48px 16px 40px; margin-bottom: 28px; }
+.hero-header { background: transparent; color: var(--text-primary); padding: 72px 16px 32px; margin-bottom: 28px; border-bottom: 1px solid var(--border); }
 .hero-inner { max-width: 1180px; margin: 0 auto; }
-.hero-date { font-size: 12px; font-weight: 500; color: #93C5FD; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; }
-.hero-title { font-size: 42px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 12px; }
-.hero-title span { color: #60A5FA; }
-.hero-tagline { font-size: 15px; color: #9CA3AF; max-width: 520px; line-height: 1.6; margin-bottom: 24px; }
+.hero-date { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 14px; }
+.hero-title { font-size: 42px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 14px; color: var(--text-primary); }
+.hero-title span { color: var(--text-muted); font-weight: 600; }
+.hero-tagline { font-size: 15px; color: var(--text-secondary); max-width: 520px; line-height: 1.6; margin-bottom: 28px; }
 .hero-stats { display: flex; gap: 32px; flex-wrap: wrap; }
-.hero-stat-num { font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -0.03em; display: block; }
-.hero-stat-label { font-size: 11px; color: #9CA3AF; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+.hero-stat-num { font-size: 28px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.03em; display: block; }
+.hero-stat-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; }
 .breaking-banner { background: #FEF2F2; border: 1px solid #FECACA; border-radius: var(--radius-sm); padding: 10px 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; color: #991B1B; }
 .breaking-tag { background: #DC2626; color: white; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; }
 .news-section { margin-bottom: 36px; }
