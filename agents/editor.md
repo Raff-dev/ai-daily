@@ -41,6 +41,23 @@ Per section:
 If a section has only 1-2 stories, use `featured` for the first, `secondary`
 for the second.
 
+## Masthead back link (required)
+
+Include a "back" link as the first element inside `.masthead-inner`, pointing
+to the upstream landing page so the reader can always return to the project
+catalog:
+
+```html
+<a class="masthead-back" href="https://raff-dev.github.io/ai-daily/" title="Back to AI Daily" aria-label="Back to AI Daily"><i data-lucide="arrow-left"></i></a>
+```
+
+If the user explicitly told you they're working in a fork with its own
+GitHub Pages URL, replace the `href` with that fork's landing URL. Otherwise
+default to `https://raff-dev.github.io/ai-daily/` — the user can edit it later.
+
+The `.masthead-back` CSS class is defined in `templates/style.css` (next to
+`.masthead-github`). It must be in the inline `<style>` block of the output.
+
 ## Hero stats
 
 The hero shows three numbers:

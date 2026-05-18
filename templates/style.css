@@ -32,6 +32,9 @@ body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height
 .masthead-github { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: var(--text-muted); transition: background 0.15s, color 0.15s; text-decoration: none; }
 .masthead-github:hover { background: var(--bg-page); color: #111827; }
 .masthead-github svg { width: 18px; height: 18px; }
+.masthead-back { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: var(--text-muted); transition: background 0.15s, color 0.15s; text-decoration: none; }
+.masthead-back:hover { background: var(--bg-page); color: #111827; }
+.masthead-back [data-lucide] { width: 18px; height: 18px; stroke-width: 2.25; }
 .language-toggle { flex-shrink: 0; display: inline-flex; gap: 3px; padding: 3px; background: #F3F4F6; border: 1px solid var(--border); border-radius: var(--radius-pill); }
 .language-toggle button { border: 0; background: transparent; color: var(--text-muted); border-radius: var(--radius-pill); padding: 4px 9px; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; }
 .language-toggle button.active { background: #111827; color: #fff; }
