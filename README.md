@@ -7,7 +7,7 @@ This is a learning project disguised as a useful tool. The repository contains
 **only instructions** — your AI assistant reads them, researches today's news
 on your topics, and saves a self-contained HTML file you open with a double-click.
 
-**👉 See what it looks like:** [`examples/sample.html`](examples/sample.html)
+**👉 See what it looks like:** [raff-dev.github.io/ai-daily](https://raff-dev.github.io/ai-daily/)
 
 ---
 
