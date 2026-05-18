@@ -490,6 +490,18 @@ def research_indexes(research_packs: list[dict]) -> tuple[set[str], set[str], di
     return source_ids, evidence_ids, verified_images, verified_image_urls
 
 
+def strip_unverified_article_images(report: dict, research_packs: list[dict]) -> dict:
+    _source_ids, _evidence_ids, verified_images, _verified_image_urls = research_indexes(research_packs)
+    for section in report.get("sections") or []:
+        for article in section.get("articles") or []:
+            image_id = article.get("image_candidate_id")
+            image_url = article.get("image_url")
+            if not image_id or image_id not in verified_images or image_url != verified_images[image_id]:
+                article.pop("image_candidate_id", None)
+                article.pop("image_url", None)
+    return report
+
+
 def validate_final_report(report: dict, research_packs: list[dict]) -> list[str]:
     errors: list[str] = []
     source_ids, evidence_ids, verified_images, _verified_image_urls = research_indexes(research_packs)
@@ -544,9 +556,9 @@ def validate_final_report(report: dict, research_packs: list[dict]) -> list[str]
 
             image_id = article.get("image_candidate_id")
             image_url = article.get("image_url")
-            if not image_id or image_id not in verified_images:
+            if image_id and image_id not in verified_images:
                 errors.append(f"{title}: image_candidate_id is not a verified research image")
-            elif image_url != verified_images[image_id]:
+            elif image_id and image_url != verified_images[image_id]:
                 errors.append(f"{title}: image_url does not match verified image_candidate_id")
     return errors
 
@@ -940,10 +952,12 @@ def run_agent(dates: dict) -> dict:
     research_packs = run_section_research_fleet(dates)
     print("running editor synthesis...")
     report = run_editor_report(research_packs, dates)
+    report = strip_unverified_article_images(report, research_packs)
     errors = validate_final_report(report, research_packs)
     if errors:
         print("warning: editor output failed validation; running one correction pass")
         report = run_editor_report(research_packs, dates, errors)
+        report = strip_unverified_article_images(report, research_packs)
         errors = validate_final_report(report, research_packs)
     if errors:
         raise RuntimeError("Final report failed validation:\n" + "\n".join(errors))
