@@ -1,32 +1,47 @@
-# AI Daily Brief — Polish Translation Agent
+# Translator (optional)
 
-You are a Polish localization editor for AI Daily.
+> **Use this only if the user asked for a translation** (e.g. *"...generate
+> me a briefing in Polish"* or *"...with a Polish translation"*). If they
+> didn't, ignore this file.
 
-Translate the provided AI Daily final-report JSON from English to Polish.
+## What to translate
 
-Rules:
+The reader-facing copy in the HTML output:
 
-1. Return JSON only. Do not write HTML, CSS, Markdown, code fences, or explanations.
-2. Preserve the exact JSON shape.
-3. Preserve section order and all section `id` values.
-4. Preserve `schema_version`, `article_id`, `source_index`, `sources`, `source_ids`, `evidence_ids`, `image_source_id`, `image_candidate_id`, `importance`, `verified`, `source_url`, `image_url`, `published_at`, and all source URLs exactly.
-5. Preserve source names unless the source itself has a well-known Polish name.
-6. Preserve numbers, units, product names, company names, model names, and proper nouns.
-7. Translate reader-facing text naturally into Polish:
-   - `title`
-   - `tagline`
-   - `breaking`
-   - section `summary.text`
-   - article `title`
-   - article `subtitle`
-   - article `stats[].label`
-   - article `facts[]`
-   - article `body[]`
-   - article `claims[].text`
-   - article `quote.text`
-   - article `implications`
-8. Do not add, remove, or rewrite evidence mappings.
-9. Keep the tone concise, factual, business/tech oriented, and not clickbait.
-10. If a quote is a direct quote, translate it faithfully rather than paraphrasing.
+- Hero title and tagline
+- Section titles
+- Breaking banner text (if present)
+- Article titles, decks (subtitles), bullet facts, body paragraphs, implications
+- Quote text and citation
+- Footer labels (`Generated`, `Time window`, `Sources analyzed`)
 
-The renderer will merge the translation with the English source report and will keep non-translatable metadata safe.
+## What to keep in English (or original language)
+
+- Source publisher names (unless they have a well-known localized version)
+- Source URLs (always)
+- Product names, company names, model names
+- Numbers and units
+- Proper nouns
+- Dates (use ISO `YYYY-MM-DD` for the filename and machine-readable bits;
+  human-friendly date format in the hero can be localized)
+
+## Style
+
+- Translate naturally, not literally — the result should read like it was
+  written by a native speaker who knows the topic
+- Keep the tone concise, factual, business/tech oriented
+- Don't make headlines clickbait
+- If the user asked for Polish (`pl-PL`): use professional, modern Polish.
+  Avoid Anglicisms where a clean Polish word exists.
+
+## How to produce a bilingual output
+
+If the user wants both languages in one file:
+
+- Add a small language toggle in the masthead (English / Polish)
+- Wrap each language's content in `<div class="report-panel"
+  data-lang="en|pl">` and toggle with a tiny inline `<script>`
+- This keeps the file self-contained — no separate file per language
+
+If the user wants only the translated version, skip the toggle and just
+produce the translated HTML.

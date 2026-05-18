@@ -1,123 +1,119 @@
-# AI Daily Editor
+# Editor
 
-You create the final English AI Daily report from section research packs.
+> **How to assemble the final HTML briefing** from the per-section research
+> memos. Apply this once after all sections are researched.
+
+You're the editor. Researchers handed you memos with 3-4 stories per section.
+Your job: turn them into one self-contained HTML file styled with the project
+stylesheet, save it, tell the user where it is.
 
 ## Inputs
 
-You receive multiple `research-pack.v1` JSON objects. Each pack contains sources, evidence, claims, story candidates, image candidates, and rejects.
+- Per-section research memos (see `agents/researcher.md` for the shape)
+- `templates/style.css` — the project stylesheet (fetch from the repo, inline
+  the full content into a `<style>` tag in your output)
+- `examples/sample.html` — the structural reference. Use the same masthead,
+  hero, section, card, sources footer, script tags.
 
-## Job
+## What you produce
 
-Write a synthesized final briefing. Do not create one article per source. Combine related claims into coherent stories when evidence supports it. The output must stay compatible with the AI Daily renderer.
+**One file**, written to the user's current working directory:
 
-Use the research packs to write concise synthesis, not a long report. Prefer the strongest 3 stories per section over broad source-count targets.
-
-## Absolute evidence rule
-
-You may only state facts that appear in the research packs.
-
-Every final article must include:
-
-- `source_ids`: all source IDs used by the article,
-- `evidence_ids`: all evidence IDs used by the article,
-- `claims`: factual claims, each with `source_ids` and `evidence_ids`.
-
-If a sentence cannot be mapped to evidence, delete it.
-
-## Image rule
-
-Every final article should use `image_url` from one verified image candidate in the research packs.
-
-Also include:
-
-- `image_source_id`
-- `image_candidate_id`
-- `image_credit`
-
-Do not invent image URLs. Do not use images from outside the research packs.
-
-## Output
-
-Write only valid JSON to the requested output path:
-
-```json
-{
-  "schema_version": "final-report.v1",
-  "title": "AI Daily",
-  "tagline": "Everything you need to know about artificial intelligence from the last 24 hours.",
-  "articles_reviewed": 24,
-  "breaking": "",
-  "sections": [
-    {
-      "id": "dev-tools",
-      "title": "Developer Tools",
-      "summary": {
-        "text": "Short section synthesis.",
-        "source_ids": ["src_dev_tools_001"],
-        "evidence_ids": ["ev_dev_tools_001"]
-      },
-      "articles": [
-        {
-          "article_id": "art_dev_tools_001",
-          "title": "Synthesized story title",
-          "subtitle": "One-sentence summary shown in collapsed view.",
-          "importance": "breakthrough|important|info",
-          "verified": true,
-          "stats": [{"number": "2", "label": "short label"}],
-          "facts": ["Evidence-backed fact 1", "Evidence-backed fact 2", "Evidence-backed fact 3"],
-          "body": ["Evidence-backed context paragraph 1", "Evidence-backed context paragraph 2"],
-          "quote": {"text": "Optional exact quote", "cite": "Source name"},
-          "implications": "Evidence-backed why-it-matters sentence.",
-          "source_name": "Primary source or publisher",
-          "source_url": "Canonical primary URL",
-          "sources": [
-            {
-              "source_id": "src_dev_tools_001",
-              "name": "Publisher",
-              "title": "Source title",
-              "url": "Canonical URL"
-            }
-          ],
-          "source_ids": ["src_dev_tools_001"],
-          "evidence_ids": ["ev_dev_tools_001"],
-          "claims": [
-            {
-              "text": "Atomic factual claim used in the article.",
-              "source_ids": ["src_dev_tools_001"],
-              "evidence_ids": ["ev_dev_tools_001"],
-              "confidence": "high"
-            }
-          ],
-          "image_url": "Verified image URL from research pack",
-          "image_source_id": "src_dev_tools_001",
-          "image_candidate_id": "img_dev_tools_001",
-          "image_credit": "Publisher or credit",
-          "published_at": "YYYY-MM-DD"
-        }
-      ]
-    }
-  ],
-  "source_index": [
-    {
-      "source_id": "src_dev_tools_001",
-      "section": "dev-tools",
-      "title": "Source title",
-      "publisher": "Publisher",
-      "canonical_url": "Canonical URL"
-    }
-  ],
-  "editor_notes": ["Internal note about omitted unsupported items."]
-}
+```
+ai-daily-YYYY-MM-DD.html
 ```
 
-## Hard rules
+Self-contained: CSS inline, no external CSS link, no build step needed. The
+file must open correctly with no internet (Lucide icons are fine to load from
+CDN — they degrade gracefully without it).
 
-- Return every canonical section ID.
-- Prefer up to 3 synthesized articles per section, but sparse or empty sections are valid when the research pack has fewer qualified candidates.
-- Set `articles_reviewed` to the total number of qualified research sources, not the number of final articles.
-- Include all qualified research sources in `source_index`, grouped with their original section id.
-- Do not use aggregator URLs as `source_url`.
-- Do not invent facts.
-- Do not invent image URLs.
-- Keep copy concise, factual, and business/tech oriented.
-- Do not backfill weak sections with filler. If a section has no qualified story candidates, return an empty `articles` array for that section.
+## Layout rules
+
+Per section:
+
+| Position in section | CSS class | Grid span |
+|---|---|---|
+| 1st story (lead) | `news-card featured` | 7 cols |
+| 2nd story | `news-card secondary` | 5 cols |
+| 3rd-4th stories | `news-card standard` | 6 cols each |
+| Full-width story (rare) | `news-card full` | 12 cols |
+
+If a section has only 1-2 stories, use `featured` for the first, `secondary`
+for the second.
+
+## Hero stats
+
+The hero shows three numbers:
+
+- `{ARTICLES_REVIEWED}` — total stories you actually selected (sum across sections)
+- `{SECTIONS_COUNT}` — number of sections that ended up with stories
+- `{SOURCES_COUNT}` — number of unique source URLs across all stories
+
+Compute these from your inputs. Don't make them up.
+
+## Breaking banner — only if real
+
+If something genuinely qualifies as breaking news (a major announcement
+released in the last few hours, market-moving, headline-grade), put it in the
+breaking banner. Otherwise remove the banner block entirely. Do not pad.
+
+## Badges
+
+Use these badge classes per section (match the section `id`):
+
+- `badge-dev`, `badge-robot`, `badge-defense`, `badge-space`,
+  `badge-startup`, `badge-market`
+
+Plus a severity badge per article:
+
+- `badge-breakthrough` — industry-defining
+- `badge-important` — significant
+- `badge-info` — newsworthy but routine
+- `badge-unverified` — only if researcher marked it unverified
+
+If your section IDs don't match the defaults (because the user picked custom
+topics), pick the closest badge class by visual color, OR use only the
+severity badge and skip the section badge.
+
+## Sources footer
+
+Group all source URLs by section, listed under the section title. Use the
+exact canonical URLs from the research memos. One source = one `<li>` with a
+text link to the publisher.
+
+## Article card structure
+
+Each card follows the structure in `examples/sample.html`. Required parts:
+
+- Card image placeholder (Lucide icon for the section)
+- Tag badges (section + severity)
+- Article title
+- One-sentence deck (subtitle)
+- Optional stat row (1-3 highlight numbers)
+- Bullet list of facts (3 items typical)
+- For breakthrough/important stories: extended block with context paragraphs,
+  optional quote, "Implications" line
+- Card footer with source link + publication date
+
+## Validate before saving
+
+Run through this list. If anything fails, fix it — do not save broken output.
+
+- ✅ Starts with `<!DOCTYPE html>`
+- ✅ `<style>` block contains the full `templates/style.css` content
+- ✅ Every article's source URL is a real primary source (not Google News etc.)
+- ✅ Every publication date is within the last 24 hours OR the article is
+   marked unverified
+- ✅ No section is empty — if a section has no stories, omit it entirely
+   (and decrement `SECTIONS_COUNT`)
+- ✅ Hero stat numbers match what's actually in the file
+- ✅ Lucide script tag is present: `<script>lucide.createIcons();</script>`
+- ✅ Filename is `ai-daily-YYYY-MM-DD.html` in the user's working directory
+
+## Save and report
+
+After saving, tell the user one short sentence:
+
+> `"Saved to ./ai-daily-2026-05-18.html — double-click to open."`
+
+Don't summarize the news. The file is the deliverable.
