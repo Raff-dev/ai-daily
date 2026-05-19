@@ -142,26 +142,35 @@ Each card follows the structure in `examples/sample.html`. Required parts:
 
 For each story, attempt to fetch the source page's `og:image` (or
 `twitter:image`) meta tag and inject it as `<img class="card-image">`
-inside the `card-image-placeholder`. The SVG visual stays as a fallback —
-on image load failure the inline `onerror` removes the `<img>` and the
-`has-image` class, so the SVG shows through.
+inside the `card-image-placeholder`. If the image fails to load, the
+inline `onerror` removes it and the standard "no preview" SVG shows
+through underneath.
 
-Pattern:
+Use the standard "no preview" SVG below for **every** card — do NOT
+generate a custom decorative SVG with section letters or shapes. The
+SVG is just a fallback when there's no image; it should look like a
+plain "no image" placeholder, not a section badge.
+
+Pattern (use this exact SVG, change only the `--accent` color):
 
 ```html
 <div class="card-image-placeholder has-image" style="--accent: #2563EB;">
   <img class="card-image" src="<OG_IMAGE_URL>" alt="" loading="lazy"
        referrerpolicy="no-referrer"
        onerror="this.remove(); this.parentElement.classList.remove('has-image');">
-  <svg class="card-visual-svg" ...>
-    ...
+  <svg class="card-visual-svg" viewBox="0 0 640 280" role="img" aria-label="No preview available" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(264, 88)" stroke="#9CA3AF" stroke-width="3" fill="none" stroke-linejoin="round">
+      <rect x="0" y="0" width="112" height="104" rx="10"/>
+      <circle cx="32" cy="34" r="10" fill="#9CA3AF" stroke="none"/>
+      <path d="M0 84 L38 56 L60 70 L86 42 L112 66 L112 104 L0 104 Z" fill="#9CA3AF" stroke="none" opacity="0.45"/>
+    </g>
   </svg>
 </div>
 ```
 
-Many publishers either block scraping or omit `og:image`. That's fine —
-for those stories drop the `<img>` entirely and the SVG fallback carries
-the card on its own (do NOT add the `has-image` class in that case).
+Many publishers either block scraping or omit `og:image`. For those
+stories drop the `<img>` entirely (keep the SVG) and do NOT add the
+`has-image` class.
 - For breakthrough/important stories: extended block with context paragraphs,
   optional quote, "Implications" line
 - Card footer with source link + publication date
