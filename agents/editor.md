@@ -131,12 +131,37 @@ text link to the publisher.
 
 Each card follows the structure in `examples/sample.html`. Required parts:
 
-- Card image placeholder (Lucide icon for the section)
+- Card image placeholder with optional preview image (see below)
 - Tag badges (section + severity)
 - Article title
 - One-sentence deck (subtitle)
 - Optional stat row (1-3 highlight numbers)
 - Bullet list of facts (3 items typical)
+
+### Card preview image (try to include, fall back gracefully)
+
+For each story, attempt to fetch the source page's `og:image` (or
+`twitter:image`) meta tag and inject it as `<img class="card-image">`
+inside the `card-image-placeholder`. The SVG visual stays as a fallback —
+on image load failure the inline `onerror` removes the `<img>` and the
+`has-image` class, so the SVG shows through.
+
+Pattern:
+
+```html
+<div class="card-image-placeholder has-image" style="--accent: #2563EB;">
+  <img class="card-image" src="<OG_IMAGE_URL>" alt="" loading="lazy"
+       referrerpolicy="no-referrer"
+       onerror="this.remove(); this.parentElement.classList.remove('has-image');">
+  <svg class="card-visual-svg" ...>
+    ...
+  </svg>
+</div>
+```
+
+Many publishers either block scraping or omit `og:image`. That's fine —
+for those stories drop the `<img>` entirely and the SVG fallback carries
+the card on its own (do NOT add the `has-image` class in that case).
 - For breakthrough/important stories: extended block with context paragraphs,
   optional quote, "Implications" line
 - Card footer with source link + publication date
