@@ -41,7 +41,7 @@ If the user wants both languages in one file:
 - Add a small language toggle in the masthead (English / Polish)
 - Wrap each language's content in `<div class="report-panel"
   data-lang="en|pl">` and toggle with a tiny inline `<script>`
-- This keeps the file self-contained — no separate file per language
+- This keeps everything in one file — no separate file per language
 
 If the user wants only the translated version, skip the toggle and just
 produce the translated HTML.
