@@ -4,14 +4,16 @@
 > memos. Apply this once after all sections are researched.
 
 You're the editor. Researchers handed you memos with 3-4 stories per section.
-Your job: turn them into one self-contained HTML file styled with the project
-stylesheet, save it, tell the user where it is.
+Your job: turn them into one HTML file styled with the project stylesheet,
+save it, tell the user where it is.
 
 ## Inputs
 
 - Per-section research memos (see `agents/researcher.md` for the shape)
-- `templates/style.css` — the project stylesheet (fetch from the repo, inline
-  the full content into a `<style>` tag in your output)
+- `templates/style.css` — the project stylesheet. **Do not fetch this file.**
+  Link it in the output's `<head>` with a `<link rel="stylesheet">` pointing
+  to its GitHub Pages URL. The browser loads it directly when the user opens
+  the file.
 - `examples/sample.html` — the structural reference. Use the same floating
   nav, hero, section, card, sources footer, and script tags.
 
@@ -23,9 +25,15 @@ stylesheet, save it, tell the user where it is.
 ai-daily-YYYY-MM-DD.html
 ```
 
-Self-contained: CSS inline, no external CSS link, no build step needed. The
-file must open correctly with no internet (Lucide icons are fine to load from
-CDN — they degrade gracefully without it).
+The file's `<head>` must contain:
+
+```html
+<link rel="stylesheet" href="https://raff-dev.github.io/ai-daily/templates/style.css">
+```
+
+Do NOT inline the stylesheet. Do NOT fetch it via WebFetch and embed it.
+The CDN-hosted link is the contract — it keeps the output small and lets
+every briefing pick up future style updates automatically.
 
 ## Layout rules
 
@@ -76,8 +84,8 @@ Do NOT include:
 - a "Structured" / "Strukturalny" version badge
 - an "AI Daily" wordmark in the nav — the hero already brands the page
 
-The `.floating-nav` CSS class is defined in `templates/style.css`. It must
-be present in the inline `<style>` block of the output.
+The `.floating-nav` CSS class is defined in `templates/style.css`, which
+loads via the `<link>` in `<head>`.
 
 ## Hero stats
 
@@ -138,7 +146,7 @@ Each card follows the structure in `examples/sample.html`. Required parts:
 Run through this list. If anything fails, fix it — do not save broken output.
 
 - ✅ Starts with `<!DOCTYPE html>`
-- ✅ `<style>` block contains the full `templates/style.css` content
+- ✅ `<head>` contains `<link rel="stylesheet" href="https://raff-dev.github.io/ai-daily/templates/style.css">`
 - ✅ Every article's source URL is a real primary source (not Google News etc.)
 - ✅ Every publication date is within the last 24 hours OR the article is
    marked unverified

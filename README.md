@@ -5,7 +5,7 @@
 
 This is a learning project disguised as a useful tool. The repository contains
 **only instructions** — your AI assistant reads them, researches today's news
-on your topics, and saves a self-contained HTML file you open with a double-click.
+on your topics, and saves an HTML file you open with a double-click.
 
 **👉 See what it looks like:** [raff-dev.github.io/ai-daily](https://raff-dev.github.io/ai-daily/)
 
@@ -22,7 +22,14 @@ about [your topics]. Save it as an HTML file I can open.
 ```
 
 That's it. Your assistant reads this repo's instructions, does the research,
-and drops a self-contained HTML file in your working directory.
+and drops an HTML file in your working directory.
+
+> **Note:** works with any AI assistant that can fetch URLs (Claude Code,
+> Claude.ai web, GitHub Copilot, Cursor, Codex). If a client has restricted
+> URL fetch — like Claude mobile blocking `raw.githubusercontent.com` — the
+> agent contract tells the assistant to use the GitHub Pages mirror
+> (`raff-dev.github.io/ai-daily/...`) instead, which serves the same files
+> with proper headers and CORS.
 
 ### Example prompts
 

@@ -33,8 +33,8 @@ Markdown follow this in one sitting?"* If not, find a simpler shape.
 ## The user contract
 
 The user does **exactly one thing**: they type a prompt. That prompt is the
-only step in their flow. You do everything else and hand them a single,
-self-contained HTML file in their working directory.
+only step in their flow. You do everything else and hand them a single
+HTML file in their working directory.
 
 You must NOT:
 
@@ -46,9 +46,10 @@ You must NOT:
 - Spawn long clarifying dialogs — if the user gave topics, run with them;
   if they didn't, use the defaults in `agents/coverage.md`
 
-You produce: **one HTML file**, self-contained (CSS inline), saved in the
-user's current working directory, named `ai-daily-YYYY-MM-DD.html`. Tell the
-user where you saved it.
+You produce: **one HTML file** saved in the user's current working directory,
+named `ai-daily-YYYY-MM-DD.html`. The file links to the project stylesheet
+hosted on GitHub Pages — keep `<link rel="stylesheet">` instead of inlining
+the CSS. Tell the user where you saved it.
 
 ---
 
@@ -56,18 +57,24 @@ user where you saved it.
 
 ### 1. Read the repo's instructions
 
-Fetch these files from the repo (use raw GitHub URLs when WebFetch'ing —
-`https://raw.githubusercontent.com/Raff-dev/ai-daily/main/<path>`):
+Fetch these files from the **GitHub Pages mirror** of this repo:
 
-- `agents/coverage.md` — default topics and search strategy (fallback if user
-  didn't specify topics)
-- `agents/researcher.md` — how to research a single section
-- `agents/editor.md` — how to assemble the final briefing
-- `templates/style.css` — the stylesheet you will inline into the output
-- `examples/sample.html` *(optional)* — reference for HTML structure
+- `https://raff-dev.github.io/ai-daily/agents/coverage.md` — default topics and search strategy (fallback if user didn't specify topics)
+- `https://raff-dev.github.io/ai-daily/agents/researcher.md` — how to research a single section
+- `https://raff-dev.github.io/ai-daily/agents/editor.md` — how to assemble the final briefing
+- `https://raff-dev.github.io/ai-daily/examples/sample.html` *(optional)* — reference for HTML structure
 
-If the user pointed you at a fork (e.g. `github.com/alice/ai-daily`), read
-from that fork instead.
+You do NOT need to fetch `templates/style.css` — the generated briefing
+links to it by URL, so the browser loads it directly.
+
+> ⚠️ **Do NOT use `raw.githubusercontent.com` URLs.** Several AI clients
+> (notably the Claude mobile app) block that domain, and it serves files
+> as `text/plain` with `nosniff` — which breaks `<link rel="stylesheet">`
+> in browsers. The GH Pages mirror above serves the same files with
+> proper `Content-Type` headers and CORS enabled.
+
+If the user pointed you at a fork (e.g. `github.com/alice/ai-daily`), use
+that fork's Pages URL instead: `https://alice.github.io/ai-daily/...`.
 
 ### 2. Decide the topics
 
@@ -94,8 +101,15 @@ Do not fabricate filler.
 ### 4. Assemble the briefing
 
 Follow `agents/editor.md` to compose the final HTML, structured according to
-`examples/sample.html` and styled with `templates/style.css` (inline the CSS
-in a `<style>` tag — the output must be self-contained).
+`examples/sample.html`. In the output's `<head>`, link the project stylesheet:
+
+```html
+<link rel="stylesheet" href="https://raff-dev.github.io/ai-daily/templates/style.css">
+```
+
+Do NOT inline the CSS into a `<style>` block — it bloats the output and
+forces you to re-fetch the stylesheet every run. The `<link>` lets the
+browser load it directly with proper caching.
 
 ### 5. Validate before saving
 
@@ -106,7 +120,7 @@ Quick checklist:
 - ✅ Every URL is a primary source — NOT Google News, Bing, Yahoo, MSN, AOL
   or other aggregators
 - ✅ Publication dates are within the last 24 hours (or marked `UNVERIFIED`)
-- ✅ The `<style>` block is inline (the file opens correctly with no internet)
+- ✅ The `<head>` contains `<link rel="stylesheet" href="https://raff-dev.github.io/ai-daily/templates/style.css">`
 - ✅ Filename is `ai-daily-YYYY-MM-DD.html`
 
 If validation fails, fix it — do not save a broken briefing.
@@ -126,11 +140,10 @@ Example: `"Saved to ./ai-daily-2026-05-18.html — double-click to open."`
 The HTML file you produce must:
 
 1. Start with `<!DOCTYPE html>`
-2. Have `<style>` inline (CSS copied from `templates/style.css`)
-3. Use only CSS classes defined in `templates/style.css`
+2. Link the project stylesheet: `<link rel="stylesheet" href="https://raff-dev.github.io/ai-daily/templates/style.css">`
+3. Use only CSS classes defined in that stylesheet
 4. Reference Lucide icons via the CDN script tag (already in `examples/sample.html`)
 5. Be valid HTML — no broken tags, no JavaScript errors
-6. Open correctly in any browser with no internet (self-contained)
 
 The structural skeleton lives in `examples/sample.html`. Treat it as the
 contract for layout: same masthead, same hero, same section structure, same
