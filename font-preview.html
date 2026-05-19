@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Font preview — AI Daily</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=Geist:wght@500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #FAFAFA;
+  color: #111827;
+  -webkit-font-smoothing: antialiased;
+  padding: 80px 24px;
+}
+.wrap { max-width: 1000px; margin: 0 auto; }
+.intro {
+  font-family: 'Inter', system-ui, sans-serif;
+  margin-bottom: 56px;
+  text-align: center;
+}
+.intro h1 { font-size: 16px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #9CA3AF; margin-bottom: 12px; }
+.intro p { font-size: 14px; color: #6B7280; }
+.option {
+  padding: 64px 32px;
+  border-top: 1px solid #E5E7EB;
+}
+.option:last-child { border-bottom: 1px solid #E5E7EB; }
+.option-label {
+  font-family: 'Inter', system-ui, sans-serif;
+  display: inline-block;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: #6B7280;
+  padding: 6px 14px;
+  border: 1px solid #E5E7EB;
+  border-radius: 9999px;
+  margin-bottom: 28px;
+}
+.option-eyebrow {
+  display: block;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: #9CA3AF;
+  margin-bottom: 22px;
+}
+.option-title {
+  font-size: clamp(38px, 6.4vw, 64px);
+  letter-spacing: -0.045em;
+  line-height: 1.04;
+  margin-bottom: 18px;
+  color: #111827;
+}
+.option-title em { font-style: normal; color: #9CA3AF; font-weight: 600; }
+.option-tagline {
+  font-size: 16px;
+  color: #4B5563;
+  max-width: 540px;
+}
+
+/* Font variants */
+.font-inter { font-family: 'Inter', system-ui, sans-serif; }
+.font-inter .option-title { font-weight: 800; }
+
+.font-geist { font-family: 'Geist', system-ui, sans-serif; }
+.font-geist .option-title { font-weight: 800; }
+
+.font-space { font-family: 'Space Grotesk', system-ui, sans-serif; }
+.font-space .option-title { font-weight: 700; letter-spacing: -0.035em; }
+
+.font-jakarta { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+.font-jakarta .option-title { font-weight: 800; }
+
+.font-instrument { font-family: 'Instrument Serif', Georgia, serif; }
+.font-instrument .option-title { font-weight: 400; letter-spacing: -0.02em; font-size: clamp(46px, 7.8vw, 76px); }
+.font-instrument .option-title em { font-style: italic; font-weight: 400; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="intro">
+    <h1>Font preview · pick one</h1>
+    <p>Same hero, five fonts. Pick the option label that fits the vibe.</p>
+  </div>
+
+  <section class="option font-inter">
+    <span class="option-label">1 · Inter (current)</span>
+    <span class="option-eyebrow">Build your AI project in 5 minutes</span>
+    <h2 class="option-title">Today's news,<br><em>one prompt away.</em></h2>
+    <p class="option-tagline">Ask your AI. Get an HTML file. Open it.</p>
+  </section>
+
+  <section class="option font-geist">
+    <span class="option-label">2 · Geist</span>
+    <span class="option-eyebrow">Build your AI project in 5 minutes</span>
+    <h2 class="option-title">Today's news,<br><em>one prompt away.</em></h2>
+    <p class="option-tagline">Ask your AI. Get an HTML file. Open it.</p>
+  </section>
+
+  <section class="option font-space">
+    <span class="option-label">3 · Space Grotesk</span>
+    <span class="option-eyebrow">Build your AI project in 5 minutes</span>
+    <h2 class="option-title">Today's news,<br><em>one prompt away.</em></h2>
+    <p class="option-tagline">Ask your AI. Get an HTML file. Open it.</p>
+  </section>
+
+  <section class="option font-jakarta">
+    <span class="option-label">4 · Plus Jakarta Sans</span>
+    <span class="option-eyebrow">Build your AI project in 5 minutes</span>
+    <h2 class="option-title">Today's news,<br><em>one prompt away.</em></h2>
+    <p class="option-tagline">Ask your AI. Get an HTML file. Open it.</p>
+  </section>
+
+  <section class="option font-instrument">
+    <span class="option-label">5 · Instrument Serif (editorial twist)</span>
+    <span class="option-eyebrow">Build your AI project in 5 minutes</span>
+    <h2 class="option-title">Today's news,<br><em>one prompt away.</em></h2>
+    <p class="option-tagline">Ask your AI. Get an HTML file. Open it.</p>
+  </section>
+
+</div>
+
+</body>
+</html>
