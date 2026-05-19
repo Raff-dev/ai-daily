@@ -56,6 +56,12 @@ a { color: #111827; text-decoration: none; }
 .floating-nav a:hover { background: var(--border-soft); color: #111827; }
 .floating-nav a.icon-only { width: 32px; padding: 0; }
 .floating-nav a.icon-only svg { width: 16px; height: 16px; display: block; }
+.floating-nav .lang-toggle { display: inline-flex; gap: 2px; padding: 0; }
+.floating-nav .lang-toggle button { border: 0; background: transparent; height: 28px; margin: 2px; padding: 0 10px; border-radius: var(--radius-pill); font: inherit; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--text-muted); cursor: pointer; transition: background .15s, color .15s; }
+.floating-nav .lang-toggle button:hover { color: #111827; }
+.floating-nav .lang-toggle button.active { background: #111827; color: #fff; }
+.lang-panel { display: none; }
+.lang-panel.active { display: block; }
 
 /* Hero */
 .hero { padding: 128px 24px 80px; text-align: center; }
@@ -200,11 +206,17 @@ footer.site-footer { padding: 80px 24px 96px; border-top: 1px solid var(--border
 <body>
 
 <nav class="floating-nav" aria-label="Primary">
-  <a href="examples/">Examples</a>
+  <a href="examples/" data-i18n-examples>Examples</a>
+  <div class="lang-toggle" aria-label="Language">
+    <button type="button" class="active" data-set-lang="en">EN</button>
+    <button type="button" data-set-lang="pl">PL</button>
+  </div>
   <a href="https://github.com/Raff-dev/ai-daily" target="_blank" rel="noopener" aria-label="Source on GitHub" title="Source on GitHub" class="icon-only">
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.185 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.891 1.529 2.341 1.088 2.91.832.091-.647.349-1.088.635-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.026 2.747-1.026.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.203 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"/></svg>
   </a>
 </nav>
+
+<div class="lang-panel active" data-lang="en">
 
 <section class="hero">
   <div class="wrap">
@@ -319,6 +331,118 @@ footer.site-footer { padding: 80px 24px 96px; border-top: 1px solid var(--border
   </div>
 </section>
 
+</div><!-- /lang-panel.en -->
+
+<div class="lang-panel" data-lang="pl">
+
+<section class="hero">
+  <div class="wrap">
+    <span class="hero-eyebrow">Zbuduj swój projekt AI w 5 minut</span>
+    <h1 class="hero-title">Dzisiejsze newsy,<br><em>jeden prompt stąd.</em></h1>
+    <p class="hero-tagline">Zapytaj swoje AI. Odbierz plik HTML. Otwórz.</p>
+    <div class="hero-cta-row">
+      <a href="examples/" class="hero-cta">Zobacz przykłady</a>
+    </div>
+  </div>
+</section>
+
+<div class="prompt-section">
+  <div class="prompt-card">
+    <button type="button" class="copy-btn" data-copy="Read https://github.com/Raff-dev/ai-daily and generate me a news briefing about [your topics]. Save it as an HTML file I can open." aria-label="Skopiuj prompt" title="Skopiuj prompt">
+      <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+    </button>
+    <div class="prompt-code">Read <span class="accent">https://github.com/Raff-dev/ai-daily</span> and generate me a news briefing about <span class="placeholder">[twoje tematy]</span>. Save it as an HTML file I can open.</div>
+  </div>
+</div>
+
+<section class="block">
+  <div class="wrap">
+    <ol class="steps">
+      <li class="step active">
+        <span class="step-rule"></span>
+        <h3 class="step-label">Wybierz swoje tematy</h3>
+      </li>
+      <li class="step">
+        <span class="step-rule"></span>
+        <h3 class="step-label">AI czyta instrukcje</h3>
+      </li>
+      <li class="step">
+        <span class="step-rule"></span>
+        <h3 class="step-label">AI przeszukuje sieć</h3>
+      </li>
+      <li class="step">
+        <span class="step-rule"></span>
+        <h3 class="step-label">Dostajesz spersonalizowane newsy</h3>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <span class="section-eyebrow">Wypróbuj na czymkolwiek</span>
+    <h2 class="section-title-center">Nie tylko AI news.</h2>
+
+    <svg class="network" viewBox="0 0 900 480" role="img" aria-label="Sieć tematów — przykłady briefów do wygenerowania" xmlns="http://www.w3.org/2000/svg">
+      <line class="net-line" x1="150" y1="72"  x2="450" y2="42"/>
+      <line class="net-line" x1="450" y1="42"  x2="750" y2="92"/>
+      <line class="net-line" x1="150" y1="72"  x2="110" y2="212"/>
+      <line class="net-line" x1="450" y1="42"  x2="450" y2="242"/>
+      <line class="net-line" x1="750" y1="92"  x2="780" y2="222"/>
+      <line class="net-line" x1="110" y1="212" x2="450" y2="242"/>
+      <line class="net-line" x1="450" y1="242" x2="780" y2="222"/>
+      <line class="net-line" x1="110" y1="212" x2="230" y2="342"/>
+      <line class="net-line" x1="450" y1="242" x2="630" y2="362"/>
+      <line class="net-line" x1="450" y1="242" x2="450" y2="422"/>
+      <line class="net-line" x1="780" y1="222" x2="630" y2="362"/>
+      <line class="net-line" x1="230" y1="342" x2="450" y2="422"/>
+      <line class="net-line" x1="630" y1="362" x2="450" y2="422"/>
+
+      <g class="net-node">
+        <rect class="net-node-bg" x="70"  y="50"  width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="150" y="72">Podróże</text>
+      </g>
+      <g class="net-node">
+        <rect class="net-node-bg" x="370" y="20"  width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="450" y="42">Sport</text>
+      </g>
+      <g class="net-node">
+        <rect class="net-node-bg" x="670" y="70"  width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="750" y="92">Biotech</text>
+      </g>
+
+      <g class="net-node">
+        <rect class="net-node-bg" x="30"  y="190" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="110" y="212">Klimat</text>
+      </g>
+      <g class="net-node">
+        <rect class="net-node-bg" x="370" y="220" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="450" y="242">Gaming</text>
+      </g>
+      <g class="net-node">
+        <rect class="net-node-bg" x="700" y="200" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="780" y="222">Polska</text>
+      </g>
+
+      <g class="net-node">
+        <rect class="net-node-bg" x="150" y="320" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="230" y="342">Krypto</text>
+      </g>
+      <g class="net-node">
+        <rect class="net-node-bg" x="550" y="340" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="630" y="362">Piłka nożna</text>
+      </g>
+      <g class="net-node">
+        <rect class="net-node-bg" x="370" y="400" width="160" height="44" rx="22"/>
+        <text class="net-node-label" x="450" y="422">Cybersec</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+</div><!-- /lang-panel.pl -->
+
 <footer class="site-footer">
   <div class="footer-inner">
     <span>MIT licensed · crafted by <a href="https://awesomeworks.ai" target="_blank" rel="noopener">AwesomeWorks</a></span>
@@ -331,6 +455,7 @@ footer.site-footer { padding: 80px 24px 96px; border-top: 1px solid var(--border
 </footer>
 
 <script>
+// Copy button
 document.querySelectorAll('.copy-btn').forEach((btn) => {
   btn.addEventListener('click', async () => {
     const text = btn.dataset.copy || '';
@@ -350,6 +475,33 @@ document.querySelectorAll('.copy-btn').forEach((btn) => {
     setTimeout(() => btn.classList.remove('copied'), 1600);
   });
 });
+
+// Language toggle (EN/PL)
+const I18N = {
+  en: { examples: 'Examples', title: "AI Daily — build your AI project in 5 minutes" },
+  pl: { examples: 'Przykłady', title: "AI Daily — zbuduj swój projekt AI w 5 minut" }
+};
+const setLang = (lang) => {
+  if (!I18N[lang]) lang = 'en';
+  document.documentElement.lang = lang;
+  document.title = I18N[lang].title;
+  document.querySelectorAll('.lang-panel').forEach((p) => {
+    p.classList.toggle('active', p.dataset.lang === lang);
+  });
+  document.querySelectorAll('[data-set-lang]').forEach((b) => {
+    b.classList.toggle('active', b.dataset.setLang === lang);
+  });
+  document.querySelectorAll('[data-i18n-examples]').forEach((el) => {
+    el.textContent = I18N[lang].examples;
+  });
+  try { localStorage.setItem('ai-daily-lang', lang); } catch {}
+};
+document.querySelectorAll('[data-set-lang]').forEach((b) => {
+  b.addEventListener('click', () => setLang(b.dataset.setLang));
+});
+const stored = (() => { try { return localStorage.getItem('ai-daily-lang'); } catch { return null; } })();
+const browserPL = (navigator.language || 'en').toLowerCase().startsWith('pl');
+setLang(stored || (browserPL ? 'pl' : 'en'));
 </script>
 
 </body>
