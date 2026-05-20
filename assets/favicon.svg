@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AI Daily">
+  <rect width="64" height="64" rx="14" fill="#111827"/>
+  <g fill="#FAFAFA" font-family="ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-weight="800">
+    <text x="32" y="40" text-anchor="middle" font-size="26" letter-spacing="-1.2">AI</text>
+  </g>
+  <rect x="14" y="46" width="36" height="3" rx="1.5" fill="#FAFAFA" opacity="0.85"/>
+  <rect x="14" y="52" width="22" height="2" rx="1" fill="#FAFAFA" opacity="0.55"/>
+</svg>

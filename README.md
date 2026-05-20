@@ -79,6 +79,10 @@ agents/
   translate-agent.md     ← optional Polish translation
 templates/
   style.css              ← the look — change this to restyle every future briefing
+assets/
+  og-image.png           ← social link preview card (1200×630) used by every page
+  favicon.svg / .ico     ← browser tab icon
+  apple-touch-icon.png   ← iOS home-screen icon
 examples/
   sample.html            ← a real generated briefing you can open right now
 ```
