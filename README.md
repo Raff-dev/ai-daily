@@ -43,25 +43,25 @@ and drops an HTML file in your working directory.
 
 ---
 
-## 🎯 Why this repo exists
+## 🎯 Why this exists
 
-**This is a learning project disguised as a useful tool.**
+Ask any AI to build you a daily news page and you'll get a different
+output every time. Some have broken images. Some skip sections you care
+about. Some look like a 2003 forum. The people who could benefit most
+from "AI can build websites now" never get past the third attempt.
 
-If you're new to AI and you've heard *"you can build anything with AI agents now"*
-but every example is wrapped in five layers of frameworks — this repo is for you.
+This repo pre-bakes the answer. Hundreds of small decisions —
+typography, layout, sources, structure — already made and reviewed. Your
+AI doesn't have to guess; you don't have to fix.
 
-It's a tiny, real, working AI tool you can:
+**It's not for developers.** It's for the people who hear "AI can build
+things" and don't know that means them too. Your mum. Your uncle. Maybe
+your grandma.
 
-- **Run** by typing one prompt
-- **Read** — every instruction is in plain Markdown
-- **Modify** — fork it, edit `agents/coverage.md` and `templates/style.css`,
-  point your AI at your fork instead
-- **Steal from** — the pattern (AI assistant + prompt collection + style sheet
-  → polished artifact) works for any "AI produces something on demand" idea:
-  weekly digests, market reports, sports recaps, anything
+One sentence in a free chat. The file lands on your disk. You
+double-click. You read your news. Nothing else.
 
-You don't need to be a senior engineer. There is no code to run, no server,
-no dependencies. Just Markdown and CSS.
+**👉 Full version:** [raff-dev.github.io/ai-daily/mission/](https://raff-dev.github.io/ai-daily/mission/)
 
 ---
 
