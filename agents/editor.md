@@ -240,3 +240,18 @@ After saving, tell the user one short sentence:
 > `"Saved to ./ai-daily-2026-05-18.html — double-click to open."`
 
 Don't summarize the news. The file is the deliverable.
+
+## Keeping the structural reference current (repo-maintenance only)
+
+`examples/sample.html` is a symlink that points at the most recent dated
+brief in `examples/`. When you publish a new dated brief to **this repo**
+(e.g. `examples/ai-daily-YYYY-MM-DD.html`), repoint the symlink so future
+agents reading the structural reference always see the latest layout:
+
+```bash
+cd examples && ln -sf ai-daily-YYYY-MM-DD.html sample.html
+```
+
+This step only applies when adding briefs to the repo itself. It does NOT
+apply to the user-facing flow where you save a brief to the user's working
+directory.
