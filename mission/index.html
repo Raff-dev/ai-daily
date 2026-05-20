@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mission — AI Daily</title>
+<meta name="description" content="Built for people technology forgot. Why AI Daily pre-bakes the answer.">
+<meta property="og:title" content="AI Daily — Mission">
+<meta property="og:description" content="Built for people technology forgot. Why AI Daily pre-bakes the answer.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://raff-dev.github.io/ai-daily/mission/">
+<meta property="og:image" content="https://raff-dev.github.io/ai-daily/assets/og-image.png">
+<link rel="icon" type="image/svg+xml" href="/ai-daily/assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Familjen Grotesk', system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #111827;
+  background: #FAFAFA;
+  -webkit-font-smoothing: antialiased;
+}
+:root {
+  --bg-page: #FAFAFA;
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-muted: #9CA3AF;
+  --border: #E5E7EB;
+  --border-soft: #F3F4F6;
+  --radius-pill: 9999px;
+}
+a { color: #111827; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: #4B5563; }
+
+/* Floating nav (same shell as landing/briefings) */
+.floating-nav {
+  position: fixed; top: 16px; right: 16px; z-index: 100;
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+.floating-nav a {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 32px; padding: 0 14px;
+  border-radius: var(--radius-pill);
+  font-size: 13px; font-weight: 600;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: background .15s, color .15s;
+}
+.floating-nav a:hover { background: var(--border-soft); color: #111827; }
+.floating-nav a.icon-only { width: 32px; padding: 0; }
+.floating-nav a.icon-only svg { width: 16px; height: 16px; display: block; }
+.floating-nav .arrow { font-size: 15px; line-height: 1; margin-right: 2px; }
+.floating-nav .current { color: #111827; background: var(--border-soft); pointer-events: none; }
+
+/* Article */
+.article-wrap { max-width: 660px; margin: 0 auto; padding: 0 24px; }
+
+.eyebrow {
+  font-family: 'Familjen Grotesk', system-ui, sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  display: block;
+}
+
+.article-header { padding: 144px 0 56px; }
+.article-title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(44px, 6.5vw, 68px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+.article-title em { font-style: italic; color: var(--text-muted); }
+.article-lead {
+  font-size: clamp(18px, 2vw, 21px);
+  line-height: 1.55;
+  color: var(--text-secondary);
+  font-weight: 400;
+  max-width: 560px;
+}
+
+.article-body { padding: 0 0 64px; }
+.article-body p {
+  font-size: 18px;
+  line-height: 1.75;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+}
+.article-body p.muted { color: var(--text-secondary); }
+.article-body h2 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(26px, 3.2vw, 34px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin: 56px 0 18px;
+}
+.article-body strong { font-weight: 700; }
+
+.pull-quote {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(28px, 3.8vw, 40px);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  text-align: center;
+  margin: 56px -24px;
+  padding: 24px;
+  position: relative;
+}
+.pull-quote::before, .pull-quote::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 1px;
+  background: var(--text-muted);
+  margin: 0 auto 32px;
+}
+.pull-quote::after {
+  margin: 32px auto 0;
+}
+
+.closing {
+  margin-top: 56px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 12px; flex-wrap: wrap;
+}
+.closing a {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 12px 22px;
+  border-radius: var(--radius-pill);
+  font-size: 14px; font-weight: 600;
+  text-decoration: none;
+}
+.closing a.primary { background: #111827; color: #fff; }
+.closing a.primary:hover { opacity: .85; color: #fff; }
+.closing a.ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+.closing a.ghost:hover { background: var(--border-soft); color: #111827; }
+
+/* Footer */
+footer.site-footer {
+  margin-top: 80px;
+  padding: 56px 24px 80px;
+  border-top: 1px solid var(--border-soft);
+}
+.footer-inner {
+  max-width: 660px; margin: 0 auto;
+  display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  font-size: 13px; color: var(--text-muted);
+}
+.footer-inner a { color: var(--text-secondary); font-weight: 500; text-decoration: none; }
+.footer-inner a:hover { color: #111827; }
+
+@media (max-width: 640px) {
+  .article-header { padding: 96px 0 40px; }
+  .pull-quote { margin: 40px 0; }
+}
+</style>
+</head>
+<body>
+
+<nav class="floating-nav" aria-label="Primary">
+  <a href="../" title="Back to AI Daily"><span class="arrow">←</span>&nbsp;Home</a>
+  <a href="../examples/">Briefings</a>
+  <a href="" class="current" aria-current="page">Mission</a>
+  <a href="https://github.com/Raff-dev/ai-daily" target="_blank" rel="noopener" aria-label="Source on GitHub" title="Source on GitHub" class="icon-only">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.185 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.891 1.529 2.341 1.088 2.91.832.091-.647.349-1.088.635-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.026 2.747-1.026.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.203 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"/></svg>
+  </a>
+</nav>
+
+<article>
+
+  <header class="article-header">
+    <div class="article-wrap">
+      <span class="eyebrow">Why this exists</span>
+      <h1 class="article-title">Built for the people<br><em>technology forgot.</em></h1>
+      <p class="article-lead">Ask any AI to build you a daily news page and you'll get a different output every time. This repo pre-bakes the answer — so the people who need it most don't have to fix it.</p>
+    </div>
+  </header>
+
+  <div class="article-body">
+    <div class="article-wrap">
+
+      <p>You can ask AI to build almost anything. Most people don't know that. The ones who do, often give up after the third attempt — because every output looks different, the images break, the layout is from 2003, and the sections they care about are missing.</p>
+
+      <p class="muted">This project starts from the other end. Hundreds of small decisions — typography, layout, source preferences, structure, what counts as a story, how it's laid out, how it links back — are already made. Not because they're objectively right, but because <em>somebody</em> already made them, reviewed them, lived with them. That somebody is me. The work is shared.</p>
+
+      <h2>Who this is for</h2>
+
+      <p>It's not for developers. They can already do this in their sleep.</p>
+
+      <p>It's for the people who hear "AI can build websites now" and don't know that means them too. Your mum. Your uncle. Maybe your grandma. Anyone who looks at a chat box and sees a search engine, not a workshop.</p>
+
+      <p class="pull-quote">For your mum, your uncle,<br>maybe your grandma.</p>
+
+      <h2>The one-step principle</h2>
+
+      <p>One sentence. The file lands on your disk. You double-click. You read your news.</p>
+
+      <p class="muted">No installation. No accounts. No keys. No plugins. No git. No subscription tier you have to compare. The free version of whatever AI is in your browser already does this. You just had to know it could.</p>
+
+      <h2>Why minimal cognitive cost matters</h2>
+
+      <p>Every step you have to learn is a step where someone gives up. Every time the output looks broken, every "log in to continue", every "now configure your environment" is a door closing on someone who would have used the thing if it had just <em>worked</em>.</p>
+
+      <p>Pre-baking removes those doors. The repo isn't fancy code. It's a set of opinions other people can borrow.</p>
+
+      <h2>A learning project, too</h2>
+
+      <p>The whole repo is open. Read it. Steal from it. Fork it and change the topics. If you've ever copy-pasted a Markdown file you can make this yours. That's also the point — the pattern (AI assistant + prompt collection + style sheet = polished artifact) works for anything: travel briefs, sports recaps, market digests, your grandfather's favourite hobby.</p>
+
+      <p class="muted">It's a tool. It's also a worked example.</p>
+
+      <div class="closing">
+        <a href="../" class="primary">← Back to home</a>
+        <a href="../examples/" class="ghost">Read a briefing</a>
+        <a href="https://github.com/Raff-dev/ai-daily" target="_blank" rel="noopener" class="ghost">View source</a>
+      </div>
+
+    </div>
+  </div>
+
+</article>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>MIT licensed · crafted by <a href="https://awesomeworks.ai" target="_blank" rel="noopener">AwesomeWorks</a></span>
+    <span>
+      <a href="../">Home</a> ·
+      <a href="../examples/">Briefings</a> ·
+      <a href="https://github.com/Raff-dev/ai-daily" target="_blank" rel="noopener">Source</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
