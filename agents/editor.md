@@ -176,18 +176,54 @@ Each card follows the structure in `examples/sample.html`. Required parts:
 - Optional stat row (1-3 highlight numbers)
 - Bullet list of facts (3 items typical)
 
-### Card preview image (try to include, fall back gracefully)
+### Card preview image — fallback chain
 
-For each story, attempt to fetch the source page's `og:image` (or
-`twitter:image`) meta tag and inject it as `<img class="card-image">`
-inside the `card-image-placeholder`. If the image fails to load, the
-inline `onerror` removes it and the standard "no preview" SVG shows
-through underneath.
+Every card should have a real preview image whenever possible. Do not
+settle for the "no preview" SVG until the chain below is exhausted.
 
-Use the standard "no preview" SVG below for **every** card — do NOT
-generate a custom decorative SVG with section letters or shapes. The
-SVG is just a fallback when there's no image; it should look like a
-plain "no image" placeholder, not a section badge.
+**Fallback chain (try in order):**
+
+1. **`og:image` / `twitter:image` from the primary source.** Fetch the
+   page and read `<meta property="og:image" content="...">` or
+   `<meta name="twitter:image" content="...">`. **Use raw HTTP** (e.g.
+   `curl` via Bash if you have it) — LLM `WebFetch` strips `<head>`
+   meta tags during Markdown conversion and gives false negatives.
+
+2. **Microlink API as a proxy.** For publishers that block scrapers
+   (see list below) and for any URL where step 1 came back empty, try:
+
+   ```
+   https://api.microlink.io/?url=<URL_ENCODED_SOURCE>&meta=true
+   ```
+
+   The response JSON contains `data.image.url` — that's the og:image
+   Microlink fetched on your behalf. Free tier handles ~50 req/day,
+   plenty for one briefing.
+
+3. **Body image scan.** If steps 1-2 are still empty, fetch the source
+   HTML and pick the first reasonably-sized `<img>` from the article
+   body (skip logos, social icons, tracking pixels — look for the hero
+   image, usually `>800px` wide and near the headline).
+
+4. **Alternative outlet.** If the same story is also covered by a
+   scrape-friendly outlet you found during research (TechCrunch, The
+   Verge, Ars Technica, official company blog, IEEE Spectrum etc.),
+   use *its* og:image instead. The story is the same; only the URL
+   in the card footer should remain the primary source.
+
+5. **Standard "no preview" SVG.** Only if steps 1-4 all return nothing.
+   Drop the `<img>` entirely and do NOT add `has-image` to the wrapper.
+
+**Known-blocked publishers (jump straight to step 2):**
+
+CNBC, PR Newswire, BusinessWire, StockTitan, Breaking Defense,
+WSJ, FT, Bloomberg (paywall), Reuters (sometimes). For these,
+`og:image` is often present in raw HTML but the request gets a 403
+or a bot-friendly stub. Microlink resolves most of them.
+
+**Use the standard "no preview" SVG for every card** as the underlay —
+do NOT generate a custom decorative SVG with section letters or shapes.
+It only renders when `<img>` is absent (step 5) or fails to load.
 
 Pattern (use this exact SVG, change only the `--accent` color):
 
@@ -206,9 +242,8 @@ Pattern (use this exact SVG, change only the `--accent` color):
 </div>
 ```
 
-Many publishers either block scraping or omit `og:image`. For those
-stories drop the `<img>` entirely (keep the SVG) and do NOT add the
-`has-image` class.
+If you reach step 5 and drop the `<img>`, also drop the `has-image`
+class from the wrapper — the underlying SVG then renders on its own.
 - For breakthrough/important stories: extended block with context paragraphs,
   optional quote, "Implications" line
 - Card footer with source link + publication date

@@ -44,14 +44,31 @@ Use these as starting points. Replace `{DATE}`, `{YEAR}`, `{MONTH}` with today's
 
 ## Default source preferences
 
-Per section, prefer these primary sources before falling back to general outlets:
+Per section, prefer the **scrape-friendly** sources listed first. When two
+outlets cover the same story, choose the one that returns a clean
+`og:image` and full article HTML without bot-protection — that keeps card
+preview images intact in the final briefing.
 
-- `dev-tools`: GitHub Blog/Changelog, OpenAI, Anthropic, Microsoft/Copilot, Cursor, Windsurf, Sourcegraph, JetBrains, Hacker News, GitHub Trending, Product Hunt
-- `robotics`: IEEE Spectrum, The Robot Report, Boston Dynamics, Figure, Tesla Optimus, NVIDIA Robotics, Agility, Unitree
-- `defense`: DefenseScoop, Breaking Defense, Defense One, DoD/DARPA/DIU releases, Anduril, Palantir, Shield AI, Helsing, NATO/EU releases
-- `space`: SpaceNews, NASA, ESA, SpaceX, Rocket Lab, Planet, Maxar, Blue Origin, launch livestreams
-- `startups`: TechCrunch, The Information, Crunchbase, YC, a16z, Sequoia, Index, company launch posts, Product Hunt
-- `markets`: Reuters, Bloomberg, CNBC, WSJ, FT, SEC filings, earnings releases, investor relations pages
+**Scrape-friendly (preferred):**
+
+- `dev-tools`: official company blogs first — Anthropic (anthropic.com / claude.com), OpenAI, GitHub Blog & Changelog, Cursor, Windsurf, Sourcegraph, JetBrains — then TechCrunch, The Verge, Ars Technica, Hacker News, Product Hunt, GitHub Trending
+- `robotics`: IEEE Spectrum, The Robot Report, Robotics & Automation News, Boston Dynamics, Figure, Tesla Optimus, NVIDIA Robotics, Agility, Unitree, Apptronik official posts
+- `defense`: DefenseScoop, Defense One, War on the Rocks, Military Times, Military Embedded Systems, DoD/DARPA/DIU official releases, Anduril, Palantir, Shield AI, Helsing official blogs
+- `space`: SpaceNews, NASA, ESA, Spaceflight Now, Ars Technica space, The Verge space, SpaceX, Rocket Lab, Planet, Maxar, Blue Origin official
+- `startups`: TechCrunch, The Verge, SiliconANGLE, Tech Startups, HIT Consultant (vertical), YC blog, a16z blog, Sequoia, Index, company launch posts, Product Hunt
+- `markets`: SEC filings, company investor-relations pages, earnings releases hosted on company sites, Tom's Hardware, The Motley Fool, MarketWatch
+
+**Use with caution (often block scrapers — go through Microlink for og:image):**
+
+- `defense`: Breaking Defense (blocks direct curl)
+- `markets`: CNBC, WSJ, FT, Bloomberg, Reuters (paywall / bot-protection)
+- `startups`: PR Newswire, BusinessWire (anti-scrape stub)
+- `stocks/companies`: StockTitan (anti-scrape)
+
+When a story has only "blocked" sources, the editor's image fallback chain
+will handle it via Microlink — but if you can credibly substitute a
+scrape-friendly outlet covering the same event, prefer that as the
+primary URL in the card.
 
 ## How to use this file when topics ARE user-provided
 
