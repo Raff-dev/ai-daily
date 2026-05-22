@@ -122,6 +122,11 @@ Quick checklist:
 - ✅ Publication dates are within the last 24 hours (or marked `UNVERIFIED`)
 - ✅ The `<head>` contains `<link rel="stylesheet" href="https://raff-dev.github.io/ai-daily/templates/style.css">`
 - ✅ Filename is `ai-daily-YYYY-MM-DD.html`
+- ✅ Every card-image URL returns HTTP 200. Run
+  `bash scripts/verify-images.sh <output-file>` (or fetch the script from
+  `https://raff-dev.github.io/ai-daily/scripts/verify-images.sh` if the
+  user isn't inside a clone). If any URL fails, re-run the image fallback
+  chain in `agents/editor.md` for that card before saving.
 
 If validation fails, fix it — do not save a broken briefing.
 
