@@ -79,6 +79,8 @@ agents/
   translate-agent.md     ← optional Polish translation
 templates/
   style.css              ← the look — change this to restyle every future briefing
+scripts/
+  verify-images.sh       ← agent runs this before saving — fails if any card image is 404
 assets/
   og-image.png           ← social link preview card (1200×630) used by every page
   favicon.svg / .ico     ← browser tab icon

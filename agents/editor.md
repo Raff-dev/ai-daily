@@ -252,6 +252,13 @@ class from the wrapper — the underlying SVG then renders on its own.
 
 Run through this list. If anything fails, fix it — do not save broken output.
 
+- ✅ **Image URLs all return HTTP 200.** Run
+  `bash scripts/verify-images.sh <output-file>` (or the equivalent fetched
+  from `https://raff-dev.github.io/ai-daily/scripts/verify-images.sh` if
+  the user isn't inside a clone). Every `<img class="card-image">` URL is
+  curl-checked. Any FAIL means re-run the fallback chain above for that
+  card — do NOT save with broken images, even though the runtime `onerror`
+  hides them. Broken `og:image` also blows up the social preview.
 - ✅ Starts with `<!DOCTYPE html>`
 - ✅ `<head>` contains `<link rel="stylesheet" href="https://raff-dev.github.io/ai-daily/templates/style.css">`
 - ✅ `<head>` contains the favicon links and the `og:image` / `twitter:image`
